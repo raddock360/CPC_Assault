@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "\"*.s\": \"retroasm_z80\"": "",
+        "*.s": "z80-asm",
+        "physics.h": "c"
+    }
+}

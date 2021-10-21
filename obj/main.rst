@@ -1,0 +1,98 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.8 #9946 (Linux)
+                              4 ;--------------------------------------------------------
+                              5 	.module main
+                              6 	.optsdcc -mz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _main
+                             12 	.globl _createEntity
+                             13 	.globl _sys_physics_update
+                             14 	.globl _man_entity_create
+                             15 	.globl _man_entity_init
+                             16 	.globl _cpct_memcpy
+                             17 	.globl _init_e
+                             18 ;--------------------------------------------------------
+                             19 ; special function registers
+                             20 ;--------------------------------------------------------
+                             21 ;--------------------------------------------------------
+                             22 ; ram data
+                             23 ;--------------------------------------------------------
+                             24 	.area _DATA
+                             25 ;--------------------------------------------------------
+                             26 ; ram data
+                             27 ;--------------------------------------------------------
+                             28 	.area _INITIALIZED
+                             29 ;--------------------------------------------------------
+                             30 ; absolute external ram data
+                             31 ;--------------------------------------------------------
+                             32 	.area _DABS (ABS)
+                             33 ;--------------------------------------------------------
+                             34 ; global & static initialisations
+                             35 ;--------------------------------------------------------
+                             36 	.area _HOME
+                             37 	.area _GSINIT
+                             38 	.area _GSFINAL
+                             39 	.area _GSINIT
+                             40 ;--------------------------------------------------------
+                             41 ; Home
+                             42 ;--------------------------------------------------------
+                             43 	.area _HOME
+                             44 	.area _HOME
+                             45 ;--------------------------------------------------------
+                             46 ; code
+                             47 ;--------------------------------------------------------
+                             48 	.area _CODE
+                             49 ;src/main.c:12: void  createEntity() {
+                             50 ;	---------------------------------
+                             51 ; Function createEntity
+                             52 ; ---------------------------------
+   4000                      53 _createEntity::
+                             54 ;src/main.c:13: Entity_t* e = man_entity_create();
+   4000 CD 40 40      [17]   55 	call	_man_entity_create
+                             56 ;src/main.c:14: cpct_memcpy(e, &init_e, sizeof(Entity_t));
+   4003 01 10 40      [10]   57 	ld	bc, #_init_e+0
+   4006 11 05 00      [10]   58 	ld	de, #0x0005
+   4009 D5            [11]   59 	push	de
+   400A C5            [11]   60 	push	bc
+   400B E5            [11]   61 	push	hl
+   400C CD C7 40      [17]   62 	call	_cpct_memcpy
+   400F C9            [10]   63 	ret
+   4010                      64 _init_e:
+   4010 01                   65 	.db #0x01	; 1
+   4011 4F                   66 	.db #0x4f	; 79	'O'
+   4012 01                   67 	.db #0x01	; 1
+   4013 FF                   68 	.db #0xff	; -1
+   4014 FF                   69 	.db #0xff	; 255
+                             70 ;src/main.c:18: void main(void) {
+                             71 ;	---------------------------------
+                             72 ; Function main
+                             73 ; ---------------------------------
+   4015                      74 _main::
+                             75 ;src/main.c:19: man_entity_init();
+   4015 CD 2B 40      [17]   76 	call	_man_entity_init
+                             77 ;src/main.c:20: for(u8 i = 5; i > 0; --i)
+   4018 0E 05         [ 7]   78 	ld	c, #0x05
+   401A                      79 00106$:
+   401A 79            [ 4]   80 	ld	a, c
+   401B B7            [ 4]   81 	or	a, a
+   401C 28 08         [12]   82 	jr	Z,00101$
+                             83 ;src/main.c:21: createEntity();
+   401E C5            [11]   84 	push	bc
+   401F CD 00 40      [17]   85 	call	_createEntity
+   4022 C1            [10]   86 	pop	bc
+                             87 ;src/main.c:20: for(u8 i = 5; i > 0; --i)
+   4023 0D            [ 4]   88 	dec	c
+   4024 18 F4         [12]   89 	jr	00106$
+   4026                      90 00101$:
+                             91 ;src/main.c:22: sys_physics_update();
+   4026 CD AF 40      [17]   92 	call	_sys_physics_update
+                             93 ;src/main.c:24: while(1);
+   4029                      94 00103$:
+   4029 18 FE         [12]   95 	jr	00103$
+                             96 	.area _CODE
+                             97 	.area _INITIALIZER
+                             98 	.area _CABS (ABS)
