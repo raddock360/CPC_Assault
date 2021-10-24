@@ -39,12 +39,12 @@ _CODE                               00004000    000000CF =         207. bytes (R
      00004000  _createEntity                      main
      00004010  _init_e                            main
      00004015  _main                              main
-     0000402B  _man_entity_init                   entity
-     00004040  _man_entity_create                 entity
-     00004051  _man_entity_forall                 entity
-     0000406D  _man_entity_destroy                entity
-     00004074  _sys_physics_update_one_entity     physics
-     000040AF  _sys_physics_update                physics
+     0000402B  _sys_physics_update_one_entity     physics
+     00004066  _sys_physics_update                physics
+     0000406F  _man_entity_init                   entity
+     00004084  _man_entity_create                 entity
+     00004095  _man_entity_forall                 entity
+     000040B1  _man_entity_destroy                entity
      000040B8  ___sdcc_call_hl                    
      000040B9  _cpct_memset                       cpct_memutils
      000040C7  _cpct_memcpy                       cpct_memutils
@@ -65,8 +65,8 @@ _DATA                               000040CF    00000034 =          52. bytes (R
 Files Linked                              [ module(s) ]
 
 obj/main.rel                              [ main ]
-obj/man/entity.rel                        [ entity ]
 obj/sys/physics.rel                       [ physics ]
+obj/man/entity.rel                        [ entity ]
 
 
 Libraries Linked                          [ object file ]

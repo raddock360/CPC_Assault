@@ -52,7 +52,7 @@
                              52 ; ---------------------------------
    4000                      53 _createEntity::
                              54 ;src/main.c:13: Entity_t* e = man_entity_create();
-   4000 CD 40 40      [17]   55 	call	_man_entity_create
+   4000 CD 84 40      [17]   55 	call	_man_entity_create
                              56 ;src/main.c:14: cpct_memcpy(e, &init_e, sizeof(Entity_t));
    4003 01 10 40      [10]   57 	ld	bc, #_init_e+0
    4006 11 05 00      [10]   58 	ld	de, #0x0005
@@ -73,7 +73,7 @@
                              73 ; ---------------------------------
    4015                      74 _main::
                              75 ;src/main.c:19: man_entity_init();
-   4015 CD 2B 40      [17]   76 	call	_man_entity_init
+   4015 CD 6F 40      [17]   76 	call	_man_entity_init
                              77 ;src/main.c:20: for(u8 i = 5; i > 0; --i)
    4018 0E 05         [ 7]   78 	ld	c, #0x05
    401A                      79 00106$:
@@ -89,7 +89,7 @@
    4024 18 F4         [12]   89 	jr	00106$
    4026                      90 00101$:
                              91 ;src/main.c:22: sys_physics_update();
-   4026 CD AF 40      [17]   92 	call	_sys_physics_update
+   4026 CD 66 40      [17]   92 	call	_sys_physics_update
                              93 ;src/main.c:24: while(1);
    4029                      94 00103$:
    4029 18 FE         [12]   95 	jr	00103$
