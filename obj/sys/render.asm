@@ -2,23 +2,16 @@
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.6.8 #9946 (Linux)
 ;--------------------------------------------------------
-	.module main
+	.module render
 	.optsdcc -mz80
 	
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
-	.globl _main
-	.globl _createEntity
+	.globl _sys_render_one_entity
+	.globl _man_entity_forall
+	.globl _cpct_getScreenPtr
 	.globl _sys_render_update
-	.globl _sys_physics_update
-	.globl _man_entity_create
-	.globl _man_entity_init
-	.globl _cpct_setPALColour
-	.globl _cpct_setVideoMode
-	.globl _cpct_memcpy
-	.globl _cpct_disableFirmware
-	.globl _init_e
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -50,68 +43,52 @@
 ; code
 ;--------------------------------------------------------
 	.area _CODE
-;src/main.c:13: void  createEntity() {
+;src/sys/render.c:4: void sys_render_one_entity (Entity_t* e) {
 ;	---------------------------------
-; Function createEntity
+; Function sys_render_one_entity
 ; ---------------------------------
-_createEntity::
-;src/main.c:14: Entity_t* e = man_entity_create();
-	call	_man_entity_create
-;src/main.c:15: cpct_memcpy(e, &init_e, sizeof(Entity_t));
-	ld	bc, #_init_e+0
-	ld	de, #0x0005
+_sys_render_one_entity::
+	push	ix
+	ld	ix,#0
+	add	ix,sp
+;src/sys/render.c:5: u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
+	ld	e,4 (ix)
+	ld	d,5 (ix)
+	ld	l, e
+	ld	h, d
+	inc	hl
+	inc	hl
+	ld	b, (hl)
+	ld	l, e
+	ld	h, d
+	inc	hl
+	ld	a, (hl)
 	push	de
 	push	bc
+	inc	sp
+	push	af
+	inc	sp
+	ld	hl, #0xc000
 	push	hl
-	call	_cpct_memcpy
+	call	_cpct_getScreenPtr
+	ld	c, l
+	ld	b, h
+	pop	iy
+	ld	a, 4 (iy)
+	ld	(bc), a
+	pop	ix
 	ret
-_init_e:
-	.db #0x01	; 1
-	.db #0x4f	; 79	'O'
-	.db #0x01	; 1
-	.db #0xff	; -1
-	.db #0xff	; 255
-;src/main.c:19: void main(void) {
+;src/sys/render.c:9: void sys_render_update() {
 ;	---------------------------------
-; Function main
+; Function sys_render_update
 ; ---------------------------------
-_main::
-;src/main.c:20: cpct_disableFirmware();
-	call	_cpct_disableFirmware
-;src/main.c:21: cpct_setVideoMode(0);
-	ld	l, #0x00
-	call	_cpct_setVideoMode
-;src/main.c:22: cpct_setBorder(HW_BLACK);
-	ld	hl, #0x1410
+_sys_render_update::
+;src/sys/render.c:10: man_entity_forall (sys_render_one_entity);
+	ld	hl, #_sys_render_one_entity
 	push	hl
-	call	_cpct_setPALColour
-;src/main.c:23: cpct_setPALColour(0, HW_BLACK);
-	ld	hl, #0x1400
-	push	hl
-	call	_cpct_setPALColour
-;src/main.c:25: man_entity_init();
-	call	_man_entity_init
-;src/main.c:26: for(u8 i = 5; i > 0; --i)
-	ld	c, #0x05
-00106$:
-	ld	a, c
-	or	a, a
-	jr	Z,00101$
-;src/main.c:27: createEntity();
-	push	bc
-	call	_createEntity
-	pop	bc
-;src/main.c:26: for(u8 i = 5; i > 0; --i)
-	dec	c
-	jr	00106$
-00101$:
-;src/main.c:28: sys_physics_update();
-	call	_sys_physics_update
-;src/main.c:29: sys_render_update();
-	call	_sys_render_update
-;src/main.c:31: while(1);
-00103$:
-	jr	00103$
+	call	_man_entity_forall
+	pop	af
+	ret
 	.area _CODE
 	.area _INITIALIZER
 	.area _CABS (ABS)

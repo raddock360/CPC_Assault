@@ -10,89 +10,108 @@
                              10 ;--------------------------------------------------------
                              11 	.globl _main
                              12 	.globl _createEntity
-                             13 	.globl _sys_physics_update
-                             14 	.globl _man_entity_create
-                             15 	.globl _man_entity_init
-                             16 	.globl _cpct_memcpy
-                             17 	.globl _init_e
-                             18 ;--------------------------------------------------------
-                             19 ; special function registers
-                             20 ;--------------------------------------------------------
-                             21 ;--------------------------------------------------------
-                             22 ; ram data
-                             23 ;--------------------------------------------------------
-                             24 	.area _DATA
+                             13 	.globl _sys_render_update
+                             14 	.globl _sys_physics_update
+                             15 	.globl _man_entity_create
+                             16 	.globl _man_entity_init
+                             17 	.globl _cpct_setPALColour
+                             18 	.globl _cpct_setVideoMode
+                             19 	.globl _cpct_memcpy
+                             20 	.globl _cpct_disableFirmware
+                             21 	.globl _init_e
+                             22 ;--------------------------------------------------------
+                             23 ; special function registers
+                             24 ;--------------------------------------------------------
                              25 ;--------------------------------------------------------
                              26 ; ram data
                              27 ;--------------------------------------------------------
-                             28 	.area _INITIALIZED
+                             28 	.area _DATA
                              29 ;--------------------------------------------------------
-                             30 ; absolute external ram data
+                             30 ; ram data
                              31 ;--------------------------------------------------------
-                             32 	.area _DABS (ABS)
+                             32 	.area _INITIALIZED
                              33 ;--------------------------------------------------------
-                             34 ; global & static initialisations
+                             34 ; absolute external ram data
                              35 ;--------------------------------------------------------
-                             36 	.area _HOME
-                             37 	.area _GSINIT
-                             38 	.area _GSFINAL
-                             39 	.area _GSINIT
-                             40 ;--------------------------------------------------------
-                             41 ; Home
-                             42 ;--------------------------------------------------------
-                             43 	.area _HOME
-                             44 	.area _HOME
-                             45 ;--------------------------------------------------------
-                             46 ; code
-                             47 ;--------------------------------------------------------
-                             48 	.area _CODE
-                             49 ;src/main.c:12: void  createEntity() {
-                             50 ;	---------------------------------
-                             51 ; Function createEntity
-                             52 ; ---------------------------------
-   4000                      53 _createEntity::
-                             54 ;src/main.c:13: Entity_t* e = man_entity_create();
-   4000 CD 84 40      [17]   55 	call	_man_entity_create
-                             56 ;src/main.c:14: cpct_memcpy(e, &init_e, sizeof(Entity_t));
-   4003 01 10 40      [10]   57 	ld	bc, #_init_e+0
-   4006 11 05 00      [10]   58 	ld	de, #0x0005
-   4009 D5            [11]   59 	push	de
-   400A C5            [11]   60 	push	bc
-   400B E5            [11]   61 	push	hl
-   400C CD C7 40      [17]   62 	call	_cpct_memcpy
-   400F C9            [10]   63 	ret
-   4010                      64 _init_e:
-   4010 01                   65 	.db #0x01	; 1
-   4011 4F                   66 	.db #0x4f	; 79	'O'
-   4012 01                   67 	.db #0x01	; 1
-   4013 FF                   68 	.db #0xff	; -1
-   4014 FF                   69 	.db #0xff	; 255
-                             70 ;src/main.c:18: void main(void) {
-                             71 ;	---------------------------------
-                             72 ; Function main
-                             73 ; ---------------------------------
-   4015                      74 _main::
-                             75 ;src/main.c:19: man_entity_init();
-   4015 CD 6F 40      [17]   76 	call	_man_entity_init
-                             77 ;src/main.c:20: for(u8 i = 5; i > 0; --i)
-   4018 0E 05         [ 7]   78 	ld	c, #0x05
-   401A                      79 00106$:
-   401A 79            [ 4]   80 	ld	a, c
-   401B B7            [ 4]   81 	or	a, a
-   401C 28 08         [12]   82 	jr	Z,00101$
-                             83 ;src/main.c:21: createEntity();
-   401E C5            [11]   84 	push	bc
-   401F CD 00 40      [17]   85 	call	_createEntity
-   4022 C1            [10]   86 	pop	bc
-                             87 ;src/main.c:20: for(u8 i = 5; i > 0; --i)
-   4023 0D            [ 4]   88 	dec	c
-   4024 18 F4         [12]   89 	jr	00106$
-   4026                      90 00101$:
-                             91 ;src/main.c:22: sys_physics_update();
-   4026 CD 66 40      [17]   92 	call	_sys_physics_update
-                             93 ;src/main.c:24: while(1);
-   4029                      94 00103$:
-   4029 18 FE         [12]   95 	jr	00103$
-                             96 	.area _CODE
-                             97 	.area _INITIALIZER
-                             98 	.area _CABS (ABS)
+                             36 	.area _DABS (ABS)
+                             37 ;--------------------------------------------------------
+                             38 ; global & static initialisations
+                             39 ;--------------------------------------------------------
+                             40 	.area _HOME
+                             41 	.area _GSINIT
+                             42 	.area _GSFINAL
+                             43 	.area _GSINIT
+                             44 ;--------------------------------------------------------
+                             45 ; Home
+                             46 ;--------------------------------------------------------
+                             47 	.area _HOME
+                             48 	.area _HOME
+                             49 ;--------------------------------------------------------
+                             50 ; code
+                             51 ;--------------------------------------------------------
+                             52 	.area _CODE
+                             53 ;src/main.c:13: void  createEntity() {
+                             54 ;	---------------------------------
+                             55 ; Function createEntity
+                             56 ; ---------------------------------
+   4000                      57 _createEntity::
+                             58 ;src/main.c:14: Entity_t* e = man_entity_create();
+   4000 CD 59 40      [17]   59 	call	_man_entity_create
+                             60 ;src/main.c:15: cpct_memcpy(e, &init_e, sizeof(Entity_t));
+   4003 01 10 40      [10]   61 	ld	bc, #_init_e+0
+   4006 11 05 00      [10]   62 	ld	de, #0x0005
+   4009 D5            [11]   63 	push	de
+   400A C5            [11]   64 	push	bc
+   400B E5            [11]   65 	push	hl
+   400C CD 31 41      [17]   66 	call	_cpct_memcpy
+   400F C9            [10]   67 	ret
+   4010                      68 _init_e:
+   4010 01                   69 	.db #0x01	; 1
+   4011 4F                   70 	.db #0x4f	; 79	'O'
+   4012 01                   71 	.db #0x01	; 1
+   4013 FF                   72 	.db #0xff	; -1
+   4014 FF                   73 	.db #0xff	; 255
+                             74 ;src/main.c:19: void main(void) {
+                             75 ;	---------------------------------
+                             76 ; Function main
+                             77 ; ---------------------------------
+   4015                      78 _main::
+                             79 ;src/main.c:20: cpct_disableFirmware();
+   4015 CD 39 41      [17]   80 	call	_cpct_disableFirmware
+                             81 ;src/main.c:21: cpct_setVideoMode(0);
+   4018 2E 00         [ 7]   82 	ld	l, #0x00
+   401A CD 15 41      [17]   83 	call	_cpct_setVideoMode
+                             84 ;src/main.c:22: cpct_setBorder(HW_BLACK);
+   401D 21 10 14      [10]   85 	ld	hl, #0x1410
+   4020 E5            [11]   86 	push	hl
+   4021 CD 08 41      [17]   87 	call	_cpct_setPALColour
+                             88 ;src/main.c:23: cpct_setPALColour(0, HW_BLACK);
+   4024 21 00 14      [10]   89 	ld	hl, #0x1400
+   4027 E5            [11]   90 	push	hl
+   4028 CD 08 41      [17]   91 	call	_cpct_setPALColour
+                             92 ;src/main.c:25: man_entity_init();
+   402B CD 44 40      [17]   93 	call	_man_entity_init
+                             94 ;src/main.c:26: for(u8 i = 5; i > 0; --i)
+   402E 0E 05         [ 7]   95 	ld	c, #0x05
+   4030                      96 00106$:
+   4030 79            [ 4]   97 	ld	a, c
+   4031 B7            [ 4]   98 	or	a, a
+   4032 28 08         [12]   99 	jr	Z,00101$
+                            100 ;src/main.c:27: createEntity();
+   4034 C5            [11]  101 	push	bc
+   4035 CD 00 40      [17]  102 	call	_createEntity
+   4038 C1            [10]  103 	pop	bc
+                            104 ;src/main.c:26: for(u8 i = 5; i > 0; --i)
+   4039 0D            [ 4]  105 	dec	c
+   403A 18 F4         [12]  106 	jr	00106$
+   403C                     107 00101$:
+                            108 ;src/main.c:28: sys_physics_update();
+   403C CD C8 40      [17]  109 	call	_sys_physics_update
+                            110 ;src/main.c:29: sys_render_update();
+   403F CD FF 40      [17]  111 	call	_sys_render_update
+                            112 ;src/main.c:31: while(1);
+   4042                     113 00103$:
+   4042 18 FE         [12]  114 	jr	00103$
+                            115 	.area _CODE
+                            116 	.area _INITIALIZER
+                            117 	.area _CABS (ABS)
