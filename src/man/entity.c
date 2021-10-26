@@ -1,13 +1,15 @@
 #include "entity.h"
 
-Entity_t  m_entities[10];
-Entity_t* m_next_free_entity;
+Entity_t  m_entities[10];     // ARRAY DE ENTIDADES
+Entity_t* m_next_free_entity; // PUNTERO A LA SIGUIENTE ENTIDAD LIBRE
 
 ///////////////////////////////////////////////////////////////////////////////////
 // INICIALIZA EL ARRAY DE ENTIDADES RELLENÁNDOLO CON CEROS
+// RECIBE:     NADA
+// DEVUELVE:   NADA
 //
 void man_entity_init(void) {
-   cpct_memset(m_entities, 0, sizeof(m_entities));
+   cpct_memset(m_entities, 0xba, sizeof(m_entities));
    m_next_free_entity = m_entities;
 }
 
@@ -15,7 +17,8 @@ void man_entity_init(void) {
 // CREA UNA ENTIDAD EN EL ARRAY DE ENTIDADES Y LA MARCA COMO TIPO DEFAULT. 
 // LUEGO AUMENTA EL PUNTERO A LA SIGUIENTE ENTIDAD LIBRE Y DEVUELVE EL PUNTERO A 
 // LA ENTIDAD CREADA
-//
+// RECIBE:     NADA
+// DEVUELVE:   PUNTERO A LA ENTIDAD CREADA
 Entity_t* man_entity_create(void) {
    Entity_t* e = m_next_free_entity;
    m_next_free_entity = e + 1;
@@ -26,6 +29,8 @@ Entity_t* man_entity_create(void) {
 ///////////////////////////////////////////////////////////////////////////////////
 // APLICA EL MÉTODO RECIBIDO COMO ARGUMENTO (MEDIANTE UN PUNTERO A FUNCIÓN) A TODAS
 // LAS ENTIDADES QUE NO SEAN INVÁLIDAS
+// RECIBE:     PUNTERO AL MÉTODO A UTILIZAR CON LAS ENTIDADES
+// DEVUELVE:   NADA
 //
 void man_entity_forall( void (*ptrfunc) (Entity_t*) ) {
    Entity_t * e = m_entities;

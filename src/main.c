@@ -13,7 +13,14 @@ const Entity_t init_e = {
 void  createEntity() {
    Entity_t* e = man_entity_create();
    cpct_memcpy(e, &init_e, sizeof(Entity_t));
+   e->y = cpct_rand() % 200;
+}
 
+void wait(u8 n) {
+   do {
+      cpct_waitHalts(2);
+      cpct_waitVSYNC();
+   } while(--n);
 }
 
 void main(void) {
@@ -25,8 +32,10 @@ void main(void) {
    man_entity_init();
    for(u8 i = 5; i > 0; --i)
       createEntity();
-   sys_physics_update();
-   sys_render_update();
    
-   while(1);
+   while(1) {
+      sys_physics_update();
+      sys_render_update();
+      wait(10);
+   }
 }
