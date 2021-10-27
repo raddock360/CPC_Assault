@@ -1,0 +1,168 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.8 #9946 (Linux)
+                              4 ;--------------------------------------------------------
+                              5 	.module main
+                              6 	.optsdcc -mz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _main
+                             12 	.globl _wait
+                             13 	.globl _createEntity
+                             14 	.globl _sys_render_update
+                             15 	.globl _sys_physics_update
+                             16 	.globl _man_entity_create
+                             17 	.globl _man_entity_init
+                             18 	.globl _cpct_getRandom_mxor_u8
+                             19 	.globl _cpct_setPALColour
+                             20 	.globl _cpct_waitVSYNC
+                             21 	.globl _cpct_setVideoMode
+                             22 	.globl _cpct_waitHalts
+                             23 	.globl _cpct_memcpy
+                             24 	.globl _cpct_disableFirmware
+                             25 	.globl _init_e
+                             26 ;--------------------------------------------------------
+                             27 ; special function registers
+                             28 ;--------------------------------------------------------
+                             29 ;--------------------------------------------------------
+                             30 ; ram data
+                             31 ;--------------------------------------------------------
+                             32 	.area _DATA
+                             33 ;--------------------------------------------------------
+                             34 ; ram data
+                             35 ;--------------------------------------------------------
+                             36 	.area _INITIALIZED
+                             37 ;--------------------------------------------------------
+                             38 ; absolute external ram data
+                             39 ;--------------------------------------------------------
+                             40 	.area _DABS (ABS)
+                             41 ;--------------------------------------------------------
+                             42 ; global & static initialisations
+                             43 ;--------------------------------------------------------
+                             44 	.area _HOME
+                             45 	.area _GSINIT
+                             46 	.area _GSFINAL
+                             47 	.area _GSINIT
+                             48 ;--------------------------------------------------------
+                             49 ; Home
+                             50 ;--------------------------------------------------------
+                             51 	.area _HOME
+                             52 	.area _HOME
+                             53 ;--------------------------------------------------------
+                             54 ; code
+                             55 ;--------------------------------------------------------
+                             56 	.area _CODE
+                             57 ;src/main.c:13: void  createEntity() {
+                             58 ;	---------------------------------
+                             59 ; Function createEntity
+                             60 ; ---------------------------------
+   0000                      61 _createEntity::
+                             62 ;src/main.c:14: Entity_t* e = man_entity_create();
+   0000 CDr00r00      [17]   63 	call	_man_entity_create
+   0003 4D            [ 4]   64 	ld	c, l
+   0004 44            [ 4]   65 	ld	b, h
+                             66 ;src/main.c:15: cpct_memcpy(e, &init_e, sizeof(Entity_t));
+   0005 59            [ 4]   67 	ld	e, c
+   0006 50            [ 4]   68 	ld	d, b
+   0007 C5            [11]   69 	push	bc
+   0008 21 05 00      [10]   70 	ld	hl, #0x0005
+   000B E5            [11]   71 	push	hl
+   000C 21r2Ar00      [10]   72 	ld	hl, #_init_e
+   000F E5            [11]   73 	push	hl
+   0010 D5            [11]   74 	push	de
+   0011 CDr00r00      [17]   75 	call	_cpct_memcpy
+   0014 C1            [10]   76 	pop	bc
+                             77 ;src/main.c:16: e->y = cpct_rand() % 200;
+   0015 03            [ 6]   78 	inc	bc
+   0016 03            [ 6]   79 	inc	bc
+   0017 C5            [11]   80 	push	bc
+   0018 CDr00r00      [17]   81 	call	_cpct_getRandom_mxor_u8
+   001B 55            [ 4]   82 	ld	d, l
+   001C 3E C8         [ 7]   83 	ld	a, #0xc8
+   001E F5            [11]   84 	push	af
+   001F 33            [ 6]   85 	inc	sp
+   0020 D5            [11]   86 	push	de
+   0021 33            [ 6]   87 	inc	sp
+   0022 CDr00r00      [17]   88 	call	__moduchar
+   0025 F1            [10]   89 	pop	af
+   0026 7D            [ 4]   90 	ld	a, l
+   0027 C1            [10]   91 	pop	bc
+   0028 02            [ 7]   92 	ld	(bc), a
+   0029 C9            [10]   93 	ret
+   002A                      94 _init_e:
+   002A 01                   95 	.db #0x01	; 1
+   002B 4F                   96 	.db #0x4f	; 79	'O'
+   002C 01                   97 	.db #0x01	; 1
+   002D FF                   98 	.db #0xff	; -1
+   002E FF                   99 	.db #0xff	; 255
+                            100 ;src/main.c:19: void wait(u8 n) {
+                            101 ;	---------------------------------
+                            102 ; Function wait
+                            103 ; ---------------------------------
+   002F                     104 _wait::
+                            105 ;src/main.c:20: do {
+   002F 21 02 00      [10]  106 	ld	hl, #2+0
+   0032 39            [11]  107 	add	hl, sp
+   0033 4E            [ 7]  108 	ld	c, (hl)
+   0034                     109 00101$:
+                            110 ;src/main.c:21: cpct_waitHalts(2);
+   0034 C5            [11]  111 	push	bc
+   0035 2E 02         [ 7]  112 	ld	l, #0x02
+   0037 CDr00r00      [17]  113 	call	_cpct_waitHalts
+   003A CDr00r00      [17]  114 	call	_cpct_waitVSYNC
+   003D C1            [10]  115 	pop	bc
+                            116 ;src/main.c:23: } while(--n);
+   003E 0D            [ 4]  117 	dec c
+   003F 20 F3         [12]  118 	jr	NZ,00101$
+   0041 C9            [10]  119 	ret
+                            120 ;src/main.c:26: void main(void) {
+                            121 ;	---------------------------------
+                            122 ; Function main
+                            123 ; ---------------------------------
+   0042                     124 _main::
+                            125 ;src/main.c:27: cpct_disableFirmware();
+   0042 CDr00r00      [17]  126 	call	_cpct_disableFirmware
+                            127 ;src/main.c:28: cpct_setVideoMode(0);
+   0045 2E 00         [ 7]  128 	ld	l, #0x00
+   0047 CDr00r00      [17]  129 	call	_cpct_setVideoMode
+                            130 ;src/main.c:29: cpct_setBorder(HW_BLACK);
+   004A 21 10 14      [10]  131 	ld	hl, #0x1410
+   004D E5            [11]  132 	push	hl
+   004E CDr00r00      [17]  133 	call	_cpct_setPALColour
+                            134 ;src/main.c:30: cpct_setPALColour(0, HW_BLACK);
+   0051 21 00 14      [10]  135 	ld	hl, #0x1400
+   0054 E5            [11]  136 	push	hl
+   0055 CDr00r00      [17]  137 	call	_cpct_setPALColour
+                            138 ;src/main.c:32: man_entity_init();
+   0058 CDr00r00      [17]  139 	call	_man_entity_init
+                            140 ;src/main.c:33: for(u8 i = 5; i > 0; --i)
+   005B 0E 05         [ 7]  141 	ld	c, #0x05
+   005D                     142 00106$:
+   005D 79            [ 4]  143 	ld	a, c
+   005E B7            [ 4]  144 	or	a, a
+   005F 28 08         [12]  145 	jr	Z,00103$
+                            146 ;src/main.c:34: createEntity();
+   0061 C5            [11]  147 	push	bc
+   0062 CDr00r00      [17]  148 	call	_createEntity
+   0065 C1            [10]  149 	pop	bc
+                            150 ;src/main.c:33: for(u8 i = 5; i > 0; --i)
+   0066 0D            [ 4]  151 	dec	c
+   0067 18 F4         [12]  152 	jr	00106$
+                            153 ;src/main.c:36: while(1) {
+   0069                     154 00103$:
+                            155 ;src/main.c:37: sys_physics_update();
+   0069 CDr00r00      [17]  156 	call	_sys_physics_update
+                            157 ;src/main.c:38: sys_render_update();
+   006C CDr00r00      [17]  158 	call	_sys_render_update
+                            159 ;src/main.c:39: wait(10);
+   006F 3E 0A         [ 7]  160 	ld	a, #0x0a
+   0071 F5            [11]  161 	push	af
+   0072 33            [ 6]  162 	inc	sp
+   0073 CDr2Fr00      [17]  163 	call	_wait
+   0076 33            [ 6]  164 	inc	sp
+   0077 18 F0         [12]  165 	jr	00103$
+                            166 	.area _CODE
+                            167 	.area _INITIALIZER
+                            168 	.area _CABS (ABS)

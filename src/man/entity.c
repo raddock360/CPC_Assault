@@ -8,8 +8,8 @@ Entity_t* m_next_free_entity; // PUNTERO A LA SIGUIENTE ENTIDAD LIBRE
 // RECIBE:     NADA
 // DEVUELVE:   NADA
 //
-void man_entity_init(void) {
-   cpct_memset(m_entities, 0xba, sizeof(m_entities));
+void man_entity_init (void) {
+   cpct_memset (m_entities, 0, sizeof(m_entities));
    m_next_free_entity = m_entities;
 }
 
@@ -19,7 +19,7 @@ void man_entity_init(void) {
 // LA ENTIDAD CREADA
 // RECIBE:     NADA
 // DEVUELVE:   PUNTERO A LA ENTIDAD CREADA
-Entity_t* man_entity_create(void) {
+Entity_t* man_entity_create (void) {
    Entity_t* e = m_next_free_entity;
    m_next_free_entity = e + 1;
    e->type = e_type_default;
@@ -32,10 +32,10 @@ Entity_t* man_entity_create(void) {
 // RECIBE:     PUNTERO AL MÉTODO A UTILIZAR CON LAS ENTIDADES
 // DEVUELVE:   NADA
 //
-void man_entity_forall( void (*ptrfunc) (Entity_t*) ) {
-   Entity_t * e = m_entities;
-   while( e->type != e_type_invalid ) {
-      ptrfunc( e );
+void man_entity_forall (void (*ptrfunc) (Entity_t*)) {
+   Entity_t* e = m_entities;
+   while (e->type != e_type_invalid) {
+      ptrfunc(e);
       ++e;
    }
 }
@@ -43,6 +43,6 @@ void man_entity_forall( void (*ptrfunc) (Entity_t*) ) {
 ///////////////////////////////////////////////////////////////////////////////////
 // DESTRUYE UNA ENTIDAD MARCÁNDOLA COMO INVÁLIDA
 //
-void man_entity_destroy(Entity_t* dead_e) {
+void man_entity_destroy (Entity_t* dead_e) {
    dead_e->type = e_type_invalid;
 }

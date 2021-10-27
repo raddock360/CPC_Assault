@@ -13,7 +13,8 @@ const Entity_t init_e = {
 void  createEntity() {
    Entity_t* e = man_entity_create();
    cpct_memcpy(e, &init_e, sizeof(Entity_t));
-   e->y = cpct_rand() % 200;
+   e->y  = cpct_rand() % 200;
+   e->vx = -1-(cpct_rand() & 0x03);
 }
 
 void wait(u8 n) {
