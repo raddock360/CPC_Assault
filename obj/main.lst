@@ -69,100 +69,117 @@
    0007 C5            [11]   69 	push	bc
    0008 21 05 00      [10]   70 	ld	hl, #0x0005
    000B E5            [11]   71 	push	hl
-   000C 21r2Ar00      [10]   72 	ld	hl, #_init_e
+   000C 21r3Er00      [10]   72 	ld	hl, #_init_e
    000F E5            [11]   73 	push	hl
    0010 D5            [11]   74 	push	de
    0011 CDr00r00      [17]   75 	call	_cpct_memcpy
    0014 C1            [10]   76 	pop	bc
-                             77 ;src/main.c:16: e->y = cpct_rand() % 200;
-   0015 03            [ 6]   78 	inc	bc
-   0016 03            [ 6]   79 	inc	bc
-   0017 C5            [11]   80 	push	bc
-   0018 CDr00r00      [17]   81 	call	_cpct_getRandom_mxor_u8
-   001B 55            [ 4]   82 	ld	d, l
-   001C 3E C8         [ 7]   83 	ld	a, #0xc8
-   001E F5            [11]   84 	push	af
-   001F 33            [ 6]   85 	inc	sp
-   0020 D5            [11]   86 	push	de
-   0021 33            [ 6]   87 	inc	sp
-   0022 CDr00r00      [17]   88 	call	__moduchar
-   0025 F1            [10]   89 	pop	af
-   0026 7D            [ 4]   90 	ld	a, l
-   0027 C1            [10]   91 	pop	bc
-   0028 02            [ 7]   92 	ld	(bc), a
-   0029 C9            [10]   93 	ret
-   002A                      94 _init_e:
-   002A 01                   95 	.db #0x01	; 1
-   002B 4F                   96 	.db #0x4f	; 79	'O'
-   002C 01                   97 	.db #0x01	; 1
-   002D FF                   98 	.db #0xff	; -1
-   002E FF                   99 	.db #0xff	; 255
-                            100 ;src/main.c:19: void wait(u8 n) {
-                            101 ;	---------------------------------
-                            102 ; Function wait
-                            103 ; ---------------------------------
-   002F                     104 _wait::
-                            105 ;src/main.c:20: do {
-   002F 21 02 00      [10]  106 	ld	hl, #2+0
-   0032 39            [11]  107 	add	hl, sp
-   0033 4E            [ 7]  108 	ld	c, (hl)
-   0034                     109 00101$:
-                            110 ;src/main.c:21: cpct_waitHalts(2);
-   0034 C5            [11]  111 	push	bc
-   0035 2E 02         [ 7]  112 	ld	l, #0x02
-   0037 CDr00r00      [17]  113 	call	_cpct_waitHalts
-   003A CDr00r00      [17]  114 	call	_cpct_waitVSYNC
-   003D C1            [10]  115 	pop	bc
-                            116 ;src/main.c:23: } while(--n);
-   003E 0D            [ 4]  117 	dec c
-   003F 20 F3         [12]  118 	jr	NZ,00101$
-   0041 C9            [10]  119 	ret
-                            120 ;src/main.c:26: void main(void) {
-                            121 ;	---------------------------------
-                            122 ; Function main
-                            123 ; ---------------------------------
-   0042                     124 _main::
-                            125 ;src/main.c:27: cpct_disableFirmware();
-   0042 CDr00r00      [17]  126 	call	_cpct_disableFirmware
-                            127 ;src/main.c:28: cpct_setVideoMode(0);
-   0045 2E 00         [ 7]  128 	ld	l, #0x00
-   0047 CDr00r00      [17]  129 	call	_cpct_setVideoMode
-                            130 ;src/main.c:29: cpct_setBorder(HW_BLACK);
-   004A 21 10 14      [10]  131 	ld	hl, #0x1410
-   004D E5            [11]  132 	push	hl
-   004E CDr00r00      [17]  133 	call	_cpct_setPALColour
-                            134 ;src/main.c:30: cpct_setPALColour(0, HW_BLACK);
-   0051 21 00 14      [10]  135 	ld	hl, #0x1400
-   0054 E5            [11]  136 	push	hl
-   0055 CDr00r00      [17]  137 	call	_cpct_setPALColour
-                            138 ;src/main.c:32: man_entity_init();
-   0058 CDr00r00      [17]  139 	call	_man_entity_init
-                            140 ;src/main.c:33: for(u8 i = 5; i > 0; --i)
-   005B 0E 05         [ 7]  141 	ld	c, #0x05
-   005D                     142 00106$:
-   005D 79            [ 4]  143 	ld	a, c
-   005E B7            [ 4]  144 	or	a, a
-   005F 28 08         [12]  145 	jr	Z,00103$
-                            146 ;src/main.c:34: createEntity();
-   0061 C5            [11]  147 	push	bc
-   0062 CDr00r00      [17]  148 	call	_createEntity
-   0065 C1            [10]  149 	pop	bc
-                            150 ;src/main.c:33: for(u8 i = 5; i > 0; --i)
-   0066 0D            [ 4]  151 	dec	c
-   0067 18 F4         [12]  152 	jr	00106$
-                            153 ;src/main.c:36: while(1) {
-   0069                     154 00103$:
-                            155 ;src/main.c:37: sys_physics_update();
-   0069 CDr00r00      [17]  156 	call	_sys_physics_update
-                            157 ;src/main.c:38: sys_render_update();
-   006C CDr00r00      [17]  158 	call	_sys_render_update
-                            159 ;src/main.c:39: wait(10);
-   006F 3E 0A         [ 7]  160 	ld	a, #0x0a
-   0071 F5            [11]  161 	push	af
-   0072 33            [ 6]  162 	inc	sp
-   0073 CDr2Fr00      [17]  163 	call	_wait
-   0076 33            [ 6]  164 	inc	sp
-   0077 18 F0         [12]  165 	jr	00103$
-                            166 	.area _CODE
-                            167 	.area _INITIALIZER
-                            168 	.area _CABS (ABS)
+                             77 ;src/main.c:16: e->y  = cpct_rand() % 200;
+   0015 59            [ 4]   78 	ld	e, c
+   0016 50            [ 4]   79 	ld	d, b
+   0017 13            [ 6]   80 	inc	de
+   0018 13            [ 6]   81 	inc	de
+   0019 C5            [11]   82 	push	bc
+   001A D5            [11]   83 	push	de
+   001B CDr00r00      [17]   84 	call	_cpct_getRandom_mxor_u8
+   001E 65            [ 4]   85 	ld	h, l
+   001F 3E C8         [ 7]   86 	ld	a, #0xc8
+   0021 F5            [11]   87 	push	af
+   0022 33            [ 6]   88 	inc	sp
+   0023 E5            [11]   89 	push	hl
+   0024 33            [ 6]   90 	inc	sp
+   0025 CDr00r00      [17]   91 	call	__moduchar
+   0028 F1            [10]   92 	pop	af
+   0029 7D            [ 4]   93 	ld	a, l
+   002A D1            [10]   94 	pop	de
+   002B C1            [10]   95 	pop	bc
+   002C 12            [ 7]   96 	ld	(de), a
+                             97 ;src/main.c:17: e->vx = -1-(cpct_rand() & 0x03);
+   002D 03            [ 6]   98 	inc	bc
+   002E 03            [ 6]   99 	inc	bc
+   002F 03            [ 6]  100 	inc	bc
+   0030 C5            [11]  101 	push	bc
+   0031 CDr00r00      [17]  102 	call	_cpct_getRandom_mxor_u8
+   0034 C1            [10]  103 	pop	bc
+   0035 7D            [ 4]  104 	ld	a, l
+   0036 E6 03         [ 7]  105 	and	a, #0x03
+   0038 5F            [ 4]  106 	ld	e, a
+   0039 3E FF         [ 7]  107 	ld	a, #0xff
+   003B 93            [ 4]  108 	sub	a, e
+   003C 02            [ 7]  109 	ld	(bc), a
+   003D C9            [10]  110 	ret
+   003E                     111 _init_e:
+   003E 01                  112 	.db #0x01	; 1
+   003F 4F                  113 	.db #0x4f	; 79	'O'
+   0040 01                  114 	.db #0x01	; 1
+   0041 FF                  115 	.db #0xff	; -1
+   0042 FF                  116 	.db #0xff	; 255
+                            117 ;src/main.c:20: void wait(u8 n) {
+                            118 ;	---------------------------------
+                            119 ; Function wait
+                            120 ; ---------------------------------
+   0043                     121 _wait::
+                            122 ;src/main.c:21: do {
+   0043 21 02 00      [10]  123 	ld	hl, #2+0
+   0046 39            [11]  124 	add	hl, sp
+   0047 4E            [ 7]  125 	ld	c, (hl)
+   0048                     126 00101$:
+                            127 ;src/main.c:22: cpct_waitHalts(2);
+   0048 C5            [11]  128 	push	bc
+   0049 2E 02         [ 7]  129 	ld	l, #0x02
+   004B CDr00r00      [17]  130 	call	_cpct_waitHalts
+   004E CDr00r00      [17]  131 	call	_cpct_waitVSYNC
+   0051 C1            [10]  132 	pop	bc
+                            133 ;src/main.c:24: } while(--n);
+   0052 0D            [ 4]  134 	dec c
+   0053 20 F3         [12]  135 	jr	NZ,00101$
+   0055 C9            [10]  136 	ret
+                            137 ;src/main.c:27: void main(void) {
+                            138 ;	---------------------------------
+                            139 ; Function main
+                            140 ; ---------------------------------
+   0056                     141 _main::
+                            142 ;src/main.c:28: cpct_disableFirmware();
+   0056 CDr00r00      [17]  143 	call	_cpct_disableFirmware
+                            144 ;src/main.c:29: cpct_setVideoMode(0);
+   0059 2E 00         [ 7]  145 	ld	l, #0x00
+   005B CDr00r00      [17]  146 	call	_cpct_setVideoMode
+                            147 ;src/main.c:30: cpct_setBorder(HW_BLACK);
+   005E 21 10 14      [10]  148 	ld	hl, #0x1410
+   0061 E5            [11]  149 	push	hl
+   0062 CDr00r00      [17]  150 	call	_cpct_setPALColour
+                            151 ;src/main.c:31: cpct_setPALColour(0, HW_BLACK);
+   0065 21 00 14      [10]  152 	ld	hl, #0x1400
+   0068 E5            [11]  153 	push	hl
+   0069 CDr00r00      [17]  154 	call	_cpct_setPALColour
+                            155 ;src/main.c:33: man_entity_init();
+   006C CDr00r00      [17]  156 	call	_man_entity_init
+                            157 ;src/main.c:34: for(u8 i = 5; i > 0; --i)
+   006F 0E 05         [ 7]  158 	ld	c, #0x05
+   0071                     159 00106$:
+   0071 79            [ 4]  160 	ld	a, c
+   0072 B7            [ 4]  161 	or	a, a
+   0073 28 08         [12]  162 	jr	Z,00103$
+                            163 ;src/main.c:35: createEntity();
+   0075 C5            [11]  164 	push	bc
+   0076 CDr00r00      [17]  165 	call	_createEntity
+   0079 C1            [10]  166 	pop	bc
+                            167 ;src/main.c:34: for(u8 i = 5; i > 0; --i)
+   007A 0D            [ 4]  168 	dec	c
+   007B 18 F4         [12]  169 	jr	00106$
+                            170 ;src/main.c:37: while(1) {
+   007D                     171 00103$:
+                            172 ;src/main.c:38: sys_physics_update();
+   007D CDr00r00      [17]  173 	call	_sys_physics_update
+                            174 ;src/main.c:39: sys_render_update();
+   0080 CDr00r00      [17]  175 	call	_sys_render_update
+                            176 ;src/main.c:40: wait(10);
+   0083 3E 0A         [ 7]  177 	ld	a, #0x0a
+   0085 F5            [11]  178 	push	af
+   0086 33            [ 6]  179 	inc	sp
+   0087 CDr43r00      [17]  180 	call	_wait
+   008A 33            [ 6]  181 	inc	sp
+   008B 18 F0         [12]  182 	jr	00103$
+                            183 	.area _CODE
+                            184 	.area _INITIALIZER
+                            185 	.area _CABS (ABS)

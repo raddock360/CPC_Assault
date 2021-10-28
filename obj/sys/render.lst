@@ -51,44 +51,75 @@
    0000 DD E5         [15]   51 	push	ix
    0002 DD 21 00 00   [14]   52 	ld	ix,#0
    0006 DD 39         [15]   53 	add	ix,sp
-                             54 ;src/sys/render.c:5: u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
-   0008 DD 5E 04      [19]   55 	ld	e,4 (ix)
-   000B DD 56 05      [19]   56 	ld	d,5 (ix)
-   000E 6B            [ 4]   57 	ld	l, e
-   000F 62            [ 4]   58 	ld	h, d
-   0010 23            [ 6]   59 	inc	hl
-   0011 23            [ 6]   60 	inc	hl
-   0012 46            [ 7]   61 	ld	b, (hl)
-   0013 6B            [ 4]   62 	ld	l, e
-   0014 62            [ 4]   63 	ld	h, d
-   0015 23            [ 6]   64 	inc	hl
-   0016 7E            [ 7]   65 	ld	a, (hl)
-   0017 D5            [11]   66 	push	de
-   0018 C5            [11]   67 	push	bc
-   0019 33            [ 6]   68 	inc	sp
-   001A F5            [11]   69 	push	af
-   001B 33            [ 6]   70 	inc	sp
-   001C 21 00 C0      [10]   71 	ld	hl, #0xc000
-   001F E5            [11]   72 	push	hl
-   0020 CDr00r00      [17]   73 	call	_cpct_getScreenPtr
-   0023 4D            [ 4]   74 	ld	c, l
-   0024 44            [ 4]   75 	ld	b, h
-   0025 FD E1         [14]   76 	pop	iy
-   0027 FD 7E 04      [19]   77 	ld	a, 4 (iy)
-   002A 02            [ 7]   78 	ld	(bc), a
-   002B DD E1         [14]   79 	pop	ix
-   002D C9            [10]   80 	ret
-                             81 ;src/sys/render.c:9: void sys_render_update() {
-                             82 ;	---------------------------------
-                             83 ; Function sys_render_update
-                             84 ; ---------------------------------
-   002E                      85 _sys_render_update::
-                             86 ;src/sys/render.c:10: man_entity_forall (sys_render_one_entity);
-   002E 21r00r00      [10]   87 	ld	hl, #_sys_render_one_entity
-   0031 E5            [11]   88 	push	hl
-   0032 CDr00r00      [17]   89 	call	_man_entity_forall
-   0035 F1            [10]   90 	pop	af
-   0036 C9            [10]   91 	ret
-                             92 	.area _CODE
-                             93 	.area _INITIALIZER
-                             94 	.area _CABS (ABS)
+   0008 F5            [11]   54 	push	af
+   0009 F5            [11]   55 	push	af
+                             56 ;src/sys/render.c:5: u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x - e->vx, e->y);
+   000A DD 5E 04      [19]   57 	ld	e,4 (ix)
+   000D DD 56 05      [19]   58 	ld	d,5 (ix)
+   0010 21 02 00      [10]   59 	ld	hl, #0x0002
+   0013 19            [11]   60 	add	hl,de
+   0014 DD 75 FE      [19]   61 	ld	-2 (ix), l
+   0017 DD 74 FF      [19]   62 	ld	-1 (ix), h
+   001A 46            [ 7]   63 	ld	b, (hl)
+   001B 21 01 00      [10]   64 	ld	hl, #0x0001
+   001E 19            [11]   65 	add	hl,de
+   001F E3            [19]   66 	ex	(sp), hl
+   0020 E1            [10]   67 	pop	hl
+   0021 E5            [11]   68 	push	hl
+   0022 4E            [ 7]   69 	ld	c, (hl)
+   0023 6B            [ 4]   70 	ld	l, e
+   0024 62            [ 4]   71 	ld	h, d
+   0025 23            [ 6]   72 	inc	hl
+   0026 23            [ 6]   73 	inc	hl
+   0027 23            [ 6]   74 	inc	hl
+   0028 6E            [ 7]   75 	ld	l, (hl)
+   0029 79            [ 4]   76 	ld	a, c
+   002A 95            [ 4]   77 	sub	a, l
+   002B D5            [11]   78 	push	de
+   002C C5            [11]   79 	push	bc
+   002D 33            [ 6]   80 	inc	sp
+   002E F5            [11]   81 	push	af
+   002F 33            [ 6]   82 	inc	sp
+   0030 21 00 C0      [10]   83 	ld	hl, #0xc000
+   0033 E5            [11]   84 	push	hl
+   0034 CDr00r00      [17]   85 	call	_cpct_getScreenPtr
+   0037 D1            [10]   86 	pop	de
+                             87 ;src/sys/render.c:6: *pvmem = 0;
+   0038 36 00         [10]   88 	ld	(hl), #0x00
+                             89 ;src/sys/render.c:7: pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
+   003A DD 6E FE      [19]   90 	ld	l,-2 (ix)
+   003D DD 66 FF      [19]   91 	ld	h,-1 (ix)
+   0040 7E            [ 7]   92 	ld	a, (hl)
+   0041 E1            [10]   93 	pop	hl
+   0042 E5            [11]   94 	push	hl
+   0043 46            [ 7]   95 	ld	b, (hl)
+   0044 D5            [11]   96 	push	de
+   0045 F5            [11]   97 	push	af
+   0046 33            [ 6]   98 	inc	sp
+   0047 C5            [11]   99 	push	bc
+   0048 33            [ 6]  100 	inc	sp
+   0049 21 00 C0      [10]  101 	ld	hl, #0xc000
+   004C E5            [11]  102 	push	hl
+   004D CDr00r00      [17]  103 	call	_cpct_getScreenPtr
+   0050 4D            [ 4]  104 	ld	c, l
+   0051 44            [ 4]  105 	ld	b, h
+   0052 FD E1         [14]  106 	pop	iy
+   0054 FD 7E 04      [19]  107 	ld	a, 4 (iy)
+   0057 02            [ 7]  108 	ld	(bc), a
+   0058 DD F9         [10]  109 	ld	sp, ix
+   005A DD E1         [14]  110 	pop	ix
+   005C C9            [10]  111 	ret
+                            112 ;src/sys/render.c:11: void sys_render_update() {
+                            113 ;	---------------------------------
+                            114 ; Function sys_render_update
+                            115 ; ---------------------------------
+   005D                     116 _sys_render_update::
+                            117 ;src/sys/render.c:12: man_entity_forall (sys_render_one_entity);
+   005D 21r00r00      [10]  118 	ld	hl, #_sys_render_one_entity
+   0060 E5            [11]  119 	push	hl
+   0061 CDr00r00      [17]  120 	call	_man_entity_forall
+   0064 F1            [10]  121 	pop	af
+   0065 C9            [10]  122 	ret
+                            123 	.area _CODE
+                            124 	.area _INITIALIZER
+                            125 	.area _CABS (ABS)

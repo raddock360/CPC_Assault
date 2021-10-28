@@ -18,83 +18,83 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000000  s__CABS                         
      00000000  s__DABS                         
      00000034  l__DATA                         
-     00000248  l__CODE                         
+     000002C3  l__CODE                         
      00004000  s__CODE                         
-     00004248  s__DATA                         
-     0000427C  s__GSFINAL                      
-     0000427C  s__GSINIT                       
-     0000427C  s__HOME                         
-     0000427C  s__INITIALIZED                  
-     0000427C  s__INITIALIZER                  
+     000042C3  s__DATA                         
+     000042F7  s__GSFINAL                      
+     000042F7  s__GSINIT                       
+     000042F7  s__HOME                         
+     000042F7  s__INITIALIZED                  
+     000042F7  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    00000248 =         584. bytes (REL,CON)
+_CODE                               00004000    000002C3 =         707. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
      00004000  _createEntity                      main
-     0000402A  _init_e                            main
-     0000402F  _wait                              main
-     00004042  _main                              main
-     00004079  _man_entity_init                   entity
-     0000408E  _man_entity_create                 entity
-     0000409F  _man_entity_forall                 entity
-     000040BB  _man_entity_destroy                entity
-     000040C2  _sys_physics_update_one_entity     physics
-     000040FD  _sys_physics_update                physics
-     00004106  _sys_render_one_entity             render
-     00004134  _sys_render_update                 render
-     0000413D  _cpct_setPALColour                 cpct_video
-     00004149  __moduchar                         
-     00004155  __moduint                          
-     00004160  _cpct_waitHalts                    cpct_memutils
-     00004165  __divuint                          
-     0000416D  __divuchar                         
-     00004174  __divu8                            
-     00004177  __divu16                           
-     000041A6  ___sdcc_call_hl                    
-     000041A7  _cpct_waitVSYNC                    cpct_video
-     000041A7  cpct_waitVSYNC_asm                 cpct_video
-     000041AF  _cpct_setVideoMode                 cpct_video
-     000041BD  _cpct_memset                       cpct_memutils
-     000041CB  _cpct_memcpy                       cpct_memutils
-     000041D3  _cpct_disableFirmware              cpct_firmware
-     000041D3  _cpct_removeInterruptHandler       cpct_firmware
-     000041D3  cpct_disableFirmware_asm           cpct_firmware
-     000041D3  cpct_removeInterruptHandler_asm    cpct_firmware
-     000041E3  _cpct_getRandom_mxor_u8            cpct_random
-     000041E3  cpct_getRandom_mxor_u8_asm         cpct_random
-     000041E4  cpct_randomIdx_mxor_u8             cpct_random
-     00004208  _cpct_mode_rom_status              cpct_firmware
-     00004209  _cpct_getScreenPtr                 cpct_video
-     00004221  _cpct_mxor32_seed                  cpct_random
-     00004225  _cpct_nextRandom_mxor_u32          cpct_random
-     00004225  cpct_nextRandom_mxor_u32_asm       cpct_random
+     0000403E  _init_e                            main
+     00004043  _wait                              main
+     00004056  _main                              main
+     0000408D  _sys_physics_update_one_entity     physics
+     000040C8  _sys_physics_update                physics
+     000040D1  _sys_render_one_entity             render
+     0000412E  _sys_render_update                 render
+     00004137  _man_entity_init                   entity
+     0000414C  _man_entity_create                 entity
+     0000415D  _man_entity_forall                 entity
+     00004179  _man_entity_destroy                entity
+     000041B8  _cpct_setPALColour                 cpct_video
+     000041C4  __moduchar                         
+     000041D0  __moduint                          
+     000041DB  _cpct_waitHalts                    cpct_memutils
+     000041E0  __divuint                          
+     000041E8  __divuchar                         
+     000041EF  __divu8                            
+     000041F2  __divu16                           
+     00004221  ___sdcc_call_hl                    
+     00004222  _cpct_waitVSYNC                    cpct_video
+     00004222  cpct_waitVSYNC_asm                 cpct_video
+     0000422A  _cpct_setVideoMode                 cpct_video
+     00004238  _cpct_memset                       cpct_memutils
+     00004246  _cpct_memcpy                       cpct_memutils
+     0000424E  _cpct_disableFirmware              cpct_firmware
+     0000424E  _cpct_removeInterruptHandler       cpct_firmware
+     0000424E  cpct_disableFirmware_asm           cpct_firmware
+     0000424E  cpct_removeInterruptHandler_asm    cpct_firmware
+     0000425E  _cpct_getRandom_mxor_u8            cpct_random
+     0000425E  cpct_getRandom_mxor_u8_asm         cpct_random
+     0000425F  cpct_randomIdx_mxor_u8             cpct_random
+     00004283  _cpct_mode_rom_status              cpct_firmware
+     00004284  _cpct_getScreenPtr                 cpct_video
+     0000429C  _cpct_mxor32_seed                  cpct_random
+     000042A0  _cpct_nextRandom_mxor_u32          cpct_random
+     000042A0  cpct_nextRandom_mxor_u32_asm       cpct_random
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_DATA                               00004248    00000034 =          52. bytes (REL,CON)
+_DATA                               000042C3    00000034 =          52. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00004248  _m_entities                        entity
-     0000427A  _m_next_free_entity                entity
+     000042C3  _m_entities                        entity
+     000042F5  _m_next_free_entity                entity
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 
 Files Linked                              [ module(s) ]
 
 obj/main.rel                              [ main ]
-obj/man/entity.rel                        [ entity ]
 obj/sys/physics.rel                       [ physics ]
 obj/sys/render.rel                        [ render ]
+obj/man/entity.rel                        [ entity ]
 
 
 Libraries Linked                          [ object file ]

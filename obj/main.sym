@@ -16,13 +16,13 @@ Symbol Table
     _cpct_waitHalts                                                **** GX
     _cpct_waitVSYNC                                                **** GX
   0 _createEntity                                                  0000 GR
-  0 _init_e                                                        002A GR
-  0 _main                                                          0042 GR
+  0 _init_e                                                        003E GR
+  0 _main                                                          0056 GR
     _man_entity_create                                             **** GX
     _man_entity_init                                               **** GX
     _sys_physics_update                                            **** GX
     _sys_render_update                                             **** GX
-  0 _wait                                                          002F GR
+  0 _wait                                                          0043 GR
 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
@@ -30,7 +30,7 @@ Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE                                      size   79   flags    0
+   0 _CODE                                      size   8D   flags    0
    1 _DATA                                      size    0   flags    0
    2 _INITIALIZED                               size    0   flags    0
    3 _DABS                                      size    0   flags    8

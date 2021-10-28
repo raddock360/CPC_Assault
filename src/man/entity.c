@@ -41,8 +41,20 @@ void man_entity_forall (void (*ptrfunc) (Entity_t*)) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-// DESTRUYE UNA ENTIDAD MARCÁNDOLA COMO INVÁLIDA
+// DESTROY
+//    Destruye una entidad dada y libera la memoria asignada a esta, copiando
+//    la última entidad válida del array sobre su posición.
+// INPUT:
+//    - dead_e: puntero a la entidad a destruir
+// PRECONDICIONES:
+//    - dead_e: debe ser un puntero a una entidad válida
 //
 void man_entity_destroy (Entity_t* dead_e) {
-   dead_e->type = e_type_invalid;
+   Entity_t* de = dead_e;
+   Entity_t* last = m_next_free_entity;
+   --last;
+   if (de != last) 
+      cpct_memcpy(dead_e, last, sizeof(Entity_t));
+   last->type = e_type_invalid;
+   m_next_free_entity = last;
 }

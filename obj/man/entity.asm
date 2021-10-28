@@ -8,6 +8,7 @@
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
+	.globl _cpct_memcpy
 	.globl _cpct_memset
 	.globl _m_next_free_entity
 	.globl _m_entities
@@ -117,18 +118,53 @@ _man_entity_forall::
 	inc	bc
 	inc	bc
 	jr	00101$
-;src/man/entity.c:46: void man_entity_destroy (Entity_t* dead_e) {
+;src/man/entity.c:52: void man_entity_destroy (Entity_t* dead_e) {
 ;	---------------------------------
 ; Function man_entity_destroy
 ; ---------------------------------
 _man_entity_destroy::
-;src/man/entity.c:47: dead_e->type = e_type_invalid;
-	pop	de
-	pop	bc
-	push	bc
+	push	ix
+	ld	ix,#0
+	add	ix,sp
+;src/man/entity.c:53: Entity_t* de = dead_e;
+	ld	e,4 (ix)
+	ld	d,5 (ix)
+;src/man/entity.c:54: Entity_t* last = m_next_free_entity;
+	ld	hl, (_m_next_free_entity)
+;src/man/entity.c:55: --last;
+	ld	bc, #0xfffb
+	add	hl,bc
+	ld	c, l
+	ld	b, h
+;src/man/entity.c:56: if (de != last) 
+	ld	a, e
+	sub	a, c
+	jr	NZ,00109$
+	ld	a, d
+	sub	a, b
+	jr	Z,00102$
+00109$:
+;src/man/entity.c:57: cpct_memcpy(dead_e, last, sizeof(Entity_t));
+	ld	l, c
+	ld	h, b
+	ld	e, 4 (ix)
+	ld	d, 5 (ix)
 	push	de
+	pop	iy
+	push	bc
+	ld	de, #0x0005
+	push	de
+	push	hl
+	push	iy
+	call	_cpct_memcpy
+	pop	bc
+00102$:
+;src/man/entity.c:58: last->type = e_type_invalid;
 	xor	a, a
 	ld	(bc), a
+;src/man/entity.c:59: m_next_free_entity = last;
+	ld	(_m_next_free_entity), bc
+	pop	ix
 	ret
 	.area _CODE
 	.area _INITIALIZER
