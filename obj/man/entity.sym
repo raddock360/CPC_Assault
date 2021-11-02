@@ -11,20 +11,21 @@ Symbol Table
     _cpct_memcpy                                                   **** GX
     _cpct_memset                                                   **** GX
   1 _m_entities                                                    0000 GR
-  1 _m_next_free_entity                                            0032 GR
+  1 _m_next_free_entity                                            0046 GR
   0 _man_entity_create                                             0015 GR
-  0 _man_entity_destroy                                            0042 GR
+  0 _man_entity_destroy                                            0043 GR
   0 _man_entity_forall                                             0026 GR
   0 _man_entity_init                                               0000 GR
-
+  0 _man_entity_set4destruction                                    0082 GR
+  0 _man_entity_update                                             008B GR
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE                                      size   81   flags    0
-   1 _DATA                                      size   34   flags    0
+   0 _CODE                                      size   A3   flags    0
+   1 _DATA                                      size   48   flags    0
    2 _INITIALIZED                               size    0   flags    0
    3 _DABS                                      size    0   flags    8
    4 _HOME                                      size    0   flags    0

@@ -1,4 +1,4 @@
-#include "render.h"
+#include "physics.h"
 #include "man/entity.h"
 
 //================================================================================
@@ -7,17 +7,26 @@
 //================================================================================
 //================================================================================
 
+const Entity_t init_e = {
+   e_type_star,   // tipo
+   79, 1,         // x, y
+   -1,            // vx
+   0xff,          // color
+   0x0000         // prev pointer
+};
+
 /////////////////////////////////////////////////////////////////////////////////
-//  RENDERIZA UNA ENTIDAD
-//      - Pinta una estrella en pantalla
+//  GENERA UNA NUEVA ESTRELLA
+//      Crea e inicializa una nueva entidad estrella
 //
-void sys_render_one_entity (Entity_t* e) {
-	if (e->prevptr != 0) *(e->prevptr) = 0;
-	if (!(e->type & e_type_dead)) {
-		u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
-		*pvmem = e->color;
-		e->prevptr = pvmem;
-	} 
+//  PRECONDICIÓN:
+//      - Tiene que haber memoria libre para nuevas entidades
+//
+void generateNewStar() {
+   Entity_t* e = man_entity_create();
+   cpct_memcpy(e, &init_e, sizeof(Entity_t));
+   e->y  = cpct_rand() % 200;
+   e->vx = -1-(cpct_rand() & 0x03);
 }
 
 //================================================================================
@@ -27,20 +36,12 @@ void sys_render_one_entity (Entity_t* e) {
 //================================================================================
 
 /////////////////////////////////////////////////////////////////////////////////
-//  INICIALIZA LA PANTALLA DE JUEGO
-//		- Inicializa el modo de vídeo y establece los colores
+//  ACTUALIZA EL GENERADOR
+//      Actualiza el generador de estrellas para crear nuevas entidades
 //
-void sys_render_init() {
-	cpct_setVideoMode(0);
-	cpct_setBorder(HW_BLACK);
-   	cpct_setPALColour(0, HW_BLACK);
+void sys_generator_update() {
+    // Necesario verificar si hay espacio
+    generateNewStar();   
 }
 
-/////////////////////////////////////////////////////////////////////////////////
-//  ACTUALIZA EL MOTOR DE RENDER
-//      - Pinta todas las entidades de la pantalla, llamando al mánager de 
-//		  entidades mediante la inversión de control
-//
-void sys_render_update() {
-    man_entity_forall (sys_render_one_entity);
-}
+

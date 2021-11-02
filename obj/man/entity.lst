@@ -16,156 +16,198 @@
                              16 	.globl _man_entity_create
                              17 	.globl _man_entity_forall
                              18 	.globl _man_entity_destroy
-                             19 ;--------------------------------------------------------
-                             20 ; special function registers
+                             19 	.globl _man_entity_set4destruction
+                             20 	.globl _man_entity_update
                              21 ;--------------------------------------------------------
-                             22 ;--------------------------------------------------------
-                             23 ; ram data
+                             22 ; special function registers
+                             23 ;--------------------------------------------------------
                              24 ;--------------------------------------------------------
-                             25 	.area _DATA
-   0000                      26 _m_entities::
-   0000                      27 	.ds 50
-   0032                      28 _m_next_free_entity::
-   0032                      29 	.ds 2
-                             30 ;--------------------------------------------------------
-                             31 ; ram data
+                             25 ; ram data
+                             26 ;--------------------------------------------------------
+                             27 	.area _DATA
+   0000                      28 _m_entities::
+   0000                      29 	.ds 70
+   0046                      30 _m_next_free_entity::
+   0046                      31 	.ds 2
                              32 ;--------------------------------------------------------
-                             33 	.area _INITIALIZED
+                             33 ; ram data
                              34 ;--------------------------------------------------------
-                             35 ; absolute external ram data
+                             35 	.area _INITIALIZED
                              36 ;--------------------------------------------------------
-                             37 	.area _DABS (ABS)
+                             37 ; absolute external ram data
                              38 ;--------------------------------------------------------
-                             39 ; global & static initialisations
+                             39 	.area _DABS (ABS)
                              40 ;--------------------------------------------------------
-                             41 	.area _HOME
-                             42 	.area _GSINIT
-                             43 	.area _GSFINAL
+                             41 ; global & static initialisations
+                             42 ;--------------------------------------------------------
+                             43 	.area _HOME
                              44 	.area _GSINIT
-                             45 ;--------------------------------------------------------
-                             46 ; Home
+                             45 	.area _GSFINAL
+                             46 	.area _GSINIT
                              47 ;--------------------------------------------------------
-                             48 	.area _HOME
-                             49 	.area _HOME
-                             50 ;--------------------------------------------------------
-                             51 ; code
+                             48 ; Home
+                             49 ;--------------------------------------------------------
+                             50 	.area _HOME
+                             51 	.area _HOME
                              52 ;--------------------------------------------------------
-                             53 	.area _CODE
-                             54 ;src/man/entity.c:11: void man_entity_init (void) {
-                             55 ;	---------------------------------
-                             56 ; Function man_entity_init
-                             57 ; ---------------------------------
-   0000                      58 _man_entity_init::
-                             59 ;src/man/entity.c:12: cpct_memset (m_entities, 0, sizeof(m_entities));
-   0000 21 32 00      [10]   60 	ld	hl, #0x0032
-   0003 E5            [11]   61 	push	hl
-   0004 AF            [ 4]   62 	xor	a, a
-   0005 F5            [11]   63 	push	af
-   0006 33            [ 6]   64 	inc	sp
-   0007 21r00r00      [10]   65 	ld	hl, #_m_entities
-   000A E5            [11]   66 	push	hl
-   000B CDr00r00      [17]   67 	call	_cpct_memset
-                             68 ;src/man/entity.c:13: m_next_free_entity = m_entities;
-   000E 21r00r00      [10]   69 	ld	hl, #_m_entities
-   0011 22r32r00      [16]   70 	ld	(_m_next_free_entity), hl
-   0014 C9            [10]   71 	ret
-                             72 ;src/man/entity.c:22: Entity_t* man_entity_create (void) {
-                             73 ;	---------------------------------
-                             74 ; Function man_entity_create
-                             75 ; ---------------------------------
-   0015                      76 _man_entity_create::
-                             77 ;src/man/entity.c:23: Entity_t* e = m_next_free_entity;
-   0015 ED 4Br32r00   [20]   78 	ld	bc, (_m_next_free_entity)
-                             79 ;src/man/entity.c:24: m_next_free_entity = e + 1;
-   0019 21 05 00      [10]   80 	ld	hl, #0x0005
-   001C 09            [11]   81 	add	hl,bc
-   001D 22r32r00      [16]   82 	ld	(_m_next_free_entity), hl
-                             83 ;src/man/entity.c:25: e->type = e_type_default;
-   0020 3E 7F         [ 7]   84 	ld	a, #0x7f
-   0022 02            [ 7]   85 	ld	(bc), a
-                             86 ;src/man/entity.c:26: return e;
-   0023 69            [ 4]   87 	ld	l, c
-   0024 60            [ 4]   88 	ld	h, b
-   0025 C9            [10]   89 	ret
-                             90 ;src/man/entity.c:35: void man_entity_forall (void (*ptrfunc) (Entity_t*)) {
-                             91 ;	---------------------------------
-                             92 ; Function man_entity_forall
-                             93 ; ---------------------------------
-   0026                      94 _man_entity_forall::
-                             95 ;src/man/entity.c:36: Entity_t* e = m_entities;
-   0026 01r00r00      [10]   96 	ld	bc, #_m_entities+0
-                             97 ;src/man/entity.c:37: while (e->type != e_type_invalid) {
-   0029                      98 00101$:
-   0029 0A            [ 7]   99 	ld	a, (bc)
-   002A B7            [ 4]  100 	or	a, a
-   002B C8            [11]  101 	ret	Z
-                            102 ;src/man/entity.c:38: ptrfunc(e);
-   002C C5            [11]  103 	push	bc
-   002D C5            [11]  104 	push	bc
-   002E 21 06 00      [10]  105 	ld	hl, #6
-   0031 39            [11]  106 	add	hl, sp
-   0032 7E            [ 7]  107 	ld	a, (hl)
-   0033 23            [ 6]  108 	inc	hl
-   0034 66            [ 7]  109 	ld	h, (hl)
-   0035 6F            [ 4]  110 	ld	l, a
-   0036 CDr00r00      [17]  111 	call	___sdcc_call_hl
-   0039 F1            [10]  112 	pop	af
-   003A C1            [10]  113 	pop	bc
-                            114 ;src/man/entity.c:39: ++e;
-   003B 03            [ 6]  115 	inc	bc
-   003C 03            [ 6]  116 	inc	bc
-   003D 03            [ 6]  117 	inc	bc
-   003E 03            [ 6]  118 	inc	bc
-   003F 03            [ 6]  119 	inc	bc
-   0040 18 E7         [12]  120 	jr	00101$
-                            121 ;src/man/entity.c:52: void man_entity_destroy (Entity_t* dead_e) {
-                            122 ;	---------------------------------
-                            123 ; Function man_entity_destroy
-                            124 ; ---------------------------------
-   0042                     125 _man_entity_destroy::
-   0042 DD E5         [15]  126 	push	ix
-   0044 DD 21 00 00   [14]  127 	ld	ix,#0
-   0048 DD 39         [15]  128 	add	ix,sp
-                            129 ;src/man/entity.c:53: Entity_t* de = dead_e;
-   004A DD 5E 04      [19]  130 	ld	e,4 (ix)
-   004D DD 56 05      [19]  131 	ld	d,5 (ix)
-                            132 ;src/man/entity.c:54: Entity_t* last = m_next_free_entity;
-   0050 2Ar32r00      [16]  133 	ld	hl, (_m_next_free_entity)
-                            134 ;src/man/entity.c:55: --last;
-   0053 01 FB FF      [10]  135 	ld	bc, #0xfffb
-   0056 09            [11]  136 	add	hl,bc
-   0057 4D            [ 4]  137 	ld	c, l
-   0058 44            [ 4]  138 	ld	b, h
-                            139 ;src/man/entity.c:56: if (de != last) 
-   0059 7B            [ 4]  140 	ld	a, e
-   005A 91            [ 4]  141 	sub	a, c
-   005B 20 04         [12]  142 	jr	NZ,00109$
-   005D 7A            [ 4]  143 	ld	a, d
-   005E 90            [ 4]  144 	sub	a, b
-   005F 28 17         [12]  145 	jr	Z,00102$
-   0061                     146 00109$:
-                            147 ;src/man/entity.c:57: cpct_memcpy(dead_e, last, sizeof(Entity_t));
-   0061 69            [ 4]  148 	ld	l, c
-   0062 60            [ 4]  149 	ld	h, b
-   0063 DD 5E 04      [19]  150 	ld	e, 4 (ix)
-   0066 DD 56 05      [19]  151 	ld	d, 5 (ix)
-   0069 D5            [11]  152 	push	de
-   006A FD E1         [14]  153 	pop	iy
-   006C C5            [11]  154 	push	bc
-   006D 11 05 00      [10]  155 	ld	de, #0x0005
-   0070 D5            [11]  156 	push	de
-   0071 E5            [11]  157 	push	hl
-   0072 FD E5         [15]  158 	push	iy
-   0074 CDr00r00      [17]  159 	call	_cpct_memcpy
-   0077 C1            [10]  160 	pop	bc
-   0078                     161 00102$:
-                            162 ;src/man/entity.c:58: last->type = e_type_invalid;
-   0078 AF            [ 4]  163 	xor	a, a
-   0079 02            [ 7]  164 	ld	(bc), a
-                            165 ;src/man/entity.c:59: m_next_free_entity = last;
-   007A ED 43r32r00   [20]  166 	ld	(_m_next_free_entity), bc
-   007E DD E1         [14]  167 	pop	ix
-   0080 C9            [10]  168 	ret
-                            169 	.area _CODE
-                            170 	.area _INITIALIZER
-                            171 	.area _CABS (ABS)
+                             53 ; code
+                             54 ;--------------------------------------------------------
+                             55 	.area _CODE
+                             56 ;src/man/entity.c:11: void man_entity_init (void) {
+                             57 ;	---------------------------------
+                             58 ; Function man_entity_init
+                             59 ; ---------------------------------
+   0000                      60 _man_entity_init::
+                             61 ;src/man/entity.c:12: cpct_memset (m_entities, 0, sizeof(m_entities));
+   0000 21 46 00      [10]   62 	ld	hl, #0x0046
+   0003 E5            [11]   63 	push	hl
+   0004 AF            [ 4]   64 	xor	a, a
+   0005 F5            [11]   65 	push	af
+   0006 33            [ 6]   66 	inc	sp
+   0007 21r00r00      [10]   67 	ld	hl, #_m_entities
+   000A E5            [11]   68 	push	hl
+   000B CDr00r00      [17]   69 	call	_cpct_memset
+                             70 ;src/man/entity.c:13: m_next_free_entity = m_entities;
+   000E 21r00r00      [10]   71 	ld	hl, #_m_entities
+   0011 22r46r00      [16]   72 	ld	(_m_next_free_entity), hl
+   0014 C9            [10]   73 	ret
+                             74 ;src/man/entity.c:22: Entity_t* man_entity_create (void) {
+                             75 ;	---------------------------------
+                             76 ; Function man_entity_create
+                             77 ; ---------------------------------
+   0015                      78 _man_entity_create::
+                             79 ;src/man/entity.c:23: Entity_t* e = m_next_free_entity;
+   0015 ED 4Br46r00   [20]   80 	ld	bc, (_m_next_free_entity)
+                             81 ;src/man/entity.c:24: m_next_free_entity = e + 1;
+   0019 21 07 00      [10]   82 	ld	hl, #0x0007
+   001C 09            [11]   83 	add	hl,bc
+   001D 22r46r00      [16]   84 	ld	(_m_next_free_entity), hl
+                             85 ;src/man/entity.c:25: e->type = e_type_default;
+   0020 3E 7F         [ 7]   86 	ld	a, #0x7f
+   0022 02            [ 7]   87 	ld	(bc), a
+                             88 ;src/man/entity.c:26: return e;
+   0023 69            [ 4]   89 	ld	l, c
+   0024 60            [ 4]   90 	ld	h, b
+   0025 C9            [10]   91 	ret
+                             92 ;src/man/entity.c:35: void man_entity_forall (void (*ptrfunc) (Entity_t*)) {
+                             93 ;	---------------------------------
+                             94 ; Function man_entity_forall
+                             95 ; ---------------------------------
+   0026                      96 _man_entity_forall::
+                             97 ;src/man/entity.c:36: Entity_t* e = m_entities;
+   0026 01r00r00      [10]   98 	ld	bc, #_m_entities+0
+                             99 ;src/man/entity.c:37: while (e->type != e_type_invalid) {
+   0029                     100 00101$:
+   0029 0A            [ 7]  101 	ld	a, (bc)
+   002A B7            [ 4]  102 	or	a, a
+   002B C8            [11]  103 	ret	Z
+                            104 ;src/man/entity.c:38: ptrfunc(e);
+   002C C5            [11]  105 	push	bc
+   002D C5            [11]  106 	push	bc
+   002E 21 06 00      [10]  107 	ld	hl, #6
+   0031 39            [11]  108 	add	hl, sp
+   0032 7E            [ 7]  109 	ld	a, (hl)
+   0033 23            [ 6]  110 	inc	hl
+   0034 66            [ 7]  111 	ld	h, (hl)
+   0035 6F            [ 4]  112 	ld	l, a
+   0036 CDr00r00      [17]  113 	call	___sdcc_call_hl
+   0039 F1            [10]  114 	pop	af
+   003A C1            [10]  115 	pop	bc
+                            116 ;src/man/entity.c:39: ++e;
+   003B 21 07 00      [10]  117 	ld	hl, #0x0007
+   003E 09            [11]  118 	add	hl,bc
+   003F 4D            [ 4]  119 	ld	c, l
+   0040 44            [ 4]  120 	ld	b, h
+   0041 18 E6         [12]  121 	jr	00101$
+                            122 ;src/man/entity.c:52: void man_entity_destroy (Entity_t* dead_e) {
+                            123 ;	---------------------------------
+                            124 ; Function man_entity_destroy
+                            125 ; ---------------------------------
+   0043                     126 _man_entity_destroy::
+   0043 DD E5         [15]  127 	push	ix
+   0045 DD 21 00 00   [14]  128 	ld	ix,#0
+   0049 DD 39         [15]  129 	add	ix,sp
+                            130 ;src/man/entity.c:53: Entity_t* de = dead_e;
+   004B DD 5E 04      [19]  131 	ld	e,4 (ix)
+   004E DD 56 05      [19]  132 	ld	d,5 (ix)
+                            133 ;src/man/entity.c:54: Entity_t* last = m_next_free_entity;
+   0051 2Ar46r00      [16]  134 	ld	hl, (_m_next_free_entity)
+                            135 ;src/man/entity.c:55: --last;
+   0054 01 F9 FF      [10]  136 	ld	bc, #0xfff9
+   0057 09            [11]  137 	add	hl,bc
+   0058 4D            [ 4]  138 	ld	c, l
+   0059 44            [ 4]  139 	ld	b, h
+                            140 ;src/man/entity.c:56: if (de != last) 
+   005A 7B            [ 4]  141 	ld	a, e
+   005B 91            [ 4]  142 	sub	a, c
+   005C 20 04         [12]  143 	jr	NZ,00109$
+   005E 7A            [ 4]  144 	ld	a, d
+   005F 90            [ 4]  145 	sub	a, b
+   0060 28 17         [12]  146 	jr	Z,00102$
+   0062                     147 00109$:
+                            148 ;src/man/entity.c:57: cpct_memcpy(dead_e, last, sizeof(Entity_t));
+   0062 69            [ 4]  149 	ld	l, c
+   0063 60            [ 4]  150 	ld	h, b
+   0064 DD 5E 04      [19]  151 	ld	e, 4 (ix)
+   0067 DD 56 05      [19]  152 	ld	d, 5 (ix)
+   006A D5            [11]  153 	push	de
+   006B FD E1         [14]  154 	pop	iy
+   006D C5            [11]  155 	push	bc
+   006E 11 07 00      [10]  156 	ld	de, #0x0007
+   0071 D5            [11]  157 	push	de
+   0072 E5            [11]  158 	push	hl
+   0073 FD E5         [15]  159 	push	iy
+   0075 CDr00r00      [17]  160 	call	_cpct_memcpy
+   0078 C1            [10]  161 	pop	bc
+   0079                     162 00102$:
+                            163 ;src/man/entity.c:58: last->type = e_type_invalid;
+   0079 AF            [ 4]  164 	xor	a, a
+   007A 02            [ 7]  165 	ld	(bc), a
+                            166 ;src/man/entity.c:59: m_next_free_entity = last;
+   007B ED 43r46r00   [20]  167 	ld	(_m_next_free_entity), bc
+   007F DD E1         [14]  168 	pop	ix
+   0081 C9            [10]  169 	ret
+                            170 ;src/man/entity.c:70: void man_entity_set4destruction (Entity_t* dead_e) {
+                            171 ;	---------------------------------
+                            172 ; Function man_entity_set4destruction
+                            173 ; ---------------------------------
+   0082                     174 _man_entity_set4destruction::
+                            175 ;src/man/entity.c:71: dead_e->type |= e_type_dead;
+   0082 D1            [10]  176 	pop	de
+   0083 C1            [10]  177 	pop	bc
+   0084 C5            [11]  178 	push	bc
+   0085 D5            [11]  179 	push	de
+   0086 0A            [ 7]  180 	ld	a, (bc)
+   0087 CB FF         [ 8]  181 	set	7, a
+   0089 02            [ 7]  182 	ld	(bc), a
+   008A C9            [10]  183 	ret
+                            184 ;src/man/entity.c:78: void man_entity_update (void) {
+                            185 ;	---------------------------------
+                            186 ; Function man_entity_update
+                            187 ; ---------------------------------
+   008B                     188 _man_entity_update::
+                            189 ;src/man/entity.c:79: Entity_t* e = m_entities;
+   008B 21r00r00      [10]  190 	ld	hl, #_m_entities+0
+                            191 ;src/man/entity.c:80: while(e->type != e_type_invalid) {
+   008E                     192 00104$:
+   008E 7E            [ 7]  193 	ld	a, (hl)
+   008F B7            [ 4]  194 	or	a, a
+   0090 C8            [11]  195 	ret	Z
+                            196 ;src/man/entity.c:81: if (e->type & e_type_dead) {
+   0091 07            [ 4]  197 	rlca
+   0092 30 09         [12]  198 	jr	NC,00102$
+                            199 ;src/man/entity.c:82: man_entity_destroy(e);
+   0094 E5            [11]  200 	push	hl
+   0095 E5            [11]  201 	push	hl
+   0096 CDr43r00      [17]  202 	call	_man_entity_destroy
+   0099 F1            [10]  203 	pop	af
+   009A E1            [10]  204 	pop	hl
+   009B 18 F1         [12]  205 	jr	00104$
+   009D                     206 00102$:
+                            207 ;src/man/entity.c:84: ++e;
+   009D 01 07 00      [10]  208 	ld	bc, #0x0007
+   00A0 09            [11]  209 	add	hl, bc
+   00A1 18 EB         [12]  210 	jr	00104$
+                            211 	.area _CODE
+                            212 	.area _INITIALIZER
+                            213 	.area _CABS (ABS)

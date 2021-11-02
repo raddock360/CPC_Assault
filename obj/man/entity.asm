@@ -16,6 +16,8 @@
 	.globl _man_entity_create
 	.globl _man_entity_forall
 	.globl _man_entity_destroy
+	.globl _man_entity_set4destruction
+	.globl _man_entity_update
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -24,7 +26,7 @@
 ;--------------------------------------------------------
 	.area _DATA
 _m_entities::
-	.ds 50
+	.ds 70
 _m_next_free_entity::
 	.ds 2
 ;--------------------------------------------------------
@@ -57,7 +59,7 @@ _m_next_free_entity::
 ; ---------------------------------
 _man_entity_init::
 ;src/man/entity.c:12: cpct_memset (m_entities, 0, sizeof(m_entities));
-	ld	hl, #0x0032
+	ld	hl, #0x0046
 	push	hl
 	xor	a, a
 	push	af
@@ -77,7 +79,7 @@ _man_entity_create::
 ;src/man/entity.c:23: Entity_t* e = m_next_free_entity;
 	ld	bc, (_m_next_free_entity)
 ;src/man/entity.c:24: m_next_free_entity = e + 1;
-	ld	hl, #0x0005
+	ld	hl, #0x0007
 	add	hl,bc
 	ld	(_m_next_free_entity), hl
 ;src/man/entity.c:25: e->type = e_type_default;
@@ -112,11 +114,10 @@ _man_entity_forall::
 	pop	af
 	pop	bc
 ;src/man/entity.c:39: ++e;
-	inc	bc
-	inc	bc
-	inc	bc
-	inc	bc
-	inc	bc
+	ld	hl, #0x0007
+	add	hl,bc
+	ld	c, l
+	ld	b, h
 	jr	00101$
 ;src/man/entity.c:52: void man_entity_destroy (Entity_t* dead_e) {
 ;	---------------------------------
@@ -132,7 +133,7 @@ _man_entity_destroy::
 ;src/man/entity.c:54: Entity_t* last = m_next_free_entity;
 	ld	hl, (_m_next_free_entity)
 ;src/man/entity.c:55: --last;
-	ld	bc, #0xfffb
+	ld	bc, #0xfff9
 	add	hl,bc
 	ld	c, l
 	ld	b, h
@@ -152,7 +153,7 @@ _man_entity_destroy::
 	push	de
 	pop	iy
 	push	bc
-	ld	de, #0x0005
+	ld	de, #0x0007
 	push	de
 	push	hl
 	push	iy
@@ -166,6 +167,47 @@ _man_entity_destroy::
 	ld	(_m_next_free_entity), bc
 	pop	ix
 	ret
+;src/man/entity.c:70: void man_entity_set4destruction (Entity_t* dead_e) {
+;	---------------------------------
+; Function man_entity_set4destruction
+; ---------------------------------
+_man_entity_set4destruction::
+;src/man/entity.c:71: dead_e->type |= e_type_dead;
+	pop	de
+	pop	bc
+	push	bc
+	push	de
+	ld	a, (bc)
+	set	7, a
+	ld	(bc), a
+	ret
+;src/man/entity.c:78: void man_entity_update (void) {
+;	---------------------------------
+; Function man_entity_update
+; ---------------------------------
+_man_entity_update::
+;src/man/entity.c:79: Entity_t* e = m_entities;
+	ld	hl, #_m_entities+0
+;src/man/entity.c:80: while(e->type != e_type_invalid) {
+00104$:
+	ld	a, (hl)
+	or	a, a
+	ret	Z
+;src/man/entity.c:81: if (e->type & e_type_dead) {
+	rlca
+	jr	NC,00102$
+;src/man/entity.c:82: man_entity_destroy(e);
+	push	hl
+	push	hl
+	call	_man_entity_destroy
+	pop	af
+	pop	hl
+	jr	00104$
+00102$:
+;src/man/entity.c:84: ++e;
+	ld	bc, #0x0007
+	add	hl, bc
+	jr	00104$
 	.area _CODE
 	.area _INITIALIZER
 	.area _CABS (ABS)

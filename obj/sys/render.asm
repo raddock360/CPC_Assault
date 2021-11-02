@@ -8,9 +8,12 @@
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
+	.globl _sys_render_init
 	.globl _sys_render_one_entity
 	.globl _man_entity_forall
 	.globl _cpct_getScreenPtr
+	.globl _cpct_setPALColour
+	.globl _cpct_setVideoMode
 	.globl _sys_render_update
 ;--------------------------------------------------------
 ; special function registers
@@ -43,7 +46,7 @@
 ; code
 ;--------------------------------------------------------
 	.area _CODE
-;src/sys/render.c:4: void sys_render_one_entity (Entity_t* e) {
+;src/sys/render.c:14: void sys_render_one_entity (Entity_t* e) {
 ;	---------------------------------
 ; Function sys_render_one_entity
 ; ---------------------------------
@@ -52,69 +55,80 @@ _sys_render_one_entity::
 	ld	ix,#0
 	add	ix,sp
 	push	af
-	push	af
-;src/sys/render.c:5: u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x - e->vx, e->y);
-	ld	e,4 (ix)
-	ld	d,5 (ix)
-	ld	hl, #0x0002
-	add	hl,de
-	ld	-2 (ix), l
-	ld	-1 (ix), h
-	ld	b, (hl)
-	ld	hl, #0x0001
-	add	hl,de
+;src/sys/render.c:15: if (e->prevptr != 0) *(e->prevptr) = 0;
+	ld	c,4 (ix)
+	ld	b,5 (ix)
+	ld	hl, #0x0005
+	add	hl,bc
 	ex	(sp), hl
 	pop	hl
 	push	hl
-	ld	c, (hl)
-	ld	l, e
-	ld	h, d
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	a, d
+	or	a,e
+	jr	Z,00102$
+	xor	a, a
+	ld	(de), a
+00102$:
+;src/sys/render.c:16: if (!(e->type & e_type_dead)) {
+	ld	a, (bc)
+	rlca
+	jr	C,00105$
+;src/sys/render.c:17: u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
+	ld	l, c
+	ld	h, b
 	inc	hl
 	inc	hl
+	ld	d, (hl)
+	ld	l, c
+	ld	h, b
 	inc	hl
-	ld	l, (hl)
-	ld	a, c
-	sub	a, l
-	push	de
-	push	bc
-	inc	sp
-	push	af
-	inc	sp
-	ld	hl, #0xc000
-	push	hl
-	call	_cpct_getScreenPtr
-	pop	de
-;src/sys/render.c:6: *pvmem = 0;
-	ld	(hl), #0x00
-;src/sys/render.c:7: pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
-	ld	l,-2 (ix)
-	ld	h,-1 (ix)
 	ld	a, (hl)
-	pop	hl
-	push	hl
-	ld	b, (hl)
-	push	de
-	push	af
-	inc	sp
 	push	bc
-	inc	sp
+	ld	e, a
+	push	de
 	ld	hl, #0xc000
 	push	hl
 	call	_cpct_getScreenPtr
-	ld	c, l
-	ld	b, h
+	ex	de,hl
 	pop	iy
 	ld	a, 4 (iy)
-	ld	(bc), a
+	ld	(de), a
+;src/sys/render.c:19: e->prevptr = pvmem;
+	pop	hl
+	push	hl
+	ld	(hl), e
+	inc	hl
+	ld	(hl), d
+00105$:
 	ld	sp, ix
 	pop	ix
 	ret
-;src/sys/render.c:11: void sys_render_update() {
+;src/sys/render.c:33: void sys_render_init() {
+;	---------------------------------
+; Function sys_render_init
+; ---------------------------------
+_sys_render_init::
+;src/sys/render.c:34: cpct_setVideoMode(0);
+	ld	l, #0x00
+	call	_cpct_setVideoMode
+;src/sys/render.c:35: cpct_setBorder(HW_BLACK);
+	ld	hl, #0x1410
+	push	hl
+	call	_cpct_setPALColour
+;src/sys/render.c:36: cpct_setPALColour(0, HW_BLACK);
+	ld	hl, #0x1400
+	push	hl
+	call	_cpct_setPALColour
+	ret
+;src/sys/render.c:44: void sys_render_update() {
 ;	---------------------------------
 ; Function sys_render_update
 ; ---------------------------------
 _sys_render_update::
-;src/sys/render.c:12: man_entity_forall (sys_render_one_entity);
+;src/sys/render.c:45: man_entity_forall (sys_render_one_entity);
 	ld	hl, #_sys_render_one_entity
 	push	hl
 	call	_man_entity_forall

@@ -2,16 +2,18 @@
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.6.8 #9946 (Linux)
 ;--------------------------------------------------------
-	.module physics
+	.module generator
 	.optsdcc -mz80
 	
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
-	.globl _sys_physics_update_one_entity
-	.globl _man_entity_set4destruction
-	.globl _man_entity_forall
-	.globl _sys_physics_update
+	.globl _sys_generator_update
+	.globl _generateNewStar
+	.globl _man_entity_create
+	.globl _cpct_getRandom_mxor_u8
+	.globl _cpct_memcpy
+	.globl _init_e
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -43,60 +45,74 @@
 ; code
 ;--------------------------------------------------------
 	.area _CODE
-;src/sys/physics.c:4: void sys_physics_update_one_entity (Entity_t* e) {
+;src/sys/generator.c:25: void generateNewStar() {
 ;	---------------------------------
-; Function sys_physics_update_one_entity
+; Function generateNewStar
 ; ---------------------------------
-_sys_physics_update_one_entity::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
-	push	af
-;src/sys/physics.c:5: u8 newx = e->x + e->vx;
-	ld	e,4 (ix)
-	ld	d,5 (ix)
-	ld	c, e
-	ld	b, d
-	inc	bc
-	ld	a, (bc)
-	ld	-1 (ix), a
-	ld	l, e
-	ld	h, d
-	inc	hl
-	inc	hl
-	inc	hl
-	ld	l, (hl)
-	ld	a, -1 (ix)
-	add	a, l
-	ld	-2 (ix), a
-;src/sys/physics.c:6: if(newx > e->x) 
-	ld	a, -1 (ix)
-	sub	a, -2 (ix)
-	jr	NC,00102$
-;src/sys/physics.c:7: man_entity_set4destruction(e);
+_generateNewStar::
+;src/sys/generator.c:26: Entity_t* e = man_entity_create();
+	call	_man_entity_create
+	ld	c, l
+	ld	b, h
+;src/sys/generator.c:27: cpct_memcpy(e, &init_e, sizeof(Entity_t));
+	ld	e, c
+	ld	d, b
+	push	bc
+	ld	hl, #0x0007
+	push	hl
+	ld	hl, #_init_e
+	push	hl
+	push	de
+	call	_cpct_memcpy
+	pop	bc
+;src/sys/generator.c:28: e->y  = cpct_rand() % 200;
+	ld	e, c
+	ld	d, b
+	inc	de
+	inc	de
 	push	bc
 	push	de
-	call	_man_entity_set4destruction
-	pop	af
-	pop	bc
-00102$:
-;src/sys/physics.c:8: e->x = newx;
-	ld	a, -2 (ix)
-	ld	(bc), a
-	ld	sp, ix
-	pop	ix
-	ret
-;src/sys/physics.c:11: void sys_physics_update() {
-;	---------------------------------
-; Function sys_physics_update
-; ---------------------------------
-_sys_physics_update::
-;src/sys/physics.c:13: man_entity_forall (sys_physics_update_one_entity);
-	ld	hl, #_sys_physics_update_one_entity
+	call	_cpct_getRandom_mxor_u8
+	ld	h, l
+	ld	a, #0xc8
+	push	af
+	inc	sp
 	push	hl
-	call	_man_entity_forall
+	inc	sp
+	call	__moduchar
 	pop	af
+	ld	a, l
+	pop	de
+	pop	bc
+	ld	(de), a
+;src/sys/generator.c:29: e->vx = -1-(cpct_rand() & 0x03);
+	inc	bc
+	inc	bc
+	inc	bc
+	push	bc
+	call	_cpct_getRandom_mxor_u8
+	pop	bc
+	ld	a, l
+	and	a, #0x03
+	ld	e, a
+	ld	a, #0xff
+	sub	a, e
+	ld	(bc), a
 	ret
+_init_e:
+	.db #0x01	; 1
+	.db #0x4f	; 79	'O'
+	.db #0x01	; 1
+	.db #0xff	; -1
+	.db #0xff	; 255
+	.dw #0x0000
+;src/sys/generator.c:42: void sys_generator_update() {
+;	---------------------------------
+; Function sys_generator_update
+; ---------------------------------
+_sys_generator_update::
+;src/sys/generator.c:44: generateNewStar();   
+	jp  _generateNewStar
 	.area _CODE
 	.area _INITIALIZER
 	.area _CABS (ABS)
