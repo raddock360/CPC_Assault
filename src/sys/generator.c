@@ -1,5 +1,6 @@
-#include "physics.h"
-#include "man/entity.h"
+#include <sys/generator.h>
+#include <sys/physics.h>
+#include <man/entity.h>
 
 //================================================================================
 //================================================================================
@@ -40,8 +41,9 @@ void generateNewStar() {
 //      Actualiza el generador de estrellas para crear nuevas entidades
 //
 void sys_generator_update() {
-    // Necesario verificar si hay espacio
-    generateNewStar();   
+    u8 free = man_entity_freeSpace();
+    if (free) 
+      generateNewStar();   
 }
 
 

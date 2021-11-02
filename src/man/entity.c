@@ -1,7 +1,8 @@
-#include "entity.h"
+#include <man/entity.h>
 
-Entity_t  m_entities[10];     // ARRAY DE ENTIDADES
-Entity_t* m_next_free_entity; // PUNTERO A LA SIGUIENTE ENTIDAD LIBRE
+Entity_t  m_entities[MAX_ENTITIES];     // ARRAY DE ENTIDADES
+Entity_t* m_next_free_entity;           // PUNTERO A LA SIGUIENTE ENTIDAD LIBRE
+u8 m_num_entities;                      // Número de entidades ya reservadas
 
 ///////////////////////////////////////////////////////////////////////////////////
 // INICIALIZA EL ARRAY DE ENTIDADES RELLENÁNDOLO CON CEROS
@@ -11,6 +12,7 @@ Entity_t* m_next_free_entity; // PUNTERO A LA SIGUIENTE ENTIDAD LIBRE
 void man_entity_init (void) {
    cpct_memset (m_entities, 0, sizeof(m_entities));
    m_next_free_entity = m_entities;
+   m_num_entities = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -19,10 +21,12 @@ void man_entity_init (void) {
 // LA ENTIDAD CREADA
 // RECIBE:     NADA
 // DEVUELVE:   PUNTERO A LA ENTIDAD CREADA
+//
 Entity_t* man_entity_create (void) {
    Entity_t* e = m_next_free_entity;
    m_next_free_entity = e + 1;
    e->type = e_type_default;
+   ++m_num_entities;
    return e;
 }
 
@@ -57,6 +61,7 @@ void man_entity_destroy (Entity_t* dead_e) {
       cpct_memcpy(dead_e, last, sizeof(Entity_t));
    last->type = e_type_invalid;
    m_next_free_entity = last;
+   --m_num_entities;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -84,4 +89,14 @@ void man_entity_update (void) {
          ++e;
       }
    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+// FREE SPACE
+//    Retorna el número de entidades vacías disponibles
+// Devuelve:
+//    u8:   Número de entidades libres
+//
+u8 man_entity_freeSpace() {
+   return MAX_ENTITIES - m_num_entities;
 }

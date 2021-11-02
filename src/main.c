@@ -1,10 +1,10 @@
 #include <cpctelera.h>
-#include "man/entity.h"
-#include "sys/physics.h"
-#include "sys/render.h"
-#include "sys/generator.h"
+#include <man/entity.h>
+#include <sys/physics.h>
+#include <sys/render.h>
+#include <sys/generator.h>
 
-void wait(u8 n) {
+void wait (u8 n) {
    do {
       cpct_waitHalts(2);
       cpct_waitVSYNC();

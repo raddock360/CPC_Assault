@@ -8,12 +8,12 @@
                               8 ;--------------------------------------------------------
                               9 ; Public variables in this module
                              10 ;--------------------------------------------------------
-                             11 	.globl _sys_render_init
-                             12 	.globl _sys_render_one_entity
-                             13 	.globl _man_entity_forall
-                             14 	.globl _cpct_getScreenPtr
-                             15 	.globl _cpct_setPALColour
-                             16 	.globl _cpct_setVideoMode
+                             11 	.globl _sys_render_one_entity
+                             12 	.globl _man_entity_forall
+                             13 	.globl _cpct_getScreenPtr
+                             14 	.globl _cpct_setPALColour
+                             15 	.globl _cpct_setVideoMode
+                             16 	.globl _sys_render_init
                              17 	.globl _sys_render_update
                              18 ;--------------------------------------------------------
                              19 ; special function registers

@@ -8,111 +8,118 @@
                               8 ;--------------------------------------------------------
                               9 ; Public variables in this module
                              10 ;--------------------------------------------------------
-                             11 	.globl _sys_generator_update
-                             12 	.globl _generateNewStar
+                             11 	.globl _generateNewStar
+                             12 	.globl _man_entity_freeSpace
                              13 	.globl _man_entity_create
                              14 	.globl _cpct_getRandom_mxor_u8
                              15 	.globl _cpct_memcpy
                              16 	.globl _init_e
-                             17 ;--------------------------------------------------------
-                             18 ; special function registers
-                             19 ;--------------------------------------------------------
+                             17 	.globl _sys_generator_update
+                             18 ;--------------------------------------------------------
+                             19 ; special function registers
                              20 ;--------------------------------------------------------
-                             21 ; ram data
-                             22 ;--------------------------------------------------------
-                             23 	.area _DATA
-                             24 ;--------------------------------------------------------
-                             25 ; ram data
-                             26 ;--------------------------------------------------------
-                             27 	.area _INITIALIZED
-                             28 ;--------------------------------------------------------
-                             29 ; absolute external ram data
-                             30 ;--------------------------------------------------------
-                             31 	.area _DABS (ABS)
-                             32 ;--------------------------------------------------------
-                             33 ; global & static initialisations
-                             34 ;--------------------------------------------------------
-                             35 	.area _HOME
-                             36 	.area _GSINIT
-                             37 	.area _GSFINAL
-                             38 	.area _GSINIT
-                             39 ;--------------------------------------------------------
-                             40 ; Home
-                             41 ;--------------------------------------------------------
-                             42 	.area _HOME
+                             21 ;--------------------------------------------------------
+                             22 ; ram data
+                             23 ;--------------------------------------------------------
+                             24 	.area _DATA
+                             25 ;--------------------------------------------------------
+                             26 ; ram data
+                             27 ;--------------------------------------------------------
+                             28 	.area _INITIALIZED
+                             29 ;--------------------------------------------------------
+                             30 ; absolute external ram data
+                             31 ;--------------------------------------------------------
+                             32 	.area _DABS (ABS)
+                             33 ;--------------------------------------------------------
+                             34 ; global & static initialisations
+                             35 ;--------------------------------------------------------
+                             36 	.area _HOME
+                             37 	.area _GSINIT
+                             38 	.area _GSFINAL
+                             39 	.area _GSINIT
+                             40 ;--------------------------------------------------------
+                             41 ; Home
+                             42 ;--------------------------------------------------------
                              43 	.area _HOME
-                             44 ;--------------------------------------------------------
-                             45 ; code
-                             46 ;--------------------------------------------------------
-                             47 	.area _CODE
-                             48 ;src/sys/generator.c:25: void generateNewStar() {
-                             49 ;	---------------------------------
-                             50 ; Function generateNewStar
-                             51 ; ---------------------------------
-   4119                      52 _generateNewStar::
-                             53 ;src/sys/generator.c:26: Entity_t* e = man_entity_create();
-   4119 CD 47 40      [17]   54 	call	_man_entity_create
-   411C 4D            [ 4]   55 	ld	c, l
-   411D 44            [ 4]   56 	ld	b, h
-                             57 ;src/sys/generator.c:27: cpct_memcpy(e, &init_e, sizeof(Entity_t));
-   411E 59            [ 4]   58 	ld	e, c
-   411F 50            [ 4]   59 	ld	d, b
-   4120 C5            [11]   60 	push	bc
-   4121 21 07 00      [10]   61 	ld	hl, #0x0007
-   4124 E5            [11]   62 	push	hl
-   4125 21 57 41      [10]   63 	ld	hl, #_init_e
-   4128 E5            [11]   64 	push	hl
-   4129 D5            [11]   65 	push	de
-   412A CD 45 42      [17]   66 	call	_cpct_memcpy
-   412D C1            [10]   67 	pop	bc
-                             68 ;src/sys/generator.c:28: e->y  = cpct_rand() % 200;
-   412E 59            [ 4]   69 	ld	e, c
-   412F 50            [ 4]   70 	ld	d, b
-   4130 13            [ 6]   71 	inc	de
-   4131 13            [ 6]   72 	inc	de
-   4132 C5            [11]   73 	push	bc
-   4133 D5            [11]   74 	push	de
-   4134 CD 6B 42      [17]   75 	call	_cpct_getRandom_mxor_u8
-   4137 65            [ 4]   76 	ld	h, l
-   4138 3E C8         [ 7]   77 	ld	a, #0xc8
-   413A F5            [11]   78 	push	af
-   413B 33            [ 6]   79 	inc	sp
-   413C E5            [11]   80 	push	hl
-   413D 33            [ 6]   81 	inc	sp
-   413E CD D1 41      [17]   82 	call	__moduchar
-   4141 F1            [10]   83 	pop	af
-   4142 7D            [ 4]   84 	ld	a, l
-   4143 D1            [10]   85 	pop	de
-   4144 C1            [10]   86 	pop	bc
-   4145 12            [ 7]   87 	ld	(de), a
-                             88 ;src/sys/generator.c:29: e->vx = -1-(cpct_rand() & 0x03);
-   4146 03            [ 6]   89 	inc	bc
-   4147 03            [ 6]   90 	inc	bc
-   4148 03            [ 6]   91 	inc	bc
-   4149 C5            [11]   92 	push	bc
-   414A CD 6B 42      [17]   93 	call	_cpct_getRandom_mxor_u8
-   414D C1            [10]   94 	pop	bc
-   414E 7D            [ 4]   95 	ld	a, l
-   414F E6 03         [ 7]   96 	and	a, #0x03
-   4151 5F            [ 4]   97 	ld	e, a
-   4152 3E FF         [ 7]   98 	ld	a, #0xff
-   4154 93            [ 4]   99 	sub	a, e
-   4155 02            [ 7]  100 	ld	(bc), a
-   4156 C9            [10]  101 	ret
-   4157                     102 _init_e:
-   4157 01                  103 	.db #0x01	; 1
-   4158 4F                  104 	.db #0x4f	; 79	'O'
-   4159 01                  105 	.db #0x01	; 1
-   415A FF                  106 	.db #0xff	; -1
-   415B FF                  107 	.db #0xff	; 255
-   415C 00 00               108 	.dw #0x0000
-                            109 ;src/sys/generator.c:42: void sys_generator_update() {
-                            110 ;	---------------------------------
-                            111 ; Function sys_generator_update
-                            112 ; ---------------------------------
-   415E                     113 _sys_generator_update::
-                            114 ;src/sys/generator.c:44: generateNewStar();   
-   415E C3 19 41      [10]  115 	jp  _generateNewStar
-                            116 	.area _CODE
-                            117 	.area _INITIALIZER
-                            118 	.area _CABS (ABS)
+                             44 	.area _HOME
+                             45 ;--------------------------------------------------------
+                             46 ; code
+                             47 ;--------------------------------------------------------
+                             48 	.area _CODE
+                             49 ;src/sys/generator.c:26: void generateNewStar() {
+                             50 ;	---------------------------------
+                             51 ; Function generateNewStar
+                             52 ; ---------------------------------
+   4032                      53 _generateNewStar::
+                             54 ;src/sys/generator.c:27: Entity_t* e = man_entity_create();
+   4032 CD 42 41      [17]   55 	call	_man_entity_create
+   4035 4D            [ 4]   56 	ld	c, l
+   4036 44            [ 4]   57 	ld	b, h
+                             58 ;src/sys/generator.c:28: cpct_memcpy(e, &init_e, sizeof(Entity_t));
+   4037 59            [ 4]   59 	ld	e, c
+   4038 50            [ 4]   60 	ld	d, b
+   4039 C5            [11]   61 	push	bc
+   403A 21 07 00      [10]   62 	ld	hl, #0x0007
+   403D E5            [11]   63 	push	hl
+   403E 21 70 40      [10]   64 	ld	hl, #_init_e
+   4041 E5            [11]   65 	push	hl
+   4042 D5            [11]   66 	push	de
+   4043 CD 6E 42      [17]   67 	call	_cpct_memcpy
+   4046 C1            [10]   68 	pop	bc
+                             69 ;src/sys/generator.c:29: e->y  = cpct_rand() % 200;
+   4047 59            [ 4]   70 	ld	e, c
+   4048 50            [ 4]   71 	ld	d, b
+   4049 13            [ 6]   72 	inc	de
+   404A 13            [ 6]   73 	inc	de
+   404B C5            [11]   74 	push	bc
+   404C D5            [11]   75 	push	de
+   404D CD 86 42      [17]   76 	call	_cpct_getRandom_mxor_u8
+   4050 65            [ 4]   77 	ld	h, l
+   4051 3E C8         [ 7]   78 	ld	a, #0xc8
+   4053 F5            [11]   79 	push	af
+   4054 33            [ 6]   80 	inc	sp
+   4055 E5            [11]   81 	push	hl
+   4056 33            [ 6]   82 	inc	sp
+   4057 CD EC 41      [17]   83 	call	__moduchar
+   405A F1            [10]   84 	pop	af
+   405B 7D            [ 4]   85 	ld	a, l
+   405C D1            [10]   86 	pop	de
+   405D C1            [10]   87 	pop	bc
+   405E 12            [ 7]   88 	ld	(de), a
+                             89 ;src/sys/generator.c:30: e->vx = -1-(cpct_rand() & 0x03);
+   405F 03            [ 6]   90 	inc	bc
+   4060 03            [ 6]   91 	inc	bc
+   4061 03            [ 6]   92 	inc	bc
+   4062 C5            [11]   93 	push	bc
+   4063 CD 86 42      [17]   94 	call	_cpct_getRandom_mxor_u8
+   4066 C1            [10]   95 	pop	bc
+   4067 7D            [ 4]   96 	ld	a, l
+   4068 E6 03         [ 7]   97 	and	a, #0x03
+   406A 5F            [ 4]   98 	ld	e, a
+   406B 3E FF         [ 7]   99 	ld	a, #0xff
+   406D 93            [ 4]  100 	sub	a, e
+   406E 02            [ 7]  101 	ld	(bc), a
+   406F C9            [10]  102 	ret
+   4070                     103 _init_e:
+   4070 01                  104 	.db #0x01	; 1
+   4071 4F                  105 	.db #0x4f	; 79	'O'
+   4072 01                  106 	.db #0x01	; 1
+   4073 FF                  107 	.db #0xff	; -1
+   4074 FF                  108 	.db #0xff	; 255
+   4075 00 00               109 	.dw #0x0000
+                            110 ;src/sys/generator.c:43: void sys_generator_update() {
+                            111 ;	---------------------------------
+                            112 ; Function sys_generator_update
+                            113 ; ---------------------------------
+   4077                     114 _sys_generator_update::
+                            115 ;src/sys/generator.c:44: u8 free = man_entity_freeSpace();
+   4077 CD D8 41      [17]  116 	call	_man_entity_freeSpace
+                            117 ;src/sys/generator.c:45: if (free) 
+   407A 7D            [ 4]  118 	ld	a, l
+   407B B7            [ 4]  119 	or	a, a
+   407C C8            [11]  120 	ret	Z
+                            121 ;src/sys/generator.c:46: generateNewStar();   
+   407D C3 32 40      [10]  122 	jp  _generateNewStar
+                            123 	.area _CODE
+                            124 	.area _INITIALIZER
+                            125 	.area _CABS (ABS)

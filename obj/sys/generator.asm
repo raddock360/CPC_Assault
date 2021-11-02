@@ -8,12 +8,13 @@
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
-	.globl _sys_generator_update
 	.globl _generateNewStar
+	.globl _man_entity_freeSpace
 	.globl _man_entity_create
 	.globl _cpct_getRandom_mxor_u8
 	.globl _cpct_memcpy
 	.globl _init_e
+	.globl _sys_generator_update
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -45,16 +46,16 @@
 ; code
 ;--------------------------------------------------------
 	.area _CODE
-;src/sys/generator.c:25: void generateNewStar() {
+;src/sys/generator.c:26: void generateNewStar() {
 ;	---------------------------------
 ; Function generateNewStar
 ; ---------------------------------
 _generateNewStar::
-;src/sys/generator.c:26: Entity_t* e = man_entity_create();
+;src/sys/generator.c:27: Entity_t* e = man_entity_create();
 	call	_man_entity_create
 	ld	c, l
 	ld	b, h
-;src/sys/generator.c:27: cpct_memcpy(e, &init_e, sizeof(Entity_t));
+;src/sys/generator.c:28: cpct_memcpy(e, &init_e, sizeof(Entity_t));
 	ld	e, c
 	ld	d, b
 	push	bc
@@ -65,7 +66,7 @@ _generateNewStar::
 	push	de
 	call	_cpct_memcpy
 	pop	bc
-;src/sys/generator.c:28: e->y  = cpct_rand() % 200;
+;src/sys/generator.c:29: e->y  = cpct_rand() % 200;
 	ld	e, c
 	ld	d, b
 	inc	de
@@ -85,7 +86,7 @@ _generateNewStar::
 	pop	de
 	pop	bc
 	ld	(de), a
-;src/sys/generator.c:29: e->vx = -1-(cpct_rand() & 0x03);
+;src/sys/generator.c:30: e->vx = -1-(cpct_rand() & 0x03);
 	inc	bc
 	inc	bc
 	inc	bc
@@ -106,12 +107,18 @@ _init_e:
 	.db #0xff	; -1
 	.db #0xff	; 255
 	.dw #0x0000
-;src/sys/generator.c:42: void sys_generator_update() {
+;src/sys/generator.c:43: void sys_generator_update() {
 ;	---------------------------------
 ; Function sys_generator_update
 ; ---------------------------------
 _sys_generator_update::
-;src/sys/generator.c:44: generateNewStar();   
+;src/sys/generator.c:44: u8 free = man_entity_freeSpace();
+	call	_man_entity_freeSpace
+;src/sys/generator.c:45: if (free) 
+	ld	a, l
+	or	a, a
+	ret	Z
+;src/sys/generator.c:46: generateNewStar();   
 	jp  _generateNewStar
 	.area _CODE
 	.area _INITIALIZER

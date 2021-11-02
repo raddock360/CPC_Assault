@@ -11,6 +11,7 @@
 	.globl _main
 	.globl _wait
 	.globl _sys_generator_update
+	.globl _sys_render_init
 	.globl _sys_render_update
 	.globl _sys_physics_update
 	.globl _man_entity_update
@@ -49,7 +50,7 @@
 ; code
 ;--------------------------------------------------------
 	.area _CODE
-;src/main.c:7: void wait(u8 n) {
+;src/main.c:7: void wait (u8 n) {
 ;	---------------------------------
 ; Function wait
 ; ---------------------------------

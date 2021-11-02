@@ -1,5 +1,5 @@
-#include "physics.h"
-#include "man/entity.h"
+#include <sys/physics.h>
+#include <man/entity.h>
 
 void sys_physics_update_one_entity (Entity_t* e) {
     u8 newx = e->x + e->vx;
