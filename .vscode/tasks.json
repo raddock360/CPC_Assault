@@ -75,10 +75,11 @@
                 ]
             },
             "linux": {
-                "command": "cpct_winape",
+                "command": "/mnt/c/Program Files (x86)/WinApe/WinApe.exe",
                 "args": [
-                    "-as",
-                    "-f"
+                    "/SN:'\\wsl$\\Ubuntu-20.04\\home\\oskar\\starfield\\starfield.sna'",
+                    "/A",
+                    "/SYM:'\\wsl$\\Ubuntu-20.04\\home\\oskar\\starfield\\obj\\starfield.noi'"
                 ]
             },            
             "osx": {
