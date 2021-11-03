@@ -105,7 +105,7 @@ _init_e:
 	.db #0x4f	; 79	'O'
 	.db #0x01	; 1
 	.db #0xff	; -1
-	.db #0xff	; 255
+	.db #0x80	; 128
 	.dw #0x0000
 ;src/sys/generator.c:43: void sys_generator_update() {
 ;	---------------------------------

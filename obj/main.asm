@@ -91,12 +91,8 @@ _main::
 	call	_sys_render_update
 ;src/main.c:25: man_entity_update();
 	call	_man_entity_update
-;src/main.c:26: wait(10);
-	ld	a, #0x0a
-	push	af
-	inc	sp
-	call	_wait
-	inc	sp
+;src/main.c:26: cpct_waitVSYNC();
+	call	_cpct_waitVSYNC
 	jr	00102$
 	.area _CODE
 	.area _INITIALIZER

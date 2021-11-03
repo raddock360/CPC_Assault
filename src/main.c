@@ -23,6 +23,6 @@ void main(void) {
       sys_render_update();
       
       man_entity_update();
-      wait(10);
+      cpct_waitVSYNC();
    }
 }

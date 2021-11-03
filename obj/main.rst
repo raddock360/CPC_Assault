@@ -63,8 +63,8 @@
                              63 ;src/main.c:9: cpct_waitHalts(2);
    4005 C5            [11]   64 	push	bc
    4006 2E 02         [ 7]   65 	ld	l, #0x02
-   4008 CD 0D 42      [17]   66 	call	_cpct_waitHalts
-   400B CD 62 42      [17]   67 	call	_cpct_waitVSYNC
+   4008 CD 2E 42      [17]   66 	call	_cpct_waitHalts
+   400B CD 83 42      [17]   67 	call	_cpct_waitVSYNC
    400E C1            [10]   68 	pop	bc
                              69 ;src/main.c:11: } while(--n);
    400F 0D            [ 4]   70 	dec c
@@ -76,28 +76,24 @@
                              76 ; ---------------------------------
    4013                      77 _main::
                              78 ;src/main.c:15: cpct_disableFirmware();
-   4013 CD 80 42      [17]   79 	call	_cpct_disableFirmware
+   4013 CD A1 42      [17]   79 	call	_cpct_disableFirmware
                              80 ;src/main.c:17: man_entity_init();
-   4016 CD 32 40      [17]   81 	call	_man_entity_init
+   4016 CD 2D 40      [17]   81 	call	_man_entity_init
                              82 ;src/main.c:18: sys_render_init();
-   4019 CD CD 41      [17]   83 	call	_sys_render_init
+   4019 CD C3 41      [17]   83 	call	_sys_render_init
                              84 ;src/main.c:20: while(1) {
    401C                      85 00102$:
                              86 ;src/main.c:21: sys_physics_update();
-   401C CD 2F 41      [17]   87 	call	_sys_physics_update
+   401C CD 25 41      [17]   87 	call	_sys_physics_update
                              88 ;src/main.c:22: sys_generator_update();
-   401F CD 7D 41      [17]   89 	call	_sys_generator_update
+   401F CD 73 41      [17]   89 	call	_sys_generator_update
                              90 ;src/main.c:23: sys_render_update();
-   4022 CD E1 41      [17]   91 	call	_sys_render_update
+   4022 CD EB 41      [17]   91 	call	_sys_render_update
                              92 ;src/main.c:25: man_entity_update();
-   4025 CD D4 40      [17]   93 	call	_man_entity_update
-                             94 ;src/main.c:26: wait(10);
-   4028 3E 0A         [ 7]   95 	ld	a, #0x0a
-   402A F5            [11]   96 	push	af
-   402B 33            [ 6]   97 	inc	sp
-   402C CD 00 40      [17]   98 	call	_wait
-   402F 33            [ 6]   99 	inc	sp
-   4030 18 EA         [12]  100 	jr	00102$
-                            101 	.area _CODE
-                            102 	.area _INITIALIZER
-                            103 	.area _CABS (ABS)
+   4025 CD CA 40      [17]   93 	call	_man_entity_update
+                             94 ;src/main.c:26: cpct_waitVSYNC();
+   4028 CD 83 42      [17]   95 	call	_cpct_waitVSYNC
+   402B 18 EF         [12]   96 	jr	00102$
+                             97 	.area _CODE
+                             98 	.area _INITIALIZER
+                             99 	.area _CABS (ABS)

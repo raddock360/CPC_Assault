@@ -17,81 +17,84 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000000  l__INITIALIZER                  
      00000000  s__CABS                         
      00000000  s__DABS                         
-     00000049  l__DATA                         
-     000002F5  l__CODE                         
+     0000011C  l__DATA                         
+     00000316  l__CODE                         
      00004000  s__CODE                         
-     000042F5  s__DATA                         
-     0000433E  s__GSFINAL                      
-     0000433E  s__GSINIT                       
-     0000433E  s__HOME                         
-     0000433E  s__INITIALIZED                  
-     0000433E  s__INITIALIZER                  
+     00004316  s__DATA                         
+     00004432  s__GSFINAL                      
+     00004432  s__GSINIT                       
+     00004432  s__HOME                         
+     00004432  s__INITIALIZED                  
+     00004432  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    000002F5 =         757. bytes (REL,CON)
+_CODE                               00004000    00000316 =         790. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
      00004000  _wait                              main
      00004013  _main                              main
-     00004032  _man_entity_init                   entity
+     0000402D  _man_entity_init                   entity
      0000404C  _man_entity_create                 entity
      00004061  _man_entity_forall                 entity
-     00004088  _man_entity_destroy                entity
-     000040CB  _man_entity_set4destruction        entity
-     000040D4  _man_entity_update                 entity
-     000040EC  _man_entity_freeSpace              entity
-     000040F4  _sys_physics_update_one_entity     physics
-     0000412F  _sys_physics_update                physics
-     00004138  _generateNewStar                   generator
-     00004176  _init_e                            generator
-     0000417D  _sys_generator_update              generator
-     00004186  _sys_render_one_entity             render
-     000041CD  _sys_render_init                   render
-     000041E1  _sys_render_update                 render
-     000041EA  _cpct_setPALColour                 cpct_video
-     000041F6  __moduchar                         
-     00004202  __moduint                          
-     0000420D  _cpct_waitHalts                    cpct_memutils
-     00004212  __divuint                          
-     0000421A  __divuchar                         
-     00004221  __divu8                            
-     00004224  __divu16                           
-     00004253  ___sdcc_call_hl                    
-     00004254  _cpct_setVideoMode                 cpct_video
-     00004262  _cpct_waitVSYNC                    cpct_video
-     00004262  cpct_waitVSYNC_asm                 cpct_video
-     0000426A  _cpct_memcpy                       cpct_memutils
-     00004272  _cpct_memset                       cpct_memutils
-     00004280  _cpct_disableFirmware              cpct_firmware
-     00004280  _cpct_removeInterruptHandler       cpct_firmware
-     00004280  cpct_disableFirmware_asm           cpct_firmware
-     00004280  cpct_removeInterruptHandler_asm    cpct_firmware
-     00004290  _cpct_getRandom_mxor_u8            cpct_random
-     00004290  cpct_getRandom_mxor_u8_asm         cpct_random
-     00004291  cpct_randomIdx_mxor_u8             cpct_random
-     000042B5  _cpct_mode_rom_status              cpct_firmware
-     000042B6  _cpct_getScreenPtr                 cpct_video
-     000042CE  _cpct_mxor32_seed                  cpct_random
-     000042D2  _cpct_nextRandom_mxor_u32          cpct_random
-     000042D2  cpct_nextRandom_mxor_u32_asm       cpct_random
-
+     0000407E  _man_entity_destroy                entity
+     000040C1  _man_entity_set4destruction        entity
+     000040CA  _man_entity_update                 entity
+     000040E2  _man_entity_freeSpace              entity
+     000040EA  _sys_physics_update_one_entity     physics
+     00004125  _sys_physics_update                physics
+     0000412E  _generateNewStar                   generator
+     0000416C  _init_e                            generator
+     00004173  _sys_generator_update              generator
+     0000417C  _sys_render_one_entity             render
+     000041C3  _sys_render_init                   render
+     000041DB  _palette                           render
+     000041EB  _sys_render_update                 render
+     000041F4  _cpct_setPalette                   cpct_video
+     0000420B  _cpct_setPALColour                 cpct_video
+     00004217  __moduchar                         
+     00004223  __moduint                          
+     0000422E  _cpct_waitHalts                    cpct_memutils
+     00004233  __divuint                          
+     0000423B  __divuchar                         
+     00004242  __divu8                            
+     00004245  __divu16                           
+     00004274  ___sdcc_call_hl                    
+     00004275  _cpct_setVideoMode                 cpct_video
+     00004283  _cpct_waitVSYNC                    cpct_video
+     00004283  cpct_waitVSYNC_asm                 cpct_video
+     0000428B  _cpct_memcpy                       cpct_memutils
+     00004293  _cpct_memset                       cpct_memutils
+     000042A1  _cpct_disableFirmware              cpct_firmware
+     000042A1  _cpct_removeInterruptHandler       cpct_firmware
+     000042A1  cpct_disableFirmware_asm           cpct_firmware
+     000042A1  cpct_removeInterruptHandler_asm    cpct_firmware
+     000042B1  _cpct_getRandom_mxor_u8            cpct_random
+     000042B1  cpct_getRandom_mxor_u8_asm         cpct_random
+     000042B2  cpct_randomIdx_mxor_u8             cpct_random
+     000042D6  _cpct_mode_rom_status              cpct_firmware
+     000042D7  _cpct_getScreenPtr                 cpct_video
+     000042EF  _cpct_mxor32_seed                  cpct_random
+     000042F3  _cpct_nextRandom_mxor_u32          cpct_random
+     000042F3  cpct_nextRandom_mxor_u32_asm       cpct_random
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_DATA                               000042F5    00000049 =          73. bytes (REL,CON)
+_DATA                               00004316    0000011C =         284. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000042F5  _m_entities                        entity
-     0000433B  _m_next_free_entity                entity
-     0000433D  _m_num_entities                    entity
+     00004316  _m_entities                        entity
+     0000442E  _m_zero_type_at_the_end            entity
+     0000442F  _m_next_free_entity                entity
+     00004431  _m_num_entities                    entity
+
 ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 
 Files Linked                              [ module(s) ]
@@ -105,6 +108,8 @@ obj/sys/render.rel                        [ render ]
 
 Libraries Linked                          [ object file ]
 
+/home/oskar/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setPalette_cbindings.rel ]
 /home/oskar/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_setPALColour_cbindings.rel ]
 /home/oskar/cpctelera/cpctelera/tools/sdcc-3.6.8-r9946/bin/../share/sdcc/lib/z80/z80.lib

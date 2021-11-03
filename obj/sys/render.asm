@@ -12,7 +12,9 @@
 	.globl _man_entity_forall
 	.globl _cpct_getScreenPtr
 	.globl _cpct_setPALColour
+	.globl _cpct_setPalette
 	.globl _cpct_setVideoMode
+	.globl _palette
 	.globl _sys_render_init
 	.globl _sys_render_update
 ;--------------------------------------------------------
@@ -107,29 +109,48 @@ _sys_render_one_entity::
 	ld	sp, ix
 	pop	ix
 	ret
-;src/sys/render.c:35: void sys_render_init() {
+;src/sys/render.c:42: void sys_render_init() {
 ;	---------------------------------
 ; Function sys_render_init
 ; ---------------------------------
 _sys_render_init::
-;src/sys/render.c:36: cpct_setVideoMode(0);
+;src/sys/render.c:43: cpct_setVideoMode(0);
 	ld	l, #0x00
 	call	_cpct_setVideoMode
-;src/sys/render.c:37: cpct_setBorder(HW_BLACK);
+;src/sys/render.c:44: cpct_setBorder(HW_BLACK);
 	ld	hl, #0x1410
 	push	hl
 	call	_cpct_setPALColour
-;src/sys/render.c:38: cpct_setPALColour(0, HW_BLACK);
-	ld	hl, #0x1400
+;src/sys/render.c:45: cpct_setPalette(palette, 16);
+	ld	hl, #0x0010
 	push	hl
-	call	_cpct_setPALColour
+	ld	hl, #_palette
+	push	hl
+	call	_cpct_setPalette
 	ret
-;src/sys/render.c:46: void sys_render_update() {
+_palette:
+	.db #0x14	; 20
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+	.db #0x0b	; 11
+;src/sys/render.c:53: void sys_render_update() {
 ;	---------------------------------
 ; Function sys_render_update
 ; ---------------------------------
 _sys_render_update::
-;src/sys/render.c:47: man_entity_forall (sys_render_one_entity);
+;src/sys/render.c:54: man_entity_forall (sys_render_one_entity);
 	ld	hl, #_sys_render_one_entity
 	push	hl
 	call	_man_entity_forall
