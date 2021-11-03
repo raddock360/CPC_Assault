@@ -1,6 +1,7 @@
 #include <man/entity.h>
 
 Entity_t  m_entities[MAX_ENTITIES];     // ARRAY DE ENTIDADES
+u8 m_zero_type_at_the_end;              // Byte a 0 para indicar el final del array de entidades
 Entity_t* m_next_free_entity;           // PUNTERO A LA SIGUIENTE ENTIDAD LIBRE
 u8 m_num_entities;                      // Número de entidades ya reservadas
 
@@ -13,6 +14,7 @@ void man_entity_init (void) {
    cpct_memset (m_entities, 0, sizeof(m_entities));
    m_next_free_entity = m_entities;
    m_num_entities = 0;
+   m_zero_type_at_the_end = e_type_invalid;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +40,7 @@ Entity_t* man_entity_create (void) {
 //
 void man_entity_forall (void (*ptrfunc) (Entity_t*)) {
    Entity_t* e = m_entities;
+   
    while (e->type != e_type_invalid) {
       ptrfunc(e);
       ++e;

@@ -63,8 +63,8 @@
                              63 ;src/main.c:9: cpct_waitHalts(2);
    4005 C5            [11]   64 	push	bc
    4006 2E 02         [ 7]   65 	ld	l, #0x02
-   4008 CD 03 42      [17]   66 	call	_cpct_waitHalts
-   400B CD 58 42      [17]   67 	call	_cpct_waitVSYNC
+   4008 CD 0D 42      [17]   66 	call	_cpct_waitHalts
+   400B CD 62 42      [17]   67 	call	_cpct_waitVSYNC
    400E C1            [10]   68 	pop	bc
                              69 ;src/main.c:11: } while(--n);
    400F 0D            [ 4]   70 	dec c
@@ -76,21 +76,21 @@
                              76 ; ---------------------------------
    4013                      77 _main::
                              78 ;src/main.c:15: cpct_disableFirmware();
-   4013 CD 76 42      [17]   79 	call	_cpct_disableFirmware
+   4013 CD 80 42      [17]   79 	call	_cpct_disableFirmware
                              80 ;src/main.c:17: man_entity_init();
-   4016 CD 28 41      [17]   81 	call	_man_entity_init
+   4016 CD 32 40      [17]   81 	call	_man_entity_init
                              82 ;src/main.c:18: sys_render_init();
-   4019 CD 0B 41      [17]   83 	call	_sys_render_init
+   4019 CD CD 41      [17]   83 	call	_sys_render_init
                              84 ;src/main.c:20: while(1) {
    401C                      85 00102$:
                              86 ;src/main.c:21: sys_physics_update();
-   401C CD BB 40      [17]   87 	call	_sys_physics_update
+   401C CD 2F 41      [17]   87 	call	_sys_physics_update
                              88 ;src/main.c:22: sys_generator_update();
-   401F CD 77 40      [17]   89 	call	_sys_generator_update
+   401F CD 7D 41      [17]   89 	call	_sys_generator_update
                              90 ;src/main.c:23: sys_render_update();
-   4022 CD 1F 41      [17]   91 	call	_sys_render_update
+   4022 CD E1 41      [17]   91 	call	_sys_render_update
                              92 ;src/main.c:25: man_entity_update();
-   4025 CD C0 41      [17]   93 	call	_man_entity_update
+   4025 CD D4 40      [17]   93 	call	_man_entity_update
                              94 ;src/main.c:26: wait(10);
    4028 3E 0A         [ 7]   95 	ld	a, #0x0a
    402A F5            [11]   96 	push	af

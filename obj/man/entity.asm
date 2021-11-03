@@ -106,15 +106,21 @@ _man_entity_create::
 _man_entity_forall::
 ;src/man/entity.c:40: Entity_t* e = m_entities;
 	ld	bc, #_m_entities+0
-;src/man/entity.c:41: while (e->type != e_type_invalid) {
-00101$:
+;src/man/entity.c:43: while( counter < MAX_ENTITIES ) {
+	ld	e, #0x00
+00103$:
+	ld	a, e
+	sub	a, #0x0a
+	ret	NC
+;src/man/entity.c:44: if( e->type != e_type_invalid ) {
 	ld	a, (bc)
 	or	a, a
-	ret	Z
-;src/man/entity.c:42: ptrfunc(e);
+	jr	Z,00102$
+;src/man/entity.c:45: ptrfunc( e );
 	push	bc
+	push	de
 	push	bc
-	ld	hl, #6
+	ld	hl, #8
 	add	hl, sp
 	ld	a, (hl)
 	inc	hl
@@ -122,14 +128,18 @@ _man_entity_forall::
 	ld	l, a
 	call	___sdcc_call_hl
 	pop	af
+	pop	de
 	pop	bc
-;src/man/entity.c:43: ++e;
+;src/man/entity.c:46: ++e;
 	ld	hl, #0x0007
 	add	hl,bc
 	ld	c, l
 	ld	b, h
-	jr	00101$
-;src/man/entity.c:56: void man_entity_destroy (Entity_t* dead_e) {
+00102$:
+;src/man/entity.c:48: ++counter;
+	inc	e
+	jr	00103$
+;src/man/entity.c:66: void man_entity_destroy (Entity_t* dead_e) {
 ;	---------------------------------
 ; Function man_entity_destroy
 ; ---------------------------------
@@ -137,17 +147,17 @@ _man_entity_destroy::
 	push	ix
 	ld	ix,#0
 	add	ix,sp
-;src/man/entity.c:57: Entity_t* de = dead_e;
+;src/man/entity.c:67: Entity_t* de = dead_e;
 	ld	e,4 (ix)
 	ld	d,5 (ix)
-;src/man/entity.c:58: Entity_t* last = m_next_free_entity;
+;src/man/entity.c:68: Entity_t* last = m_next_free_entity;
 	ld	hl, (_m_next_free_entity)
-;src/man/entity.c:59: --last;
+;src/man/entity.c:69: --last;
 	ld	bc, #0xfff9
 	add	hl,bc
 	ld	c, l
 	ld	b, h
-;src/man/entity.c:60: if (de != last) 
+;src/man/entity.c:70: if (de != last) 
 	ld	a, e
 	sub	a, c
 	jr	NZ,00109$
@@ -155,7 +165,7 @@ _man_entity_destroy::
 	sub	a, b
 	jr	Z,00102$
 00109$:
-;src/man/entity.c:61: cpct_memcpy(dead_e, last, sizeof(Entity_t));
+;src/man/entity.c:71: cpct_memcpy(dead_e, last, sizeof(Entity_t));
 	ld	l, c
 	ld	h, b
 	ld	e, 4 (ix)
@@ -170,22 +180,22 @@ _man_entity_destroy::
 	call	_cpct_memcpy
 	pop	bc
 00102$:
-;src/man/entity.c:62: last->type = e_type_invalid;
+;src/man/entity.c:72: last->type = e_type_invalid;
 	xor	a, a
 	ld	(bc), a
-;src/man/entity.c:63: m_next_free_entity = last;
+;src/man/entity.c:73: m_next_free_entity = last;
 	ld	(_m_next_free_entity), bc
-;src/man/entity.c:64: --m_num_entities;
+;src/man/entity.c:74: --m_num_entities;
 	ld	hl, #_m_num_entities+0
 	dec	(hl)
 	pop	ix
 	ret
-;src/man/entity.c:75: void man_entity_set4destruction (Entity_t* dead_e) {
+;src/man/entity.c:85: void man_entity_set4destruction (Entity_t* dead_e) {
 ;	---------------------------------
 ; Function man_entity_set4destruction
 ; ---------------------------------
 _man_entity_set4destruction::
-;src/man/entity.c:76: dead_e->type |= e_type_dead;
+;src/man/entity.c:86: dead_e->type |= e_type_dead;
 	pop	de
 	pop	bc
 	push	bc
@@ -194,22 +204,22 @@ _man_entity_set4destruction::
 	set	7, a
 	ld	(bc), a
 	ret
-;src/man/entity.c:83: void man_entity_update (void) {
+;src/man/entity.c:93: void man_entity_update (void) {
 ;	---------------------------------
 ; Function man_entity_update
 ; ---------------------------------
 _man_entity_update::
-;src/man/entity.c:84: Entity_t* e = m_entities;
+;src/man/entity.c:94: Entity_t* e = m_entities;
 	ld	hl, #_m_entities+0
-;src/man/entity.c:85: while(e->type != e_type_invalid) {
+;src/man/entity.c:95: while(e->type != e_type_invalid) {
 00104$:
 	ld	a, (hl)
 	or	a, a
 	ret	Z
-;src/man/entity.c:86: if (e->type & e_type_dead) {
+;src/man/entity.c:96: if (e->type & e_type_dead) {
 	rlca
 	jr	NC,00102$
-;src/man/entity.c:87: man_entity_destroy(e);
+;src/man/entity.c:97: man_entity_destroy(e);
 	push	hl
 	push	hl
 	call	_man_entity_destroy
@@ -217,16 +227,16 @@ _man_entity_update::
 	pop	hl
 	jr	00104$
 00102$:
-;src/man/entity.c:89: ++e;
+;src/man/entity.c:99: ++e;
 	ld	bc, #0x0007
 	add	hl, bc
 	jr	00104$
-;src/man/entity.c:100: u8 man_entity_freeSpace() {
+;src/man/entity.c:110: u8 man_entity_freeSpace() {
 ;	---------------------------------
 ; Function man_entity_freeSpace
 ; ---------------------------------
 _man_entity_freeSpace::
-;src/man/entity.c:101: return MAX_ENTITIES - m_num_entities;
+;src/man/entity.c:111: return MAX_ENTITIES - m_num_entities;
 	ld	hl, #_m_num_entities
 	ld	a, #0x0a
 	sub	a, (hl)

@@ -12,7 +12,9 @@
 //      - Pinta una estrella en pantalla
 //
 void sys_render_one_entity (Entity_t* e) {
-	if (e->prevptr != 0) *(e->prevptr) = 0;
+	if (e->prevptr != 0) 
+		*(e->prevptr) = 0;
+	
 	if (!(e->type & e_type_dead)) {
 		u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
 		*pvmem = e->color;

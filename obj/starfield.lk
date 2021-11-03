@@ -8,9 +8,9 @@
 -l /home/oskar/cpctelera/cpctelera/cpctelera.lib
 -l z80
 obj/main.rel
-obj/sys/generator.rel
-obj/sys/physics.rel
-obj/sys/render.rel
 obj/man/entity.rel
+obj/sys/physics.rel
+obj/sys/generator.rel
+obj/sys/render.rel
 
 -e
