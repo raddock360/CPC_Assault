@@ -57,7 +57,7 @@
    0002 DD 21 00 00   [14]   57 	ld	ix,#0
    0006 DD 39         [15]   58 	add	ix,sp
    0008 F5            [11]   59 	push	af
-                             60 ;src/sys/render.c:15: if (e->prevptr != 0) 
+                             60 ;src/sys/render.c:18: if (e->prevptr != 0) 	
    0009 DD 4E 04      [19]   61 	ld	c,4 (ix)
    000C DD 46 05      [19]   62 	ld	b,5 (ix)
    000F 21 05 00      [10]   63 	ld	hl, #0x0005
@@ -71,15 +71,15 @@
    0019 7A            [ 4]   71 	ld	a, d
    001A B3            [ 4]   72 	or	a,e
    001B 28 02         [12]   73 	jr	Z,00102$
-                             74 ;src/sys/render.c:16: *(e->prevptr) = 0;
+                             74 ;src/sys/render.c:19: *(e->prevptr) = 0;
    001D AF            [ 4]   75 	xor	a, a
    001E 12            [ 7]   76 	ld	(de), a
    001F                      77 00102$:
-                             78 ;src/sys/render.c:18: if (!(e->type & e_type_dead)) {
+                             78 ;src/sys/render.c:23: if (!(e->type & e_type_dead)) {
    001F 0A            [ 7]   79 	ld	a, (bc)
    0020 07            [ 4]   80 	rlca
    0021 38 1F         [12]   81 	jr	C,00105$
-                             82 ;src/sys/render.c:19: u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
+                             82 ;src/sys/render.c:24: u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
    0023 69            [ 4]   83 	ld	l, c
    0024 60            [ 4]   84 	ld	h, b
    0025 23            [ 6]   85 	inc	hl
@@ -99,7 +99,7 @@
    0037 FD E1         [14]   99 	pop	iy
    0039 FD 7E 04      [19]  100 	ld	a, 4 (iy)
    003C 12            [ 7]  101 	ld	(de), a
-                            102 ;src/sys/render.c:21: e->prevptr = pvmem;
+                            102 ;src/sys/render.c:26: e->prevptr = pvmem;
    003D E1            [10]  103 	pop	hl
    003E E5            [11]  104 	push	hl
    003F 73            [ 7]  105 	ld	(hl), e
@@ -109,19 +109,19 @@
    0042 DD F9         [10]  109 	ld	sp, ix
    0044 DD E1         [14]  110 	pop	ix
    0046 C9            [10]  111 	ret
-                            112 ;src/sys/render.c:42: void sys_render_init() {
+                            112 ;src/sys/render.c:47: void sys_render_init() {
                             113 ;	---------------------------------
                             114 ; Function sys_render_init
                             115 ; ---------------------------------
    0047                     116 _sys_render_init::
-                            117 ;src/sys/render.c:43: cpct_setVideoMode(0);
+                            117 ;src/sys/render.c:48: cpct_setVideoMode(0);
    0047 2E 00         [ 7]  118 	ld	l, #0x00
    0049 CDr00r00      [17]  119 	call	_cpct_setVideoMode
-                            120 ;src/sys/render.c:44: cpct_setBorder(HW_BLACK);
+                            120 ;src/sys/render.c:49: cpct_setBorder(HW_BLACK);
    004C 21 10 14      [10]  121 	ld	hl, #0x1410
    004F E5            [11]  122 	push	hl
    0050 CDr00r00      [17]  123 	call	_cpct_setPALColour
-                            124 ;src/sys/render.c:45: cpct_setPalette(palette, 16);
+                            124 ;src/sys/render.c:50: cpct_setPalette(palette, 16);
    0053 21 10 00      [10]  125 	ld	hl, #0x0010
    0056 E5            [11]  126 	push	hl
    0057 21r5Fr00      [10]  127 	ld	hl, #_palette
@@ -131,8 +131,8 @@
    005F                     131 _palette:
    005F 14                  132 	.db #0x14	; 20
    0060 0B                  133 	.db #0x0b	; 11
-   0061 0B                  134 	.db #0x0b	; 11
-   0062 0B                  135 	.db #0x0b	; 11
+   0061 0A                  134 	.db #0x0a	; 10
+   0062 1E                  135 	.db #0x1e	; 30
    0063 0B                  136 	.db #0x0b	; 11
    0064 0B                  137 	.db #0x0b	; 11
    0065 0B                  138 	.db #0x0b	; 11
@@ -145,12 +145,12 @@
    006C 0B                  145 	.db #0x0b	; 11
    006D 0B                  146 	.db #0x0b	; 11
    006E 0B                  147 	.db #0x0b	; 11
-                            148 ;src/sys/render.c:53: void sys_render_update() {
+                            148 ;src/sys/render.c:59: void sys_render_update() {
                             149 ;	---------------------------------
                             150 ; Function sys_render_update
                             151 ; ---------------------------------
    006F                     152 _sys_render_update::
-                            153 ;src/sys/render.c:54: man_entity_forall (sys_render_one_entity);
+                            153 ;src/sys/render.c:60: man_entity_forall (sys_render_one_entity);
    006F 21r00r00      [10]  154 	ld	hl, #_sys_render_one_entity
    0072 E5            [11]  155 	push	hl
    0073 CDr00r00      [17]  156 	call	_man_entity_forall

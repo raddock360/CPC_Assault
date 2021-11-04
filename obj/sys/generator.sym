@@ -11,17 +11,17 @@ Symbol Table
     _cpct_getRandom_mxor_u8                                        **** GX
     _cpct_memcpy                                                   **** GX
   0 _generateNewStar                                               0000 GR
-  0 _init_e                                                        003E GR
+  0 _init_e                                                        005B GR
     _man_entity_create                                             **** GX
     _man_entity_freeSpace                                          **** GX
-  0 _sys_generator_update                                          0045 GR
+  0 _sys_generator_update                                          0062 GR
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE                                      size   4E   flags    0
+   0 _CODE                                      size   78   flags    0
    1 _DATA                                      size    0   flags    0
    2 _INITIALIZED                               size    0   flags    0
    3 _DABS                                      size    0   flags    8

@@ -57,7 +57,7 @@ _sys_render_one_entity::
 	ld	ix,#0
 	add	ix,sp
 	push	af
-;src/sys/render.c:15: if (e->prevptr != 0) 
+;src/sys/render.c:18: if (e->prevptr != 0) 	
 	ld	c,4 (ix)
 	ld	b,5 (ix)
 	ld	hl, #0x0005
@@ -71,15 +71,15 @@ _sys_render_one_entity::
 	ld	a, d
 	or	a,e
 	jr	Z,00102$
-;src/sys/render.c:16: *(e->prevptr) = 0;
+;src/sys/render.c:19: *(e->prevptr) = 0;
 	xor	a, a
 	ld	(de), a
 00102$:
-;src/sys/render.c:18: if (!(e->type & e_type_dead)) {
+;src/sys/render.c:23: if (!(e->type & e_type_dead)) {
 	ld	a, (bc)
 	rlca
 	jr	C,00105$
-;src/sys/render.c:19: u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
+;src/sys/render.c:24: u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
 	ld	l, c
 	ld	h, b
 	inc	hl
@@ -99,7 +99,7 @@ _sys_render_one_entity::
 	pop	iy
 	ld	a, 4 (iy)
 	ld	(de), a
-;src/sys/render.c:21: e->prevptr = pvmem;
+;src/sys/render.c:26: e->prevptr = pvmem;
 	pop	hl
 	push	hl
 	ld	(hl), e
@@ -109,19 +109,19 @@ _sys_render_one_entity::
 	ld	sp, ix
 	pop	ix
 	ret
-;src/sys/render.c:42: void sys_render_init() {
+;src/sys/render.c:47: void sys_render_init() {
 ;	---------------------------------
 ; Function sys_render_init
 ; ---------------------------------
 _sys_render_init::
-;src/sys/render.c:43: cpct_setVideoMode(0);
+;src/sys/render.c:48: cpct_setVideoMode(0);
 	ld	l, #0x00
 	call	_cpct_setVideoMode
-;src/sys/render.c:44: cpct_setBorder(HW_BLACK);
+;src/sys/render.c:49: cpct_setBorder(HW_BLACK);
 	ld	hl, #0x1410
 	push	hl
 	call	_cpct_setPALColour
-;src/sys/render.c:45: cpct_setPalette(palette, 16);
+;src/sys/render.c:50: cpct_setPalette(palette, 16);
 	ld	hl, #0x0010
 	push	hl
 	ld	hl, #_palette
@@ -131,6 +131,8 @@ _sys_render_init::
 _palette:
 	.db #0x14	; 20
 	.db #0x0b	; 11
+	.db #0x0a	; 10
+	.db #0x1e	; 30
 	.db #0x0b	; 11
 	.db #0x0b	; 11
 	.db #0x0b	; 11
@@ -143,14 +145,12 @@ _palette:
 	.db #0x0b	; 11
 	.db #0x0b	; 11
 	.db #0x0b	; 11
-	.db #0x0b	; 11
-	.db #0x0b	; 11
-;src/sys/render.c:53: void sys_render_update() {
+;src/sys/render.c:59: void sys_render_update() {
 ;	---------------------------------
 ; Function sys_render_update
 ; ---------------------------------
 _sys_render_update::
-;src/sys/render.c:54: man_entity_forall (sys_render_one_entity);
+;src/sys/render.c:60: man_entity_forall (sys_render_one_entity);
 	ld	hl, #_sys_render_one_entity
 	push	hl
 	call	_man_entity_forall

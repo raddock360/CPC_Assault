@@ -29,7 +29,7 @@
 ;--------------------------------------------------------
 	.area _DATA
 _m_entities::
-	.ds 280
+	.ds 315
 _m_zero_type_at_the_end::
 	.ds 1
 _m_next_free_entity::
@@ -66,7 +66,7 @@ _m_num_entities::
 ; ---------------------------------
 _man_entity_init::
 ;src/man/entity.c:14: cpct_memset (m_entities, 0, sizeof(m_entities));
-	ld	hl, #0x0118
+	ld	hl, #0x013b
 	push	hl
 	xor	a, a
 	push	af
@@ -234,7 +234,7 @@ _man_entity_update::
 _man_entity_freeSpace::
 ;src/man/entity.c:109: return MAX_ENTITIES - m_num_entities;
 	ld	hl, #_m_num_entities
-	ld	a, #0x28
+	ld	a, #0x2d
 	sub	a, (hl)
 	ld	l, a
 	ret

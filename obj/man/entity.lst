@@ -29,13 +29,13 @@
                              29 ;--------------------------------------------------------
                              30 	.area _DATA
    0000                      31 _m_entities::
-   0000                      32 	.ds 280
-   0118                      33 _m_zero_type_at_the_end::
-   0118                      34 	.ds 1
-   0119                      35 _m_next_free_entity::
-   0119                      36 	.ds 2
-   011B                      37 _m_num_entities::
-   011B                      38 	.ds 1
+   0000                      32 	.ds 315
+   013B                      33 _m_zero_type_at_the_end::
+   013B                      34 	.ds 1
+   013C                      35 _m_next_free_entity::
+   013C                      36 	.ds 2
+   013E                      37 _m_num_entities::
+   013E                      38 	.ds 1
                              39 ;--------------------------------------------------------
                              40 ; ram data
                              41 ;--------------------------------------------------------
@@ -66,7 +66,7 @@
                              66 ; ---------------------------------
    0000                      67 _man_entity_init::
                              68 ;src/man/entity.c:14: cpct_memset (m_entities, 0, sizeof(m_entities));
-   0000 21 18 01      [10]   69 	ld	hl, #0x0118
+   0000 21 3B 01      [10]   69 	ld	hl, #0x013b
    0003 E5            [11]   70 	push	hl
    0004 AF            [ 4]   71 	xor	a, a
    0005 F5            [11]   72 	push	af
@@ -76,12 +76,12 @@
    000B CDr00r00      [17]   76 	call	_cpct_memset
                              77 ;src/man/entity.c:15: m_next_free_entity = m_entities;
    000E 21r00r00      [10]   78 	ld	hl, #_m_entities
-   0011 22r19r01      [16]   79 	ld	(_m_next_free_entity), hl
+   0011 22r3Cr01      [16]   79 	ld	(_m_next_free_entity), hl
                              80 ;src/man/entity.c:16: m_num_entities = 0;
-   0014 21r1Br01      [10]   81 	ld	hl,#_m_num_entities + 0
+   0014 21r3Er01      [10]   81 	ld	hl,#_m_num_entities + 0
    0017 36 00         [10]   82 	ld	(hl), #0x00
                              83 ;src/man/entity.c:17: m_zero_type_at_the_end = e_type_invalid;
-   0019 21r18r01      [10]   84 	ld	hl,#_m_zero_type_at_the_end + 0
+   0019 21r3Br01      [10]   84 	ld	hl,#_m_zero_type_at_the_end + 0
    001C 36 00         [10]   85 	ld	(hl), #0x00
    001E C9            [10]   86 	ret
                              87 ;src/man/entity.c:27: Entity_t* man_entity_create (void) {
@@ -90,16 +90,16 @@
                              90 ; ---------------------------------
    001F                      91 _man_entity_create::
                              92 ;src/man/entity.c:28: Entity_t* e = m_next_free_entity;
-   001F ED 4Br19r01   [20]   93 	ld	bc, (_m_next_free_entity)
+   001F ED 4Br3Cr01   [20]   93 	ld	bc, (_m_next_free_entity)
                              94 ;src/man/entity.c:29: m_next_free_entity = e + 1;
    0023 21 07 00      [10]   95 	ld	hl, #0x0007
    0026 09            [11]   96 	add	hl,bc
-   0027 22r19r01      [16]   97 	ld	(_m_next_free_entity), hl
+   0027 22r3Cr01      [16]   97 	ld	(_m_next_free_entity), hl
                              98 ;src/man/entity.c:30: e->type = e_type_default;
    002A 3E 7F         [ 7]   99 	ld	a, #0x7f
    002C 02            [ 7]  100 	ld	(bc), a
                             101 ;src/man/entity.c:31: ++m_num_entities;
-   002D 21r1Br01      [10]  102 	ld	hl, #_m_num_entities+0
+   002D 21r3Er01      [10]  102 	ld	hl, #_m_num_entities+0
    0030 34            [11]  103 	inc	(hl)
                             104 ;src/man/entity.c:32: return e;
    0031 69            [ 4]  105 	ld	l, c
@@ -147,7 +147,7 @@
    0059 DD 5E 04      [19]  147 	ld	e,4 (ix)
    005C DD 56 05      [19]  148 	ld	d,5 (ix)
                             149 ;src/man/entity.c:66: Entity_t* last = m_next_free_entity;
-   005F 2Ar19r01      [16]  150 	ld	hl, (_m_next_free_entity)
+   005F 2Ar3Cr01      [16]  150 	ld	hl, (_m_next_free_entity)
                             151 ;src/man/entity.c:67: --last;
    0062 01 F9 FF      [10]  152 	ld	bc, #0xfff9
    0065 09            [11]  153 	add	hl,bc
@@ -180,9 +180,9 @@
    0087 AF            [ 4]  180 	xor	a, a
    0088 02            [ 7]  181 	ld	(bc), a
                             182 ;src/man/entity.c:71: m_next_free_entity = last;
-   0089 ED 43r19r01   [20]  183 	ld	(_m_next_free_entity), bc
+   0089 ED 43r3Cr01   [20]  183 	ld	(_m_next_free_entity), bc
                             184 ;src/man/entity.c:72: --m_num_entities;
-   008D 21r1Br01      [10]  185 	ld	hl, #_m_num_entities+0
+   008D 21r3Er01      [10]  185 	ld	hl, #_m_num_entities+0
    0090 35            [11]  186 	dec	(hl)
    0091 DD E1         [14]  187 	pop	ix
    0093 C9            [10]  188 	ret
@@ -233,8 +233,8 @@
                             233 ; ---------------------------------
    00B5                     234 _man_entity_freeSpace::
                             235 ;src/man/entity.c:109: return MAX_ENTITIES - m_num_entities;
-   00B5 21r1Br01      [10]  236 	ld	hl, #_m_num_entities
-   00B8 3E 28         [ 7]  237 	ld	a, #0x28
+   00B5 21r3Er01      [10]  236 	ld	hl, #_m_num_entities
+   00B8 3E 2D         [ 7]  237 	ld	a, #0x2d
    00BA 96            [ 7]  238 	sub	a, (hl)
    00BB 6F            [ 4]  239 	ld	l, a
    00BC C9            [10]  240 	ret

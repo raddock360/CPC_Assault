@@ -11,9 +11,9 @@ Symbol Table
     _cpct_memcpy                                                   **** GX
     _cpct_memset                                                   **** GX
   1 _m_entities                                                    0000 GR
-  1 _m_next_free_entity                                            0119 GR
-  1 _m_num_entities                                                011B GR
-  1 _m_zero_type_at_the_end                                        0118 GR
+  1 _m_next_free_entity                                            013C GR
+  1 _m_num_entities                                                013E GR
+  1 _m_zero_type_at_the_end                                        013B GR
   0 _man_entity_create                                             001F GR
   0 _man_entity_destroy                                            0051 GR
   0 _man_entity_forall                                             0034 GR
@@ -28,7 +28,7 @@ Hexadecimal [16-Bits]
 Area Table
 
    0 _CODE                                      size   BD   flags    0
-   1 _DATA                                      size  11C   flags    0
+   1 _DATA                                      size  13F   flags    0
    2 _INITIALIZED                               size    0   flags    0
    3 _DABS                                      size    0   flags    8
    4 _HOME                                      size    0   flags    0
