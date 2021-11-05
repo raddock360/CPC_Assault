@@ -57,38 +57,47 @@ _sys_render_one_entity::
 	ld	ix,#0
 	add	ix,sp
 	push	af
-;src/sys/render.c:18: if (e->prevptr != 0) 	
+	dec	sp
+;src/sys/render.c:21: if (e->prevptr != 0) 	
 	ld	c,4 (ix)
 	ld	b,5 (ix)
 	ld	hl, #0x0005
 	add	hl,bc
-	ex	(sp), hl
-	pop	hl
-	push	hl
+	ld	-2 (ix), l
+	ld	-1 (ix), h
 	ld	e, (hl)
 	inc	hl
 	ld	d, (hl)
 	ld	a, d
 	or	a,e
 	jr	Z,00102$
-;src/sys/render.c:19: *(e->prevptr) = 0;
+;src/sys/render.c:22: *(e->prevptr) = 0;
 	xor	a, a
 	ld	(de), a
 00102$:
-;src/sys/render.c:23: if (!(e->type & e_type_dead)) {
+;src/sys/render.c:26: if (!(e->type & e_type_dead)) {
 	ld	a, (bc)
 	rlca
-	jr	C,00105$
-;src/sys/render.c:24: u8* pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
+	jr	C,00108$
+;src/sys/render.c:27: xPixelCoord = e->x;
+	ld	l, c
+	ld	h, b
+	inc	hl
+	ld	d, (hl)
+;src/sys/render.c:28: xByteCoord = (xPixelCoord / 2) + (xPixelCoord % 2);
+	ld	e, d
+	srl	e
+	ld	a, d
+	and	a, #0x01
+	ld	-3 (ix), a
+	ld	a, e
+	add	a, -3 (ix)
+;src/sys/render.c:29: pvmem = cpct_getScreenPtr (CPCT_VMEM_START, xByteCoord, e->y);
 	ld	l, c
 	ld	h, b
 	inc	hl
 	inc	hl
 	ld	d, (hl)
-	ld	l, c
-	ld	h, b
-	inc	hl
-	ld	a, (hl)
 	push	bc
 	ld	e, a
 	push	de
@@ -97,31 +106,44 @@ _sys_render_one_entity::
 	call	_cpct_getScreenPtr
 	ex	de,hl
 	pop	iy
-	ld	a, 4 (iy)
+	ld	c, 4 (iy)
+;src/sys/render.c:30: if( ( xPixelCoord % 2) == 0 ) {
+	ld	a, -3 (ix)
+	or	a, a
+	jr	NZ,00104$
+;src/sys/render.c:31: *pvmem = e->color >> 1;	
+	ld	a,c
+	srl	a
 	ld	(de), a
-;src/sys/render.c:26: e->prevptr = pvmem;
-	pop	hl
-	push	hl
+	jr	00105$
+00104$:
+;src/sys/render.c:33: *pvmem = e->color;
+	ld	a, c
+	ld	(de), a
+00105$:
+;src/sys/render.c:35: e->prevptr = pvmem;
+	ld	l,-2 (ix)
+	ld	h,-1 (ix)
 	ld	(hl), e
 	inc	hl
 	ld	(hl), d
-00105$:
+00108$:
 	ld	sp, ix
 	pop	ix
 	ret
-;src/sys/render.c:47: void sys_render_init() {
+;src/sys/render.c:56: void sys_render_init() {
 ;	---------------------------------
 ; Function sys_render_init
 ; ---------------------------------
 _sys_render_init::
-;src/sys/render.c:48: cpct_setVideoMode(0);
+;src/sys/render.c:57: cpct_setVideoMode(0);
 	ld	l, #0x00
 	call	_cpct_setVideoMode
-;src/sys/render.c:49: cpct_setBorder(HW_BLACK);
+;src/sys/render.c:58: cpct_setBorder(HW_BLACK);
 	ld	hl, #0x1410
 	push	hl
 	call	_cpct_setPALColour
-;src/sys/render.c:50: cpct_setPalette(palette, 16);
+;src/sys/render.c:59: cpct_setPalette(palette, 16);
 	ld	hl, #0x0010
 	push	hl
 	ld	hl, #_palette
@@ -145,12 +167,12 @@ _palette:
 	.db #0x0b	; 11
 	.db #0x0b	; 11
 	.db #0x0b	; 11
-;src/sys/render.c:59: void sys_render_update() {
+;src/sys/render.c:68: void sys_render_update() {
 ;	---------------------------------
 ; Function sys_render_update
 ; ---------------------------------
 _sys_render_update::
-;src/sys/render.c:60: man_entity_forall (sys_render_one_entity);
+;src/sys/render.c:69: man_entity_forall (sys_render_one_entity);
 	ld	hl, #_sys_render_one_entity
 	push	hl
 	call	_man_entity_forall

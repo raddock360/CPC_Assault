@@ -63,7 +63,7 @@
    4139 21 89 41      [10]   63 	ld	hl, #_init_e
    413C E5            [11]   64 	push	hl
    413D C5            [11]   65 	push	bc
-   413E CD B5 42      [17]   66 	call	_cpct_memcpy
+   413E CD D7 42      [17]   66 	call	_cpct_memcpy
    4141 D1            [10]   67 	pop	de
                              68 ;src/sys/generator.c:30: e->y  = cpct_rand() % 200;                   // Asignamos una posición y aleatoria (0 a 200)
    4142 4B            [ 4]   69 	ld	c, e
@@ -72,14 +72,14 @@
    4145 03            [ 6]   72 	inc	bc
    4146 C5            [11]   73 	push	bc
    4147 D5            [11]   74 	push	de
-   4148 CD DB 42      [17]   75 	call	_cpct_getRandom_mxor_u8
+   4148 CD FD 42      [17]   75 	call	_cpct_getRandom_mxor_u8
    414B 65            [ 4]   76 	ld	h, l
    414C 3E C8         [ 7]   77 	ld	a, #0xc8
    414E F5            [11]   78 	push	af
    414F 33            [ 6]   79 	inc	sp
    4150 E5            [11]   80 	push	hl
    4151 33            [ 6]   81 	inc	sp
-   4152 CD 41 42      [17]   82 	call	__moduchar
+   4152 CD 63 42      [17]   82 	call	__moduchar
    4155 F1            [10]   83 	pop	af
    4156 7D            [ 4]   84 	ld	a, l
    4157 D1            [10]   85 	pop	de
@@ -93,7 +93,7 @@
    415E 23            [ 6]   93 	inc	hl
    415F E5            [11]   94 	push	hl
    4160 D5            [11]   95 	push	de
-   4161 CD DB 42      [17]   96 	call	_cpct_getRandom_mxor_u8
+   4161 CD FD 42      [17]   96 	call	_cpct_getRandom_mxor_u8
    4164 7D            [ 4]   97 	ld	a, l
    4165 D1            [10]   98 	pop	de
    4166 E1            [10]   99 	pop	hl
@@ -135,7 +135,7 @@
    4188 C9            [10]  135 	ret
    4189                     136 _init_e:
    4189 01                  137 	.db #0x01	; 1
-   418A 4F                  138 	.db #0x4f	; 79	'O'
+   418A 9E                  138 	.db #0x9e	; 158
    418B 01                  139 	.db #0x01	; 1
    418C FF                  140 	.db #0xff	; -1
    418D 80                  141 	.db #0x80	; 128

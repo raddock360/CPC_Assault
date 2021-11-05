@@ -11,7 +11,7 @@
 // Entidad por defecto. Se utiliza para inicializar las entidades creadas.
 const Entity_t init_e = {
    e_type_star,   // tipo
-   79, 1,         // x, y
+   158, 1,        // x, y
    -1,            // vx
    0x80,          // color
    0x0000         // prev pointer

@@ -135,7 +135,7 @@ _generateNewStar::
 	ret
 _init_e:
 	.db #0x01	; 1
-	.db #0x4f	; 79	'O'
+	.db #0x9e	; 158
 	.db #0x01	; 1
 	.db #0xff	; -1
 	.db #0x80	; 128

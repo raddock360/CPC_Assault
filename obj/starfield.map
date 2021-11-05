@@ -18,21 +18,21 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000000  s__CABS                         
      00000000  s__DABS                         
      0000013F  l__DATA                         
-     00000340  l__CODE                         
+     00000362  l__CODE                         
      00004000  s__CODE                         
-     00004340  s__DATA                         
-     0000447F  s__GSFINAL                      
-     0000447F  s__GSINIT                       
-     0000447F  s__HOME                         
-     0000447F  s__INITIALIZED                  
-     0000447F  s__INITIALIZER                  
+     00004362  s__DATA                         
+     000044A1  s__GSFINAL                      
+     000044A1  s__GSINIT                       
+     000044A1  s__HOME                         
+     000044A1  s__INITIALIZED                  
+     000044A1  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    00000340 =         832. bytes (REL,CON)
+_CODE                               00004000    00000362 =         866. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -51,49 +51,49 @@ _CODE                               00004000    00000340 =         832. bytes (R
      00004189  _init_e                            generator
      00004190  _sys_generator_update              generator
      000041A6  _sys_render_one_entity             render
-     000041ED  _sys_render_init                   render
-     00004205  _palette                           render
-     00004215  _sys_render_update                 render
-     0000421E  _cpct_setPalette                   cpct_video
-     00004235  _cpct_setPALColour                 cpct_video
-     00004241  __moduchar                         
-     0000424D  __moduint                          
-     00004258  _cpct_waitHalts                    cpct_memutils
-     0000425D  __divuint                          
-     00004265  __divuchar                         
-     0000426C  __divu8                            
-     0000426F  __divu16                           
-     0000429E  ___sdcc_call_hl                    
-     0000429F  _cpct_setVideoMode                 cpct_video
-     000042AD  _cpct_waitVSYNC                    cpct_video
-     000042AD  cpct_waitVSYNC_asm                 cpct_video
-     000042B5  _cpct_memcpy                       cpct_memutils
-     000042BD  _cpct_memset                       cpct_memutils
-     000042CB  _cpct_disableFirmware              cpct_firmware
-     000042CB  _cpct_removeInterruptHandler       cpct_firmware
-     000042CB  cpct_disableFirmware_asm           cpct_firmware
-     000042CB  cpct_removeInterruptHandler_asm    cpct_firmware
-     000042DB  _cpct_getRandom_mxor_u8            cpct_random
-     000042DB  cpct_getRandom_mxor_u8_asm         cpct_random
-     000042DC  cpct_randomIdx_mxor_u8             cpct_random
-     00004300  _cpct_mode_rom_status              cpct_firmware
-     00004301  _cpct_getScreenPtr                 cpct_video
-     00004319  _cpct_mxor32_seed                  cpct_random
-     0000431D  _cpct_nextRandom_mxor_u32          cpct_random
-     0000431D  cpct_nextRandom_mxor_u32_asm       cpct_random
+     0000420F  _sys_render_init                   render
+     00004227  _palette                           render
+     00004237  _sys_render_update                 render
+     00004240  _cpct_setPalette                   cpct_video
+     00004257  _cpct_setPALColour                 cpct_video
+     00004263  __moduchar                         
+     0000426F  __moduint                          
+     0000427A  _cpct_waitHalts                    cpct_memutils
+     0000427F  __divuint                          
+     00004287  __divuchar                         
+     0000428E  __divu8                            
+     00004291  __divu16                           
+     000042C0  ___sdcc_call_hl                    
+     000042C1  _cpct_setVideoMode                 cpct_video
+     000042CF  _cpct_waitVSYNC                    cpct_video
+     000042CF  cpct_waitVSYNC_asm                 cpct_video
+     000042D7  _cpct_memcpy                       cpct_memutils
+     000042DF  _cpct_memset                       cpct_memutils
+     000042ED  _cpct_disableFirmware              cpct_firmware
+     000042ED  _cpct_removeInterruptHandler       cpct_firmware
+     000042ED  cpct_disableFirmware_asm           cpct_firmware
+     000042ED  cpct_removeInterruptHandler_asm    cpct_firmware
+     000042FD  _cpct_getRandom_mxor_u8            cpct_random
+     000042FD  cpct_getRandom_mxor_u8_asm         cpct_random
+     000042FE  cpct_randomIdx_mxor_u8             cpct_random
+     00004322  _cpct_mode_rom_status              cpct_firmware
+     00004323  _cpct_getScreenPtr                 cpct_video
+     0000433B  _cpct_mxor32_seed                  cpct_random
+     0000433F  _cpct_nextRandom_mxor_u32          cpct_random
+     0000433F  cpct_nextRandom_mxor_u32_asm       cpct_random
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_DATA                               00004340    0000013F =         319. bytes (REL,CON)
+_DATA                               00004362    0000013F =         319. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00004340  _m_entities                        entity
-     0000447B  _m_zero_type_at_the_end            entity
-     0000447C  _m_next_free_entity                entity
-     0000447E  _m_num_entities                    entity
+     00004362  _m_entities                        entity
+     0000449D  _m_zero_type_at_the_end            entity
+     0000449E  _m_next_free_entity                entity
+     000044A0  _m_num_entities                    entity
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 
