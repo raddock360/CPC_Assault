@@ -47,56 +47,56 @@
                              47 ;	---------------------------------
                              48 ; Function sys_physics_update_one_entity
                              49 ; ---------------------------------
-   40EA                      50 _sys_physics_update_one_entity::
-   40EA DD E5         [15]   51 	push	ix
-   40EC DD 21 00 00   [14]   52 	ld	ix,#0
-   40F0 DD 39         [15]   53 	add	ix,sp
-   40F2 F5            [11]   54 	push	af
+   40A5                      50 _sys_physics_update_one_entity::
+   40A5 DD E5         [15]   51 	push	ix
+   40A7 DD 21 00 00   [14]   52 	ld	ix,#0
+   40AB DD 39         [15]   53 	add	ix,sp
+   40AD F5            [11]   54 	push	af
                              55 ;src/sys/physics.c:5: u8 newx = e->x + e->vx;
-   40F3 DD 5E 04      [19]   56 	ld	e,4 (ix)
-   40F6 DD 56 05      [19]   57 	ld	d,5 (ix)
-   40F9 4B            [ 4]   58 	ld	c, e
-   40FA 42            [ 4]   59 	ld	b, d
-   40FB 03            [ 6]   60 	inc	bc
-   40FC 0A            [ 7]   61 	ld	a, (bc)
-   40FD DD 77 FF      [19]   62 	ld	-1 (ix), a
-   4100 6B            [ 4]   63 	ld	l, e
-   4101 62            [ 4]   64 	ld	h, d
-   4102 23            [ 6]   65 	inc	hl
-   4103 23            [ 6]   66 	inc	hl
-   4104 23            [ 6]   67 	inc	hl
-   4105 6E            [ 7]   68 	ld	l, (hl)
-   4106 DD 7E FF      [19]   69 	ld	a, -1 (ix)
-   4109 85            [ 4]   70 	add	a, l
-   410A DD 77 FE      [19]   71 	ld	-2 (ix), a
+   40AE DD 5E 04      [19]   56 	ld	e,4 (ix)
+   40B1 DD 56 05      [19]   57 	ld	d,5 (ix)
+   40B4 4B            [ 4]   58 	ld	c, e
+   40B5 42            [ 4]   59 	ld	b, d
+   40B6 03            [ 6]   60 	inc	bc
+   40B7 0A            [ 7]   61 	ld	a, (bc)
+   40B8 DD 77 FF      [19]   62 	ld	-1 (ix), a
+   40BB 6B            [ 4]   63 	ld	l, e
+   40BC 62            [ 4]   64 	ld	h, d
+   40BD 23            [ 6]   65 	inc	hl
+   40BE 23            [ 6]   66 	inc	hl
+   40BF 23            [ 6]   67 	inc	hl
+   40C0 6E            [ 7]   68 	ld	l, (hl)
+   40C1 DD 7E FF      [19]   69 	ld	a, -1 (ix)
+   40C4 85            [ 4]   70 	add	a, l
+   40C5 DD 77 FE      [19]   71 	ld	-2 (ix), a
                              72 ;src/sys/physics.c:6: if(newx > e->x) 
-   410D DD 7E FF      [19]   73 	ld	a, -1 (ix)
-   4110 DD 96 FE      [19]   74 	sub	a, -2 (ix)
-   4113 30 07         [12]   75 	jr	NC,00102$
+   40C8 DD 7E FF      [19]   73 	ld	a, -1 (ix)
+   40CB DD 96 FE      [19]   74 	sub	a, -2 (ix)
+   40CE 30 07         [12]   75 	jr	NC,00102$
                              76 ;src/sys/physics.c:7: man_entity_set4destruction(e);
-   4115 C5            [11]   77 	push	bc
-   4116 D5            [11]   78 	push	de
-   4117 CD C1 40      [17]   79 	call	_man_entity_set4destruction
-   411A F1            [10]   80 	pop	af
-   411B C1            [10]   81 	pop	bc
-   411C                      82 00102$:
+   40D0 C5            [11]   77 	push	bc
+   40D1 D5            [11]   78 	push	de
+   40D2 CD 10 42      [17]   79 	call	_man_entity_set4destruction
+   40D5 F1            [10]   80 	pop	af
+   40D6 C1            [10]   81 	pop	bc
+   40D7                      82 00102$:
                              83 ;src/sys/physics.c:8: e->x = newx;
-   411C DD 7E FE      [19]   84 	ld	a, -2 (ix)
-   411F 02            [ 7]   85 	ld	(bc), a
-   4120 DD F9         [10]   86 	ld	sp, ix
-   4122 DD E1         [14]   87 	pop	ix
-   4124 C9            [10]   88 	ret
+   40D7 DD 7E FE      [19]   84 	ld	a, -2 (ix)
+   40DA 02            [ 7]   85 	ld	(bc), a
+   40DB DD F9         [10]   86 	ld	sp, ix
+   40DD DD E1         [14]   87 	pop	ix
+   40DF C9            [10]   88 	ret
                              89 ;src/sys/physics.c:11: void sys_physics_update() {
                              90 ;	---------------------------------
                              91 ; Function sys_physics_update
                              92 ; ---------------------------------
-   4125                      93 _sys_physics_update::
+   40E0                      93 _sys_physics_update::
                              94 ;src/sys/physics.c:13: man_entity_forall (sys_physics_update_one_entity);
-   4125 21 EA 40      [10]   95 	ld	hl, #_sys_physics_update_one_entity
-   4128 E5            [11]   96 	push	hl
-   4129 CD 61 40      [17]   97 	call	_man_entity_forall
-   412C F1            [10]   98 	pop	af
-   412D C9            [10]   99 	ret
+   40E0 21 A5 40      [10]   95 	ld	hl, #_sys_physics_update_one_entity
+   40E3 E5            [11]   96 	push	hl
+   40E4 CD B0 41      [17]   97 	call	_man_entity_forall
+   40E7 F1            [10]   98 	pop	af
+   40E8 C9            [10]   99 	ret
                             100 	.area _CODE
                             101 	.area _INITIALIZER
                             102 	.area _CABS (ABS)
