@@ -63,9 +63,8 @@ _sys_render_one_entity::
 	ld	b,5 (ix)
 	ld	hl, #0x0005
 	add	hl,bc
-	ex	(sp), hl
-	pop	hl
-	push	hl
+	ld	-2 (ix), l
+	ld	-1 (ix), h
 	ld	e, (hl)
 	inc	hl
 	ld	d, (hl)
@@ -90,9 +89,9 @@ _sys_render_one_entity::
 	srl	e
 	ld	a, d
 	and	a, #0x01
-	ld	-1 (ix), a
+	ld	-3 (ix), a
 	ld	a, e
-	add	a, -1 (ix)
+	add	a, -3 (ix)
 ;src/sys/render.c:29: pvmem = cpct_getScreenPtr (CPCT_VMEM_START, xByteCoord, e->y);
 	ld	l, c
 	ld	h, b
@@ -109,7 +108,7 @@ _sys_render_one_entity::
 	pop	iy
 	ld	c, 4 (iy)
 ;src/sys/render.c:30: if( ( xPixelCoord % 2) == 0 ) {
-	ld	a, -1 (ix)
+	ld	a, -3 (ix)
 	or	a, a
 	jr	NZ,00104$
 ;src/sys/render.c:31: *pvmem = e->color >> 1;	
@@ -123,8 +122,8 @@ _sys_render_one_entity::
 	ld	(de), a
 00105$:
 ;src/sys/render.c:35: e->prevptr = pvmem;
-	pop	hl
-	push	hl
+	ld	l,-2 (ix)
+	ld	h,-1 (ix)
 	ld	(hl), e
 	inc	hl
 	ld	(hl), d

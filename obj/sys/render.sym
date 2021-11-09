@@ -12,10 +12,10 @@ Symbol Table
     _cpct_setPalette                                               **** GX
     _cpct_setVideoMode                                             **** GX
     _man_entity_forall                                             **** GX
-  0 _palette                                                       007A GR
-  0 _sys_render_init                                               0062 GR
+  0 _palette                                                       0081 GR
+  0 _sys_render_init                                               0069 GR
   0 _sys_render_one_entity                                         0000 GR
-  0 _sys_render_update                                             008A GR
+  0 _sys_render_update                                             0091 GR
 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
@@ -23,7 +23,7 @@ Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE                                      size   93   flags    0
+   0 _CODE                                      size   9A   flags    0
    1 _DATA                                      size    0   flags    0
    2 _INITIALIZED                               size    0   flags    0
    3 _DABS                                      size    0   flags    8
