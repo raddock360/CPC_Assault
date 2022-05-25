@@ -53,6 +53,29 @@ void man_entity_forall (void (*ptrfunc) (Entity_t*)) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+// APLICA EL MÉTODO RECIBIDO COMO ARGUMENTO (MEDIANTE UN PUNTERO A FUNCIÓN) A TODAS
+// LAS ENTIDADES QUE CUMPLAN CON EL BYTE DE FIRMA RECIBIDO. LA FUNCIÓN RECORRE EL 
+// ARRAY DE ENTIDADES HASTA ENCONTRAR UNA ENTIDAD INVÁLIDA. NUESTRO ARRAY SIEMPRE ESTÁ TERMINADO CON
+// UN BYTE A 0 QUE SIMULA SER UNA ENTIDAD INVÁLIDA PARA QUE EL BUCLE NO SE SALGA 
+// DEL ARRAY CUANDO TODAS LAS ENTIDADES POSIBLES SON VÁLIDAS.
+// RECIBE:     
+//    PUNTERO AL MÉTODO A UTILIZAR CON LAS ENTIDADES
+//    BYTE DE FIRMA
+// DEVUELVE:   
+//    NADA
+//
+void man_entity_forall_matching (void (*ptrfunc) (Entity_t*), u8 signature) {
+   Entity_t* e = m_entities;
+   
+   while (e->type != e_type_invalid) {
+      if((e->type & signature) == signature)
+         ptrfunc(e);
+      ++e;
+   }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////
 // DESTROY
 //    Destruye una entidad dada y libera la memoria asignada a esta, copiando
 //    la última entidad válida del array sobre su posición.
