@@ -40,8 +40,9 @@ $(eval $(call IMG2SP, SET_FOLDER, src/sprites/ ))
 $(eval $(call IMG2SP, SET_OUTPUT, c ))
 $(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTE)))
 $(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTE), main_palette))
-$(eval $(call IMG2SP, CONVERT, assets/Nodriza.png , 36, 18, spr_nodriza,,))
-$(eval $(call IMG2SP, CONVERT, assets/Jugador.png , 12,  8, spr_jugador,,))
+$(eval $(call IMG2SP, CONVERT, assets/Nodriza.png  ,  36, 18, spr_nodriza,, ))
+$(eval $(call IMG2SP, CONVERT, assets/Jugador.png  ,  12,  8, spr_jugador,, ))
+$(eval $(call IMG2SP, CONVERT, assets/enemigo1.png ,  20, 10, spr_enemigo1,,))
 
 
 

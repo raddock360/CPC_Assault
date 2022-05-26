@@ -5,6 +5,7 @@
 #include <sys/render.h>
 #include <sprites/Nodriza.h>
 #include <sprites/Jugador.h>
+#include <sprites/enemigo1.h>
 
 //*******************************************************************
 // DATOS PRIVADOS
@@ -17,7 +18,8 @@ const Entity_t mothership_templ = {
     SPR_NODRIZA_W,                   // w
     SPR_NODRIZA_H,                   // h
     -1,  0,                          // vx, vy
-    spr_nodriza                      // sprite
+    spr_nodriza,                     // sprite
+    sys_ai_behaviour_mothership      // comportamiento de la entidad
 };
 
 // Entidad por defecto de las naves del marcador de vidas
@@ -27,7 +29,8 @@ const Entity_t playership_templ = {
     SPR_JUGADOR_1_W, // w
     SPR_JUGADOR_1_H, // h
     0,  0,           // vx, vy
-    spr_jugador_1    // sprite
+    spr_jugador_1,   // sprite
+    0x0000           // entidad sin IA (puntero NULL)
 };
 
 // Entidad por defecto de la nave del jugador
@@ -37,8 +40,21 @@ const Entity_t player_templ = {
     SPR_JUGADOR_0_W, // w
     SPR_JUGADOR_0_H, // h
     0,  0,           // vx, vy
-    spr_jugador_0    // sprite
+    spr_jugador_0,   // sprite
+    0x0000           // entidad sin IA (puntero NULL)
 };
+
+// Entidad por defecto de la nave enemiga 1
+const Entity_t enemy1_templ = {
+    e_type_movable | e_type_ai | e_type_render,   // Tipo
+    0, 40,            // x, y
+    SPR_ENEMIGO1_0_W, // w
+    SPR_ENEMIGO1_0_H, // h
+    0,  0,            // vx, vy
+    spr_enemigo1_0,   // sprite
+    sys_ai_behaviour_left_right // entidad sin IA (puntero NULL)
+};
+
 
 //*******************************************************************
 // FUNCIONES PRIVADAS
@@ -91,6 +107,14 @@ void man_game_init() {
 
     // Crea la entidad del jugador y la inicializa
     man_game_create_template_entity(&player_templ);
+
+    /*Crea una entidad enemigo 1
+    {
+        Entity_t *e = man_game_create_template_entity(&enemy1_templ);
+        e->x = 38;
+        e->vx = 1;
+    }
+    */
 }
 
 //-------------------------------------------------------------------------------------

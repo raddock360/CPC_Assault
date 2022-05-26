@@ -43,11 +43,11 @@ Entity_t* man_entity_create (void) {
 // DEVUELVE:   
 //    NADA
 //
-void man_entity_forall (void (*ptrfunc) (Entity_t*)) {
+void man_entity_forall (UpdateFunc_t updFunc) {
    Entity_t* e = m_entities;
    
    while (e->type != e_type_invalid) {
-      ptrfunc(e);
+      updFunc(e);
       ++e;
    }
 }
@@ -64,12 +64,12 @@ void man_entity_forall (void (*ptrfunc) (Entity_t*)) {
 // DEVUELVE:   
 //    NADA
 //
-void man_entity_forall_matching (void (*ptrfunc) (Entity_t*), u8 signature) {
+void man_entity_forall_matching (UpdateFunc_t updfunc, u8 signature) {
    Entity_t* e = m_entities;
    
    while (e->type != e_type_invalid) {
       if((e->type & signature) == signature)
-         ptrfunc(e);
+         updfunc(e);
       ++e;
    }
 }

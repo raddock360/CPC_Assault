@@ -33,7 +33,8 @@
                 "${workspaceRoot}/src",
                 "/usr/local/include",
                 "/usr/include",
-                "${env:CPCT_PATH}/src"
+                "${env:CPCT_PATH}/src",
+                "/home/oskar/cpctelera/cpctelera/src"
             ],
             "defines": [],
             "browse": {
