@@ -1,4 +1,3 @@
-#include <man/game.h>
 #include <man/entity.h>
 #include <sys/physics.h>
 #include <sys/ai.h>
@@ -6,11 +5,14 @@
 #include <sprites/Nodriza.h>
 #include <sprites/Jugador.h>
 #include <sprites/enemigo1.h>
+#include <man/game.h>
 
 //*******************************************************************
 // DATOS PRIVADOS
 //*******************************************************************
-
+// Flag de verificación de enemigo en el carril superior
+static u8 m_enemy_on_lane;
+    
 // Entidad por defecto de la nave nodriza
 const Entity_t mothership_templ = {
     e_type_ai | e_type_movable | e_type_render,  // Tipo
@@ -94,6 +96,8 @@ void man_game_init() {
     man_entity_init();  // Iniciamos el sistema de entidades
     sys_render_init();  // Iniciamos el sistema de render
 
+    m_enemy_on_lane = 0;
+    
     // Crea la entidad nave dodriza y la inicializa
     man_game_create_template_entity(&mothership_templ);
 
@@ -128,5 +132,20 @@ void man_game_play() {
       
         man_entity_update();    // Actualiza las entidades en memoria. Destruyendo las muertas
         cpct_waitVSYNC();       // Esperamos al refresco de pantalla
+        wait(3);
     }
+}
+
+void man_game_create_enemy(Entity_t *e_mother) {
+    // Si ya hay un enemigo en el carril de arriba, no generamos otro.
+    if(m_enemy_on_lane) return;
+
+    // Creamos enemigo
+    {
+        Entity_t *e = man_game_create_template_entity(&enemy1_templ);
+        e->x  = e_mother->x;
+        e->vx = e_mother->vx;
+    }
+    // Marcamos que hay un enemigo
+    m_enemy_on_lane = 1;
 }

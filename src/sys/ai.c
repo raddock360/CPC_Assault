@@ -1,5 +1,6 @@
 #include <man/entity.h>
 #include <sys/ai.h>
+#include <man/game.h>
 
 //-------------------------------------------------------------------------------
 // UPDATE ONE ENTITY
@@ -8,6 +9,9 @@
 //      *e -> puntero a la entidad
 //
 void sys_ai_behaviour_mothership(Entity_t* e) {
+    if(e->x == 20) {
+        man_game_create_enemy(e);
+    }
     sys_ai_behaviour_left_right(e);
 }
 
