@@ -48,7 +48,7 @@ const Entity_t player_templ = {
 
 // Entidad por defecto de la nave enemiga 1
 const Entity_t enemy1_templ = {
-    e_type_movable | e_type_ai | e_type_render,   // Tipo
+    e_type_movable | e_type_ai | e_type_render | e_type_animated, // Tipo
     0, 40,            // x, y
     SPR_ENEMIGO1_0_W, // w
     SPR_ENEMIGO1_0_H, // h
