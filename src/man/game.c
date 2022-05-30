@@ -1,62 +1,20 @@
 #include <man/entity.h>
+#include <man/game.h>
+#include <man/animation.h>
 #include <sys/physics.h>
 #include <sys/ai.h>
 #include <sys/render.h>
+#include <sys/animation.h>
 #include <sprites/Nodriza.h>
 #include <sprites/Jugador.h>
 #include <sprites/enemigo1.h>
-#include <man/game.h>
+#include <man/entity_templates.h>
 
 //*******************************************************************
 // DATOS PRIVADOS
 //*******************************************************************
 // Flag de verificación de enemigo en el carril superior
 static u8 m_enemy_on_lane;
-    
-// Entidad por defecto de la nave nodriza
-const Entity_t mothership_templ = {
-    e_type_ai | e_type_movable | e_type_render,  // Tipo
-    38, 10,                          // x, y
-    SPR_NODRIZA_W,                   // w
-    SPR_NODRIZA_H,                   // h
-    -1,  0,                          // vx, vy
-    spr_nodriza,                     // sprite
-    sys_ai_behaviour_mothership      // comportamiento de la entidad
-};
-
-// Entidad por defecto de las naves del marcador de vidas
-const Entity_t playership_templ = {
-    e_type_render,   // Tipo
-    0, 192,          // x, y
-    SPR_JUGADOR_1_W, // w
-    SPR_JUGADOR_1_H, // h
-    0,  0,           // vx, vy
-    spr_jugador_1,   // sprite
-    0x0000           // entidad sin IA (puntero NULL)
-};
-
-// Entidad por defecto de la nave del jugador
-const Entity_t player_templ = {
-    e_type_movable | e_type_input | e_type_render,   // Tipo
-    38, 180,         // x, y
-    SPR_JUGADOR_0_W, // w
-    SPR_JUGADOR_0_H, // h
-    0,  0,           // vx, vy
-    spr_jugador_0,   // sprite
-    0x0000           // entidad sin IA (puntero NULL)
-};
-
-// Entidad por defecto de la nave enemiga 1
-const Entity_t enemy1_templ = {
-    e_type_movable | e_type_ai | e_type_render | e_type_animated, // Tipo
-    0, 40,            // x, y
-    SPR_ENEMIGO1_0_W, // w
-    SPR_ENEMIGO1_0_H, // h
-    0,  0,            // vx, vy
-    spr_enemigo1_0,   // sprite
-    sys_ai_behaviour_left_right // entidad sin IA (puntero NULL)
-};
-
 
 //*******************************************************************
 // FUNCIONES PRIVADAS
@@ -128,11 +86,11 @@ void man_game_play() {
     while(1) {
         sys_ai_update();        // Actualiza las entidades con IA
         sys_physics_update();   // Actualiza las entidades con físicas
+        sys_animation_update(); // Actualiza las animaciones
         sys_render_update();    // Renderiza la escena
       
         man_entity_update();    // Actualiza las entidades en memoria. Destruyendo las muertas
         cpct_waitVSYNC();       // Esperamos al refresco de pantalla
-        wait(3);
     }
 }
 

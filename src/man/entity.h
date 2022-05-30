@@ -7,7 +7,7 @@
 #define e_type_movable  0x02 // Entidad movible
 #define e_type_input    0x04 // Entidad controlable
 #define e_type_ai       0x08 // Entidad con IA        
-#define e_type_animated 0x10 // Entidad con animación
+#define e_type_animated 0x10 // Entidad con animación           
 #define e_type_dead     0x80 // El bit mas alto indica estrella muerta
 #define e_type_default  0x7f // Entidad por defecto (todos los bits a 1 excepto al mas alto)
 #define MAX_ENTITIES    12   // Número máximo de entidades
@@ -43,7 +43,7 @@ union SpNx_t {
 };
 
 struct AnFr_t {
-    u8                  time;
+    u8 const            time;
     SpriteOrNextFrame_t val;
 };
 
@@ -55,6 +55,7 @@ struct Ent_t{
    u8*             sprite;
    BehaviourFunc_t ai_vehaviour;
    AnimFrame_t*    anim;
+   u8              anim_counter;
 };
 
 void      man_entity_init (void);

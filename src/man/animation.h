@@ -1,4 +1,14 @@
 #pragma once
 #include <man/entity.h>
 
-extern const AnimFrame_t man_anim_enemy1_1[];
+
+
+
+//**********************************************************************************
+// CONSTANTES PÚBLICAS
+//**********************************************************************************
+
+////////////////////////////////////////////////////////////////////////////////////
+// Animaciones
+#define man_anim_enemy1_time 12
+extern const AnimFrame_t man_anim_enemy1[];
