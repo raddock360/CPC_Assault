@@ -2,9 +2,9 @@
 #include <sys/ai.h>
 #include <man/game.h>
 
-//-------------------------------------------------------------------------------
-// UPDATE ONE ENTITY
-//      Actualiza las físicas de una entidad, basándose en su comportamiento. 
+///////////////////////////////////////////////////////////////////////////////////
+// BEHAVIOUR MOTHERSHIP
+//      Define comportamiento de la nave nodriza 
 // INPUT: 
 //      *e -> puntero a la entidad
 //
@@ -15,6 +15,12 @@ void sys_ai_behaviour_mothership(Entity_t* e) {
     sys_ai_behaviour_left_right(e);
 }
 
+///////////////////////////////////////////////////////////////////////////////////
+// BEHAVIOUR LEFT RIGTH
+//      Comportamiento de movimiento izquierda derecha 
+// INPUT: 
+//      *e -> puntero a la entidad
+//
 void sys_ai_behaviour_left_right(Entity_t* e) {
     const u8 right_bound = 80 - e->w;
 
@@ -22,6 +28,25 @@ void sys_ai_behaviour_left_right(Entity_t* e) {
     else if (e->x == right_bound) e->vx = -1;
 }
 
+///////////////////////////////////////////////////////////////////////////////////
+// BEHAVIOUR ENEMY
+//      Comportamiento de la nave enemiga
+// INPUT: 
+//      *e -> puntero a la entidad
+//
+void sys_ai_behaviour_enemy(Entity_t* e) {
+    if(e->x & 7) {
+        man_game_enemy_lane_down(e);
+    }
+    sys_ai_behaviour_left_right(e);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+// UPDATE ONE ENTITY
+//      Actualiza las físicas de una entidad, basándose en su comportamiento. 
+// INPUT: 
+//      *e -> puntero a la entidad
+//
 void sys_ai_update_one_entity (Entity_t* e) {
     e->ai_vehaviour(e);
 }

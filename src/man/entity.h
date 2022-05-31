@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cpctelera.h>
+#include <man/animation.h>
 
 #define e_type_invalid  0x00 //
 #define e_type_render   0x01 // Entidad renderizable
@@ -24,8 +25,6 @@
 // Para poder utilizar cómodamente el tipo Entity_t dentro de la propia definición
 // de la estructura, declaramos previamente el tipo, sin definirlo (forward declaration)
 typedef struct Ent_t Entity_t;
-typedef struct AnFr_t AnimFrame_t;
-typedef union  SpNx_t SpriteOrNextFrame_t;
 //
 // Alias de un puntero a función. Al contrario que en el uso "normal" de typedef, donde
 // primero se pone el tipo y después el alias, en un alias de puntero a función se esribe
@@ -37,25 +36,15 @@ typedef void (*UpdateFunc_t)(Entity_t*);
 //
 // A continuación, definimos la estructura y así podemos utilizar el tipo Entity_t
 // en la declaración del puntero a comportamiento.
-union SpNx_t {
-    u8*          sprite;
-    AnimFrame_t* next;
-};
-
-struct AnFr_t {
-    u8 const            time;
-    SpriteOrNextFrame_t val;
-};
-
 struct Ent_t{
-   u8              type;
-   u8              x, y;
-   u8              w, h;
-   i8              vx, vy;
-   u8*             sprite;
-   BehaviourFunc_t ai_vehaviour;
-   AnimFrame_t*    anim;
-   u8              anim_counter;
+   u8                   type;
+   u8                   x, y; 
+   u8                   w, h;
+   i8                   vx, vy;
+   u8 const*            sprite;
+   BehaviourFunc_t      ai_vehaviour;
+   AnimFrame_t const*   anim;
+   u8                   anim_counter;
 };
 
 void      man_entity_init (void);

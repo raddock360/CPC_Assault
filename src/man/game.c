@@ -14,14 +14,17 @@
 // DATOS PRIVADOS
 //*******************************************************************
 // Flag de verificación de enemigo en el carril superior
-static u8 m_enemy_on_lane;
+u8 m_lane_status[3];
 
 //*******************************************************************
 // FUNCIONES PRIVADAS
 //*******************************************************************
 
-//-------------------------------------------------------------------
-// Función de espera. Llama a waitVSYNC n veces.
+////////////////////////////////////////////////////////////////////////////////////
+// WAIT
+//      Función de espera. Llama a waitVSYNC n veces.
+// INPUT:
+//      u8 n -> número de veces que esperamos a vsync
 //
 void wait (u8 n) {
    do {
@@ -30,13 +33,16 @@ void wait (u8 n) {
    } while(--n);
 }
 
-//-------------------------------------------------------------------
-// Crea una entidad, llamando a man_entity_create y la inicializa
-// copiando en el espacio reservado, los valores por defecto de la
-// entidad creada.
-// INPUT: *templ_e -> puntero a una estuctura de datos constante que 
-//        contiene los datos de inicio de la entidad.
-// OUTPUT: e -> Entity_t puntero a la entidad recién creada.
+////////////////////////////////////////////////////////////////////////////////////
+// CREATE TEMPLATE ENTITY
+//      Crea una entidad, llamando a man_entity_create y la inicializa
+//      copiando en el espacio reservado, los valores por defecto de la
+//      entidad creada.
+// INPUT: 
+//      - *templ_e -> puntero a una estuctura de datos constante que 
+//                    contiene los datos de inicio de la entidad.
+// OUTPUT: 
+//        - e -> Entity_t puntero a la entidad recién creada.
 //
 Entity_t* man_game_create_template_entity(const Entity_t *templ_e) {
     Entity_t *e = man_entity_create();
@@ -44,17 +50,18 @@ Entity_t* man_game_create_template_entity(const Entity_t *templ_e) {
     return e;
 }
 
-//-------------------------------------------------------------------------------------
-// Inicia el juego. Primero llama al iniciador del mánager de entidades y al del 
-// sistema de render. Después crea las distintas entidades del juego y las inicializa
-// copiando los valores por defecto.
+////////////////////////////////////////////////////////////////////////////////////
+// INIT
+//      Inicia el juego. Primero llama al iniciador del mánager de entidades y al del 
+//      sistema de render. Después crea las distintas entidades del juego y las 
+//      inicializa copiando los valores por defecto.
 //
 void man_game_init() {
     u8 x = 30;          // Contador para el bucle de creación de entidad playership
     man_entity_init();  // Iniciamos el sistema de entidades
     sys_render_init();  // Iniciamos el sistema de render
 
-    m_enemy_on_lane = 0;
+    cpct_memset(m_lane_status, 0, sizeof(m_lane_status));
     
     // Crea la entidad nave dodriza y la inicializa
     man_game_create_template_entity(&mothership_templ);
@@ -79,8 +86,9 @@ void man_game_init() {
     */
 }
 
-//-------------------------------------------------------------------------------------
-// Inicia una partida al juego
+////////////////////////////////////////////////////////////////////////////////////
+// PLAY
+//      Inicia una partida al juego
 //
 void man_game_play() {
     while(1) {
@@ -94,9 +102,15 @@ void man_game_play() {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////////
+// CREATE ENEMY
+//      Crea un nuevo enemigo en el carril superior, si está libre.
+// INPUT:
+//      - Entity_t *e -> puntero a la entidad madre nodriza
+//
 void man_game_create_enemy(Entity_t *e_mother) {
     // Si ya hay un enemigo en el carril de arriba, no generamos otro.
-    if(m_enemy_on_lane) return;
+    if(m_lane_status[2]) return;
 
     // Creamos enemigo
     {
@@ -105,5 +119,23 @@ void man_game_create_enemy(Entity_t *e_mother) {
         e->vx = e_mother->vx;
     }
     // Marcamos que hay un enemigo
-    m_enemy_on_lane = 1;
+    m_lane_status[2] = 1;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+// ENEMY LANE DOWN
+//      Baja el enemigo al carril inferior
+// INPUT:
+//      - Entity_t *e_enemy -> puntero a la entidad enemiga
+//
+void man_game_enemy_lane_down(Entity_t *e_enemy) {
+    u8 lane = 2;
+    // Solo podemos bajar al enemigo si lane es 1 o 2
+    if      (e_enemy->y > LANE1_Y) return;
+    else if (e_enemy->y > LANE2_Y) lane = 1;
+
+    e_enemy->y += LANE_DY;
+    m_lane_status[lane]     = 0;
+    m_lane_status[lane - 1] = 1;
+
 }

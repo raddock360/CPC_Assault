@@ -1,8 +1,18 @@
 #pragma once
 #include <man/entity.h>
 
+typedef union  SpNx_t SpriteOrNextFrame_t;
+typedef struct AnFr_t AnimFrame_t;
 
+union SpNx_t {
+    u8* const           sprite;
+    AnimFrame_t* const  next;
+};
 
+struct AnFr_t {
+    u8 const            time;
+    SpriteOrNextFrame_t val;
+};
 
 //**********************************************************************************
 // CONSTANTES PÚBLICAS

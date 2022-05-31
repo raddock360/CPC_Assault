@@ -47,12 +47,12 @@ const Entity_t player_templ = {
 // Entidad por defecto de la nave enemiga 1
 const Entity_t enemy1_templ = {
     e_type_movable | e_type_ai | e_type_render | e_type_animated, // Tipo
-     0, 40,                         // x, y
+     0, LANE2_Y,                    // x, y
     SPR_ENEMIGO1_0_W,               // w
     SPR_ENEMIGO1_0_H,               // h
      0,  0,                         // vx, vy
     spr_enemigo1_0,                 // sprite
-    sys_ai_behaviour_left_right,    // entidad sin IA (puntero NULL)
+    sys_ai_behaviour_enemy,         // entidad sin IA (puntero NULL)
     man_anim_enemy1,                // Animación
     man_anim_enemy1_time            // Contador de animación
 };
