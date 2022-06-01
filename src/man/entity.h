@@ -47,12 +47,13 @@ struct Ent_t{
    u8                   anim_counter;
 };
 
-void      man_entity_init (void);
-Entity_t* man_entity_create (void);
-void      man_entity_destroy (Entity_t*);
-void      man_entity_forall (UpdateFunc_t updFunc);
+void      man_entity_init            (void);
+Entity_t* man_entity_create          (void);
+void      man_entity_destroy         (Entity_t*);
+void      man_entity_forall          (UpdateFunc_t updFunc);
 void      man_entity_forall_matching (UpdateFunc_t updFunc, u8 signature);
 void      man_entity_set4destruction (Entity_t*); 
-void      man_entity_update (void);
-u8        man_entity_freeSpace();
+void      man_entity_update          (void);
+u8        man_entity_freeSpace       ();
+Entity_t* man_entity_clone           (Entity_t* e);
 

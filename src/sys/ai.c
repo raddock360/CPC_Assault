@@ -35,7 +35,7 @@ void sys_ai_behaviour_left_right(Entity_t* e) {
 //      *e -> puntero a la entidad
 //
 void sys_ai_behaviour_enemy(Entity_t* e) {
-    if(e->x & 7) {
+    if(!(e->x & 7)) {
         man_game_enemy_lane_down(e);
     }
     sys_ai_behaviour_left_right(e);

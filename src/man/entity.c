@@ -33,6 +33,18 @@ Entity_t* man_entity_create (void) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+// CLONE
+//    TODO
+// Precondiciones:
+//    Debe haber espacio para, al menos, pode crear una entidad  
+//
+Entity_t* man_entity_clone(Entity_t* e) {
+   Entity_t* clone = man_entity_create();
+   cpct_memcpy(clone, e, sizeof(Entity_t));
+   return clone;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
 // APLICA EL MÉTODO RECIBIDO COMO ARGUMENTO (MEDIANTE UN PUNTERO A FUNCIÓN) A TODAS
 // LAS ENTIDADES QUE NO SEAN INVÁLIDAS. LA FUNCIÓN RECORRE EL ARRAY DE ENTIDADES
 // HASTA ENCONTRAR UNA ENTIDAD INVÁLIDA. NUESTRO ARRAY SIEMPRE ESTÁ TERMINADO CON

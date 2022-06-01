@@ -99,6 +99,7 @@ void man_game_play() {
       
         man_entity_update();    // Actualiza las entidades en memoria. Destruyendo las muertas
         cpct_waitVSYNC();       // Esperamos al refresco de pantalla
+        wait(5);
     }
 }
 
@@ -134,6 +135,15 @@ void man_game_enemy_lane_down(Entity_t *e_enemy) {
     if      (e_enemy->y > LANE1_Y) return;
     else if (e_enemy->y > LANE2_Y) lane = 1;
 
+    // Comprobamos el siguiente carril para comprobar si está libre
+    if(m_lane_status[lane-1]) return;
+
+    // Creamos un clon fantasma de la entidad para borrar el carril que deja libre
+    {
+        Entity_t* clone = man_entity_clone(e_enemy);
+    }
+    
+    // Bajamos
     e_enemy->y += LANE_DY;
     m_lane_status[lane]     = 0;
     m_lane_status[lane - 1] = 1;
