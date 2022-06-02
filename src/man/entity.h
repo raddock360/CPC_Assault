@@ -43,6 +43,7 @@ struct Ent_t{
    i8                   vx, vy;
    u8 const*            sprite;
    BehaviourFunc_t      ai_vehaviour;
+   u8                   ai_counter;
    AnimFrame_t const*   anim;
    u8                   anim_counter;
 };

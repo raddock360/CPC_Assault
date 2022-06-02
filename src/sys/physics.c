@@ -1,5 +1,6 @@
 #include <sys/physics.h>
 #include <man/entity.h>
+#include <man/game.h>
 
 //-------------------------------------------------------------------------------
 // Comprueba el teclado para la entidad recibida.
@@ -7,10 +8,13 @@
 //
 void sys_physics_check_keyboard(Entity_t *e) {
     cpct_scanKeyboard_f();
-
+    // Movimiento Izquierda - Derecha
     e->vx = 0;
     if      (cpct_isKeyPressed(Key_O)) e->vx = -1;    
     else if (cpct_isKeyPressed(Key_P)) e->vx =  1;
+    // Disparo
+    if      (cpct_isKeyPressed(Key_Space))
+        man_game_player_shoot(e);
 }
 
 //-------------------------------------------------------------------------------

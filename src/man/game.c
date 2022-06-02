@@ -15,6 +15,8 @@
 //*******************************************************************
 // Flag de verificación de enemigo en el carril superior
 u8 m_lane_status[3];
+// Flag de verificación de disparo activo
+u8 m_player_shoot;
 
 //*******************************************************************
 // FUNCIONES PRIVADAS
@@ -60,6 +62,7 @@ void man_game_init() {
     u8 x = 30;          // Contador para el bucle de creación de entidad playership
     man_entity_init();  // Iniciamos el sistema de entidades
     sys_render_init();  // Iniciamos el sistema de render
+    m_player_shoot = 0; // No hay disparos activos al empezar la partida
 
     cpct_memset(m_lane_status, 0, sizeof(m_lane_status));
     
@@ -141,6 +144,8 @@ void man_game_enemy_lane_down(Entity_t *e_enemy) {
     // Creamos un clon fantasma de la entidad para borrar el carril que deja libre
     {
         Entity_t* clone = man_entity_clone(e_enemy);
+        clone->type = e_type_render;
+        man_entity_set4destruction(clone);
     }
     
     // Bajamos
@@ -148,4 +153,34 @@ void man_game_enemy_lane_down(Entity_t *e_enemy) {
     m_lane_status[lane]     = 0;
     m_lane_status[lane - 1] = 1;
 
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+// GAME ENTITY DESTROY
+// INPUT:
+//      - Entity_t *e -> puntero a la entidad 
+//
+void man_game_entity_destroy(Entity_t* e) {
+
+    man_entity_destroy(e); 
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+// GAME PLAYER SHOOT
+//      Crea un disparo del jugador
+// INPUT:
+//      - Entity_t *e_player -> puntero a la entidad 
+//
+void man_game_player_shoot(Entity_t* e_player){
+    // Comprobamos si existe ya algún disparo
+    if(m_player_shoot) return;
+    
+    // Disparo
+    {
+        Entity_t* e = man_game_create_template_entity(&vshoot_templ);
+        e->x = e_player->x + 2;
+    }
+
+    // Activamos el flag de disparo (sólo puede haber un disparo en pantalla)
+    m_player_shoot = 1;
 }

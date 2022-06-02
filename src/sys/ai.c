@@ -42,6 +42,16 @@ void sys_ai_behaviour_enemy(Entity_t* e) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+// BEHAVIOUR AUTODESTROY
+// INPUT: 
+//      *e -> puntero a la entidad
+//
+void sys_ai_vehaviour_autodestroy(Entity_t* e) {
+    if(--(e->ai_counter) == 0)
+        man_game_entity_destroy(e);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
 // UPDATE ONE ENTITY
 //      Actualiza las físicas de una entidad, basándose en su comportamiento. 
 // INPUT: 
