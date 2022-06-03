@@ -46,5 +46,5 @@ void sys_render_init() {
 // encarga de aplicar la función a cada una de las entidades.
 //
 void sys_render_update() {
-    man_entity_forall_matching(sys_render_one_entity, e_type_render);
+    man_entity_forall_matching(sys_render_one_entity, e_cmp_render);
 }

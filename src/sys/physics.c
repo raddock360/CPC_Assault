@@ -23,7 +23,7 @@ void sys_physics_check_keyboard(Entity_t *e) {
 //
 void sys_physics_update_one_entity (Entity_t* e) {
     // Si la entidad tiente input, comprobamos el teclado
-    if(e->type & e_type_input) 
+    if(e->type & e_cmp_input) 
         sys_physics_check_keyboard(e);
 
     e->x += e->vx;
@@ -32,5 +32,5 @@ void sys_physics_update_one_entity (Entity_t* e) {
 
 void sys_physics_update() {
     // for all entities
-    man_entity_forall_matching(sys_physics_update_one_entity, e_type_movable);
+    man_entity_forall_matching(sys_physics_update_one_entity, e_cmp_movable);
 }

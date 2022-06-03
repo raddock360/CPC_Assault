@@ -144,7 +144,7 @@ void man_game_enemy_lane_down(Entity_t *e_enemy) {
     // Creamos un clon fantasma de la entidad para borrar el carril que deja libre
     {
         Entity_t* clone = man_entity_clone(e_enemy);
-        clone->type = e_type_render;
+        clone->type = e_cmp_render;
         man_entity_set4destruction(clone);
     }
     
@@ -161,7 +161,7 @@ void man_game_enemy_lane_down(Entity_t *e_enemy) {
 //      - Entity_t *e -> puntero a la entidad 
 //
 void man_game_entity_destroy(Entity_t* e) {
-
+    m_player_shoot = 0;
     man_entity_destroy(e); 
 }
 

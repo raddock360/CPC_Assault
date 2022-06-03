@@ -25,5 +25,5 @@ void sys_animation_update_one_entity (Entity_t* e) {
 
 void sys_animation_update() {
     // for all entities
-    man_entity_forall_matching(sys_animation_update_one_entity, e_type_animated);
+    man_entity_forall_matching(sys_animation_update_one_entity, e_cmp_animated);
 }

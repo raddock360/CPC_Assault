@@ -27,7 +27,7 @@ void man_entity_init (void) {
 Entity_t* man_entity_create (void) {
    Entity_t* e = m_next_free_entity;
    m_next_free_entity = e + 1;
-   e->type = e_type_default;
+   e->type = e_cmp_default;
    ++m_num_entities;
    return e;
 }

@@ -3,15 +3,19 @@
 #include <cpctelera.h>
 #include <man/animation.h>
 
-#define e_type_invalid  0x00 //
-#define e_type_render   0x01 // Entidad renderizable
-#define e_type_movable  0x02 // Entidad movible
-#define e_type_input    0x04 // Entidad controlable
-#define e_type_ai       0x08 // Entidad con IA        
-#define e_type_animated 0x10 // Entidad con animación           
-#define e_type_dead     0x80 // El bit mas alto indica estrella muerta
-#define e_type_default  0x7f // Entidad por defecto (todos los bits a 1 excepto al mas alto)
 #define MAX_ENTITIES    12   // Número máximo de entidades
+
+// Tipos de entidad
+#define e_type_invalid  0x00 //
+#define e_type_dead     0x80 // El bit mas alto indica estrella muerta
+
+// Componentes de las entidades
+#define e_cmp_render   0x01 // Entidad renderizable
+#define e_cmp_movable  0x02 // Entidad movible
+#define e_cmp_input    0x04 // Entidad controlable
+#define e_cmp_ai       0x08 // Entidad con IA        
+#define e_cmp_animated 0x10 // Entidad con animación           
+#define e_cmp_default  0x00 // Entidad sin ningún componente
 
 //----------------------------------------------------------------------------------
 // Estructura de una entidad
@@ -38,6 +42,7 @@ typedef void (*UpdateFunc_t)(Entity_t*);
 // en la declaración del puntero a comportamiento.
 struct Ent_t{
    u8                   type;
+   u8                   cmps;
    u8                   x, y; 
    u8                   w, h;
    i8                   vx, vy;
