@@ -59,7 +59,7 @@ Entity_t* man_entity_clone(Entity_t* e) {
 void man_entity_forall (UpdateFunc_t updFunc) {
    Entity_t* e = m_entities;
    
-   while (e->type != e_type_invalid) {
+   while (IsValid(e)) {
       updFunc(e);
       ++e;
    }
@@ -80,13 +80,41 @@ void man_entity_forall (UpdateFunc_t updFunc) {
 void man_entity_forall_matching (UpdateFunc_t updfunc, u8 signature) {
    Entity_t* e = m_entities;
    
-   while (e->type != e_type_invalid) {
-      if((e->cmps & signature) == signature)
+   while(IsValid(e)) {
+      if(SignatureMatches(e, signature))
          updfunc(e);
       ++e;
    }
 }
 
+///////////////////////////////////////////////////////////////////////////////////
+// APLICA EL MÉTODO RECIBIDO COMO ARGUMENTO (MEDIANTE UN PUNTERO A FUNCIÓN) A TODAS
+// LAS ENTIDADES QUE CUMPLAN CON EL BYTE DE FIRMA RECIBIDO. LA FUNCIÓN RECORRE EL 
+// ARRAY DE ENTIDADES HASTA ENCONTRAR UNA ENTIDAD INVÁLIDA. NUESTRO ARRAY SIEMPRE ESTÁ TERMINADO CON
+// UN BYTE A 0 QUE SIMULA SER UNA ENTIDAD INVÁLIDA PARA QUE EL BUCLE NO SE SALGA 
+// DEL ARRAY CUANDO TODAS LAS ENTIDADES POSIBLES SON VÁLIDAS.
+// RECIBE:     
+//    PUNTERO AL MÉTODO A UTILIZAR CON LAS ENTIDADES
+//    BYTE DE FIRMA
+// DEVUELVE:   
+//    NADA
+//
+void man_entity_forall_pairs_matching (UpdateFunc2E_t updfunc, u8 signature) {
+   Entity_t* e_left = m_entities;
+   
+   while (IsValid(e_left)) {
+      if(SignatureMatches(e_left, signature)){
+         Entity_t *e_right = e_left + 1;
+         while(IsValid(e_right)) {
+            if(SignatureMatches(e_right, signature))
+               updfunc(e_left, e_right);
+
+            ++e_right;
+         }
+      }
+      ++e_left;
+   }
+}
 
 ///////////////////////////////////////////////////////////////////////////////////
 // DESTROY
@@ -126,8 +154,8 @@ void man_entity_set4destruction (Entity_t* dead_e) {
 //
 void man_entity_update (void) {
    Entity_t* e = m_entities;
-   while(e->type != e_type_invalid) {
-      if (e->type & e_type_dead) {
+   while(IsValid(e)) {
+      if (IsDead(e)) {
          man_entity_destroy(e);
       } else {
          ++e;
