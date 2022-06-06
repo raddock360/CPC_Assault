@@ -6,8 +6,13 @@
 #define MAX_ENTITIES    12   // Número máximo de entidades
 
 // Tipos de entidad
-#define e_type_invalid  0x00 //
-#define e_type_dead     0x80 // El bit mas alto indica estrella muerta
+#define e_type_invalid     0x00         // Entidad inválida
+#define e_type_player      0x01         // Entidad Jugador
+#define e_type_enemy       0x02         // Entidad Enemigo
+#define e_type_mothership  0x04         // Entidad Nave nodriza
+#define e_type_shot        0x08         // Entidad Disparo
+#define e_type_dead        0x80         // Entidad marcada para morir
+#define e_type_default     e_type_enemy // Entidad por defecto
 
 // Componentes de las entidades
 #define e_cmp_render   0x01 // Entidad renderizable

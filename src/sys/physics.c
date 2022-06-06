@@ -23,7 +23,7 @@ void sys_physics_check_keyboard(Entity_t *e) {
 //
 void sys_physics_update_one_entity (Entity_t* e) {
     // Si la entidad tiente input, comprobamos el teclado
-    if(e->type & e_cmp_input) 
+    if(e->cmps & e_cmp_input) 
         sys_physics_check_keyboard(e);
 
     e->x += e->vx;

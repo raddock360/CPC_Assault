@@ -27,7 +27,8 @@ void man_entity_init (void) {
 Entity_t* man_entity_create (void) {
    Entity_t* e = m_next_free_entity;
    m_next_free_entity = e + 1;
-   e->type = e_cmp_default;
+   e->type = e_type_default;
+   e->cmps = e_cmp_default;
    ++m_num_entities;
    return e;
 }
@@ -80,7 +81,7 @@ void man_entity_forall_matching (UpdateFunc_t updfunc, u8 signature) {
    Entity_t* e = m_entities;
    
    while (e->type != e_type_invalid) {
-      if((e->type & signature) == signature)
+      if((e->cmps & signature) == signature)
          updfunc(e);
       ++e;
    }

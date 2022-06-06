@@ -2,6 +2,7 @@
     "files.associations": {
         "\"*.s\": \"retroasm_z80\"": "",
         "*.s": "z80-asm",
-        "physics.h": "c"
+        "physics.h": "c",
+        "entity_templates.h": "c"
     }
 }

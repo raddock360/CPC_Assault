@@ -8,7 +8,8 @@
 
 // Entidad por defecto de la nave nodriza
 const Entity_t mothership_templ = {
-    e_cmp_ai | e_cmp_movable | e_cmp_render,  // Tipo
+    e_type_mothership,              // Tipo
+    e_cmp_ai | e_cmp_movable | e_cmp_render,  // Componentes
     38, 10,                         // x, y
     SPR_NODRIZA_W,                  // w
     SPR_NODRIZA_H,                  // h
@@ -22,7 +23,8 @@ const Entity_t mothership_templ = {
 
 // Entidad por defecto de las naves del marcador de vidas
 const Entity_t playership_templ = {
-    e_cmp_render,                  // Tipo
+    e_type_enemy,                   // Tipo
+    e_cmp_render,                   // Componentes
      0, 192,                        // x, y
     SPR_JUGADOR_1_W,                // w
     SPR_JUGADOR_1_H,                // h
@@ -36,7 +38,8 @@ const Entity_t playership_templ = {
 
 // Entidad por defecto de la nave del jugador
 const Entity_t player_templ = {
-    e_cmp_movable | e_cmp_input | e_cmp_render,   // Tipo
+    e_type_player,                  // Tipo
+    e_cmp_movable | e_cmp_input | e_cmp_render, // Componentes
     PLAYER_X,                       // x 
     PLAYER_Y,                       // y
     SPR_JUGADOR_0_W,                // w
@@ -51,7 +54,8 @@ const Entity_t player_templ = {
 
 // Entidad por defecto de la nave enemiga 1
 const Entity_t enemy1_templ = {
-    e_cmp_movable | e_cmp_ai | e_cmp_render | e_cmp_animated, // Tipo
+    e_type_enemy,                   // Tipo
+    e_cmp_movable | e_cmp_ai | e_cmp_render | e_cmp_animated, // Componentes
      0, LANE2_Y,                    // x, y
     SPR_ENEMIGO1_0_W,               // w
     SPR_ENEMIGO1_0_H,               // h
@@ -65,7 +69,8 @@ const Entity_t enemy1_templ = {
 
 // Entidad por defecto disparo vertical
 const Entity_t vshoot_templ = {
-    e_cmp_movable | e_cmp_ai | e_cmp_render, // Tipo
+    e_type_shot,                    // Tipo
+    e_cmp_movable | e_cmp_ai | e_cmp_render, // Componentes
      0,                             // x
     PLAYERSHOT_Y,                   // y
     SPR_VSHOOT_W,                   // w
