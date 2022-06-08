@@ -68,7 +68,7 @@ const Entity_t enemy1_templ = {
     SPR_ENEMIGO1_0_H,               // h
      0,  0,                         // vx, vy
     spr_enemigo1_0,                 // sprite
-    sys_ai_behaviour_enemy,         // entidad sin IA (puntero NULL)
+    sys_ai_behaviour_enemy,         // IA enemigo
     0,                              // Contador IA
     man_anim_enemy1,                // Animación
     man_anim_enemy1_time,           // Contador de animación
@@ -86,8 +86,8 @@ const Entity_t vshoot_templ = {
     SPR_VSHOOT_H,                   // h
      0,  -8,                        // vx, vy
     spr_vshoot,                     // sprite
-    sys_ai_vehaviour_autodestroy,   // Comportamiento de la entidad
-    14,                             // Contador IA
+    sys_ai_vehaviour_autodestroy,   // IA disparo
+    20,                             // Contador IA
     0x0000,                         // Animación
     0x00,                           // Contador de animación
     e_type_enemy                    // Colisiona contra enemigos

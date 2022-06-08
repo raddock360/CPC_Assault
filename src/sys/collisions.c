@@ -1,5 +1,6 @@
 #include <sys/collisions.h>
 #include <man/entity.h>
+#include <man/game.h>
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -23,8 +24,12 @@ void sys_collisions_update_entities (Entity_t* e1, Entity_t* e2) {
 
     // Las entidades PUEDEN colisionar, así que comprobamos si realmente colisionan.
     // TODO
-
-
+    if(((e1->x + e1->w) > e2->x) && (e1->x < (e2->x + e2->w))) { 
+        if((e1->y < (e2->y + e2->h)) && ((e1->y + e1->h) > e2->y)) {
+            man_game_entity_destroy(e1);
+            man_game_entity_destroy(e2);
+        }
+    }
 }
 
 void sys_collisions_update() {

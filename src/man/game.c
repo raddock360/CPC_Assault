@@ -2,6 +2,7 @@
 #include <man/game.h>
 #include <man/animation.h>
 #include <sys/physics.h>
+#include <sys/collisions.h>
 #include <sys/ai.h>
 #include <sys/render.h>
 #include <sys/animation.h>
@@ -97,12 +98,13 @@ void man_game_play() {
     while(1) {
         sys_ai_update();        // Actualiza las entidades con IA
         sys_physics_update();   // Actualiza las entidades con físicas
+        sys_collisions_update();// Actualiza las colisiones
         sys_animation_update(); // Actualiza las animaciones
         sys_render_update();    // Renderiza la escena
       
         man_entity_update();    // Actualiza las entidades en memoria. Destruyendo las muertas
         cpct_waitVSYNC();       // Esperamos al refresco de pantalla
-        wait(5);
+        wait(1);
     }
 }
 
@@ -162,7 +164,7 @@ void man_game_enemy_lane_down(Entity_t *e_enemy) {
 //
 void man_game_entity_destroy(Entity_t* e) {
     if(e->type & e_type_shot) m_player_shoot = 0;
-    man_entity_destroy(e); 
+    man_entity_set4destruction(e); 
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
