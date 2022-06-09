@@ -104,7 +104,6 @@ void man_game_play() {
       
         man_entity_update();    // Actualiza las entidades en memoria. Destruyendo las muertas
         cpct_waitVSYNC();       // Esperamos al refresco de pantalla
-        wait(1);
     }
 }
 
@@ -163,8 +162,23 @@ void man_game_enemy_lane_down(Entity_t *e_enemy) {
 //      - Entity_t *e -> puntero a la entidad 
 //
 void man_game_entity_destroy(Entity_t* e) {
-    if(e->type & e_type_shot) m_player_shoot = 0;
-    man_entity_set4destruction(e); 
+    if(e->type & e_type_shot) m_player_shoot = 0; // Si la entidad es un disparo, reseteamos el flag de disparo activo.
+        else if(e->type & e_type_enemy) {         // Si es un enemigo, liberamos su carril. Para ello, nos basamos en 
+            switch (e->y) {                       // su posición actual [e->y].
+                case LANE2_Y:
+                    m_lane_status[2] = 0;
+                    break;
+
+                case LANE1_Y:
+                    m_lane_status[1] = 0;
+                    break;
+
+                case LANE0_Y:
+                    m_lane_status[0] = 0;
+                    break;
+            }
+        }
+    man_entity_set4destruction(e); // Marcamos la entidad para ser destruida.
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
