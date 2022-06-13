@@ -20,7 +20,8 @@ const Entity_t mothership_templ = {
     0,                              // Contador IA
     0x0000,                         // Animación (no tiene)
     0x00,                           // Contador de animación
-    0                               // No colisiona contra nada
+    0,                              // No colisiona contra nada
+    0x0000                          // Puntero a la posición previa
 };
 
 // Entidad por defecto de las naves del marcador de vidas
@@ -36,7 +37,8 @@ const Entity_t playership_templ = {
     0,                              // Contador IA
     0x0000,                         // Animación (no tiene)
     0x00,                           // Contador de animación
-    0                               // No colisiona contra nada
+    0,                              // No colisiona contra nada
+    0x0000                          // Puntero a la posición previa
 };
 
 // Entidad por defecto de la nave del jugador
@@ -54,7 +56,8 @@ const Entity_t player_templ = {
     0,                              // Contador IA
     0x0000,                         // Sin animación
     0x00,                           // Contador de animación
-    0                               // No colisiona contra nada
+    0,                              // No colisiona contra nada
+    0x0000                          // Puntero a la posición previa
 };
 
 // Entidad por defecto de la nave enemiga 1
@@ -72,7 +75,8 @@ const Entity_t enemy1_templ = {
     0,                              // Contador IA
     man_anim_enemy1,                // Animación
     man_anim_enemy1_time,           // Contador de animación
-    0                               // No colisiona contra nada
+    0,                              // No colisiona contra nada
+    0x0000                          // Puntero a la posición previa
 };
 
 // Entidad por defecto disparo vertical
@@ -87,8 +91,9 @@ const Entity_t vshoot_templ = {
      0,  -8,                        // vx, vy
     spr_vshoot,                     // sprite
     sys_ai_vehaviour_autodestroy,   // IA disparo
-    20,                             // Contador IA
+    16,                             // Contador IA
     0x0000,                         // Animación
     0x00,                           // Contador de animación
-    e_type_enemy                    // Colisiona contra enemigos
+    e_type_enemy,                   // Colisiona contra enemigos
+    0x0000                          // Puntero a la posición previa
 };

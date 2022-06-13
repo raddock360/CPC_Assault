@@ -100,10 +100,10 @@ void man_game_play() {
         sys_physics_update();   // Actualiza las entidades con físicas
         sys_collisions_update();// Actualiza las colisiones
         sys_animation_update(); // Actualiza las animaciones
-        sys_render_update();    // Renderiza la escena
-      
+        cpct_waitVSYNC();
+        cpct_setBorder(HW_BRIGHT_CYAN); sys_render_update();    // Renderiza la escena
+        cpct_setBorder(HW_BLUE);
         man_entity_update();    // Actualiza las entidades en memoria. Destruyendo las muertas
-        cpct_waitVSYNC();       // Esperamos al refresco de pantalla
     }
 }
 

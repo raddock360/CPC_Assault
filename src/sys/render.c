@@ -14,13 +14,24 @@
 //
 void sys_render_one_entity (Entity_t* e) {
 	u8 *pvmem = cpct_getScreenPtr (CPCT_VMEM_START, e->x, e->y);
+	u8* prev = e->prev_pos;
+
+	if(e->type & e_type_dead) {
+			cpct_drawSolidBox(prev, 0, e->w, e->h);
+	} else if(prev != pvmem) {
+		cpct_drawSolidBox(prev, 0, e->w, e->h);
+		cpct_drawSprite(e->sprite, pvmem, e->w, e->h);
+		prev = pvmem; 
+		e->prev_pos = prev;
+	}
+	
 	// Si la entidad está muerta, dibujamos borramos su sprite con una caja negra
 	// Si está viva, la renderizamos en la nueva posición	
-	if (e->type & e_type_dead) {
-		cpct_drawSolidBox(pvmem, 0, e->w, e->h);
-	} else if (!(e->type & e_type_dead)) {
-		cpct_drawSprite(e->sprite, pvmem, e->w, e->h);
-	} 
+	//if (e->type & e_type_dead) {
+	//	cpct_drawSolidBox(pvmem, 0, e->w, e->h);
+	//} else if (!(e->type & e_type_dead)) {
+	//	cpct_drawSprite(e->sprite, pvmem, e->w, e->h);
+	//} 
 }
 
 //================================================================================

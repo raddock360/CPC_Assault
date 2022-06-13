@@ -67,6 +67,7 @@ struct Ent_t{
    AnimFrame_t const*   anim;            // Puntero a la estructura fotograma
    u8                   anim_counter;    // Contador para la animación
    u8                   collide_against; // ¿Contra qué colisiona la entidad?
+   u8*                  prev_pos;        // Puntero a la posición previa (para borrado).
 };
 
 //**********************************************************************************
