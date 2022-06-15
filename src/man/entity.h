@@ -23,6 +23,11 @@
 #define e_cmp_collider 0x20 // Entidad con colisiones  
 #define e_cmp_default  0x00 // Entidad sin ningún componente 
 
+typedef enum e_m {
+   entity_not_move = 0,
+   entity_move
+} e_move;
+
 // Macros
 // Comprueba si el tipo de la entidad recibida es distinta de inválida
 #define IsValid(E) ((E)->type != e_type_invalid)
@@ -61,13 +66,16 @@ struct Ent_t{
    u8                   x, y;            // Posición X e Y
    u8                   w, h;            // Ancho y alto
    i8                   vx, vy;          // Velocidad X e Y
-   u8 const*            sprite;          // Puntero al sprite 
+   u8 const*            sprite;          // Puntero al sprite
    BehaviourFunc_t      ai_vehaviour;    // Puntero al comportamiento
    u8                   ai_counter;      // Contador para la IA
    AnimFrame_t const*   anim;            // Puntero a la estructura fotograma
    u8                   anim_counter;    // Contador para la animación
    u8                   collide_against; // ¿Contra qué colisiona la entidad?
+   u8*                  next_pos;        // Puntero utilizado como caché para el próximo renderizado 
    u8*                  prev_pos;        // Puntero a la posición previa (para borrado).
+   e_move               move;            // ¿Se mueve o no? 
+   
 };
 
 //**********************************************************************************

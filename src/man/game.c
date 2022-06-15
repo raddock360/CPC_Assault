@@ -96,13 +96,20 @@ void man_game_init() {
 //
 void man_game_play() {
     while(1) {
+        cpct_setBorder(HW_BRIGHT_YELLOW); 
         sys_ai_update();        // Actualiza las entidades con IA
+        cpct_setBorder(HW_RED);
         sys_physics_update();   // Actualiza las entidades con físicas
+        cpct_setBorder(HW_WHITE); 
         sys_collisions_update();// Actualiza las colisiones
+        cpct_setBorder(HW_GREEN); 
         sys_animation_update(); // Actualiza las animaciones
-        cpct_waitVSYNC();
-        cpct_setBorder(HW_BRIGHT_CYAN); sys_render_update();    // Renderiza la escena
-        cpct_setBorder(HW_BLUE);
+        cpct_setBorder(HW_BRIGHT_BLUE); 
+        sys_pre_render_update();
+        cpct_setBorder(HW_BRIGHT_WHITE);
+	    if(!cpct_getVSYNCStatus()) cpct_waitVSYNC();
+	    sys_render_update();    // Renderiza la escena
+        cpct_setBorder(HW_BRIGHT_GREEN); 
         man_entity_update();    // Actualiza las entidades en memoria. Destruyendo las muertas
     }
 }
