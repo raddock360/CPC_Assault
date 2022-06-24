@@ -14,3 +14,4 @@ extern const Entity_t playership_templ;
 extern const Entity_t player_templ;
 extern const Entity_t enemy1_templ;
 extern const Entity_t vshoot_templ;
+extern const Entity_t vshoot_enemy_templ;

@@ -39,6 +39,17 @@ void sys_ai_behaviour_enemy(Entity_t* e) {
         man_game_enemy_lane_down(e);
     }
     sys_ai_behaviour_left_right(e);
+    sys_ai_behaviour_enemy_shoot(e);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+// BEHAVIOUR ENEMY
+//      Comportamiento de la nave enemiga
+// INPUT: 
+//      *e -> puntero a la entidad
+//
+void sys_ai_behaviour_enemy_shoot(Entity_t *e) {
+    man_game_enemy_shoot(e);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

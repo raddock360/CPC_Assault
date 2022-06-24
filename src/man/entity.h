@@ -72,10 +72,8 @@ struct Ent_t{
    AnimFrame_t const*   anim;            // Puntero a la estructura fotograma
    u8                   anim_counter;    // Contador para la animación
    u8                   collide_against; // ¿Contra qué colisiona la entidad?
-   u8*                  next_pos;        // Puntero utilizado como caché para el próximo renderizado 
-   u8*                  prev_pos;        // Puntero a la posición previa (para borrado).
+   u8*                  pos_ptr[3];      // Vector de punteros a vídeo para la coherencia del doble buffer 
    e_move               move;            // ¿Se mueve o no? 
-   
 };
 
 //**********************************************************************************
